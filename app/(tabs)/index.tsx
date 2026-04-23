@@ -1,98 +1,217 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import * as Haptics from 'expo-haptics';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import {
+  AdBanner,
+  AppBackground,
+  ChallengerOverlay,
+  MarketTicker,
+  MarketSignalCard,
+  PoliticianCard,
+  ReceiptStack,
+  RosterStrip,
+  ScoreTile,
+  ScreenHeader,
+  WildCardSpotlight,
+} from '@/components/game-ui';
+import { SwipeDeck } from '@/components/swipe-deck';
+import { marketSignals, politicians, promiseReceipts, wildCardEvents } from '@/data/politicians';
+import { getPromiseHitRate, getReceiptsForPolitician, getTruthPressure } from '@/lib/game';
+import { useGame } from '@/providers/game-provider';
+import { SwipeDirection } from '@/types/game';
 
-export default function HomeScreen() {
+export default function DraftScreen() {
+  const router = useRouter();
+  const {
+    currentPolitician,
+    availablePoliticians,
+    draftPolitician,
+    dismissPolitician,
+    roster,
+    rosterFull,
+    totalScore,
+    resetGame,
+  } = useGame();
+  const promiseRate = getPromiseHitRate(roster);
+  const [showChallenger, setShowChallenger] = useState(true);
+  const truthPressure = getTruthPressure(roster);
+  const currentSignal = marketSignals.find(
+    (signal) => signal.politicianId === currentPolitician?.id
+  );
+  const topWildCard = wildCardEvents[0];
+  const wildPolitician = politicians.find(
+    (politician) => politician.id === topWildCard.politicianId
+  );
+
+  const handleSwipe = (direction: SwipeDirection) => {
+    if (!currentPolitician) {
+      return;
+    }
+
+    void Haptics.impactAsync(
+      direction === 'left' ? Haptics.ImpactFeedbackStyle.Light : Haptics.ImpactFeedbackStyle.Medium
+    );
+
+    if (direction === 'left') {
+      dismissPolitician(currentPolitician.id);
+      return;
+    }
+
+    draftPolitician(currentPolitician.id, direction === 'up');
+    if (roster.length === 1 || direction === 'up') {
+      setShowChallenger(true);
+    }
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <SafeAreaView style={styles.safeArea}>
+      <AppBackground />
+      <ChallengerOverlay
+        visible={showChallenger}
+        event={topWildCard}
+        politician={wildPolitician}
+        onClose={() => setShowChallenger(false)}
+      />
+      <ScrollView contentContainerStyle={styles.container}>
+        <ScreenHeader kicker="GLOBAL DRAFT" title="Power Cabinet" score={totalScore} />
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+        <View style={styles.tickerWrap}>
+          <MarketTicker items={availablePoliticians.slice(0, 5)} />
+        </View>
+
+        <WildCardSpotlight event={topWildCard} politician={wildPolitician} />
+
+        <View style={styles.scoreRow}>
+          <ScoreTile label="Squad" value={`${roster.length}/5`} accent="#ef233c" />
+          <ScoreTile label="Promise" value={`${promiseRate}%`} accent="#2dc653" />
+          <ScoreTile label="Truth tax" value={truthPressure} accent="#00a9a5" />
+        </View>
+
+        <RosterStrip roster={roster} />
+
+        {rosterFull ? (
+          <View style={styles.lockedPanel}>
+            <Text style={styles.lockedTitle}>Squad locked</Text>
+            <Text style={styles.lockedCopy}>
+              {totalScore} projected points with a {promiseRate}% promise pace.
+            </Text>
+            <View style={styles.lockedActions}>
+              <Text onPress={() => router.push('/(tabs)/league')} style={styles.primaryCta}>
+                League table
+              </Text>
+              <Text onPress={() => router.push('/(tabs)/clips')} style={styles.secondaryCta}>
+                Card pack
+              </Text>
+              <Text onPress={resetGame} style={styles.secondaryCta}>
+                Redraft
+              </Text>
+            </View>
+          </View>
+        ) : (
+          <View style={styles.draftStack}>
+            <SwipeDeck
+              item={currentPolitician}
+              nextItem={availablePoliticians[1]}
+              renderCard={(item, captainPreview) => (
+                <PoliticianCard politician={item} captainPreview={captainPreview} />
+              )}
+              onSwipe={(_, direction) => handleSwipe(direction)}
+            />
+            <MarketSignalCard signal={currentSignal} />
+            <View style={styles.receiptsPanel}>
+              <Text style={styles.sectionTitle}>Live receipts</Text>
+              <ReceiptStack
+                compact
+                receipts={
+                  currentPolitician ? getReceiptsForPolitician(currentPolitician.id) : promiseReceipts.slice(0, 2)
+                }
+              />
+            </View>
+          </View>
+        )}
+
+        <AdBanner label="Pack break" />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#f3ead7',
+  },
+  container: {
+    padding: 16,
+    paddingBottom: 30,
+    gap: 16,
+  },
+  tickerWrap: {
+    marginTop: -4,
+  },
+  draftStack: {
+    gap: 12,
+  },
+  scoreRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    flexWrap: 'wrap',
     gap: 8,
   },
-  stepContainer: {
+  receiptsPanel: {
     gap: 8,
-    marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  sectionTitle: {
+    color: '#111111',
+    fontSize: 20,
+    fontWeight: '900',
+  },
+  lockedPanel: {
+    borderRadius: 8,
+    borderWidth: 3,
+    borderColor: '#111111',
+    backgroundColor: '#fff7e6',
+    padding: 16,
+    gap: 10,
+  },
+  lockedTitle: {
+    color: '#111111',
+    fontSize: 28,
+    fontWeight: '900',
+  },
+  lockedCopy: {
+    color: '#837766',
+    fontSize: 15,
+    fontWeight: '800',
+  },
+  lockedActions: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginTop: 4,
+  },
+  primaryCta: {
+    color: '#111111',
+    backgroundColor: '#f7c948',
+    overflow: 'hidden',
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#111111',
+    fontWeight: '900',
+  },
+  secondaryCta: {
+    color: '#111111',
+    backgroundColor: '#fff7e6',
+    overflow: 'hidden',
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#111111',
+    fontWeight: '900',
   },
 });

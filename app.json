@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "power-cabinet",
+    "name": "Power Cabinet",
     "slug": "power-cabinet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "powercabinet",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
@@ -33,9 +33,9 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#f3ead7",
           "dark": {
-            "backgroundColor": "#000000"
+            "backgroundColor": "#f3ead7"
           }
         }
       ]
