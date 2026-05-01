@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AppBackground, CaricaturePortrait, ScreenHeader } from '@/components/game-ui';
+import { AppBackground, CaricaturePortrait, ScreenHeader, RegionalPromo } from '@/components/game-ui';
 import { SwipeDeck } from '@/components/swipe-deck';
 import { politicians } from '@/data/politicians';
 import { useGame } from '@/providers/game-provider';
@@ -34,6 +35,7 @@ function TeamCard({
 
 export default function TeamsScreen() {
   const { teams } = useGame();
+  const router = useRouter();
   const [idx, setIdx] = useState(0);
 
   const current = teams[idx] ?? null;
@@ -56,6 +58,12 @@ export default function TeamsScreen() {
       <AppBackground />
       <ScrollView contentContainerStyle={styles.container}>
         <ScreenHeader kicker="TEAM DRAFT" title="Pick a Squad" />
+
+        <RegionalPromo
+          region="Teams"
+          politician={current ? politicians.find((p) => p.id === current.memberIds[0]) ?? politicians[0] : politicians[0]}
+          onExplore={() => router.push('/(tabs)/league')}
+        />
 
         <Text style={styles.hint}>Swipe right to draft · left to pass · up to captain-draft</Text>
 

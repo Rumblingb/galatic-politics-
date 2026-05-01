@@ -1617,6 +1617,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 4,
   },
+  
   // FIFA-style card
   cardShellFifa: {
     minHeight: 520,
@@ -1828,4 +1829,49 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '900',
   },
+  promoBanner: {
+    borderRadius: 8,
+    borderWidth: 3,
+    borderColor: ink,
+    backgroundColor: paper,
+    padding: 12,
+    gap: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  promoTitle: {
+    color: '#ef233c',
+    fontSize: 11,
+    fontWeight: '900',
+    textTransform: 'uppercase',
+  },
+  promoSubtitle: {
+    color: ink,
+    fontSize: 14,
+    fontWeight: '900',
+  },
 });
+
+export function RegionalPromo({ region = 'Global', politician, onExplore }: { region?: string; politician?: Politician; onExplore?: () => void }) {
+  if (!politician) {
+    return (
+      <View style={styles.promoBanner}>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.promoTitle}>{region} Spotlight</Text>
+          <Text style={styles.promoSubtitle}>Discover region-specific squads and events</Text>
+        </View>
+        <ActionButton label="Explore" icon="globe" tone="accent" onPress={onExplore ?? (() => {})} />
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.promoBanner}>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.promoTitle}>{region} Spotlight</Text>
+        <Text style={styles.promoSubtitle}>{politician.name} — {politician.role}</Text>
+      </View>
+      <ActionButton label={`Follow ${politician.name}`} icon="person" tone="gold" onPress={onExplore ?? (() => {})} />
+    </View>
+  );
+}

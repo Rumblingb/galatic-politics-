@@ -3,7 +3,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
-import { LoginGate } from '@/components/login-gate';
+import { LoginGate } from '@/components/login-gate-clean';
 import { GameProvider } from '@/providers/game-provider';
 
 export const unstable_settings = {
