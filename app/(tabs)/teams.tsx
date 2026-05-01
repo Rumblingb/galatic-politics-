@@ -24,7 +24,12 @@ function TeamCard({
       </View>
       <View style={styles.thumbsRow}>
         {sampleMembers.map((member, idx) => (
-          <View key={member.id} style={[styles.thumb, { left: idx * 38 }]}>
+          <View
+            key={member.id}
+            style={[
+              styles.thumb,
+              idx > 0 && { marginLeft: -18, zIndex: idx },
+            ]}>
             {member.portraitImage ? (
               <Image source={member.portraitImage} style={styles.thumbImage} resizeMode="contain" />
             ) : (
@@ -69,7 +74,7 @@ export default function TeamsScreen() {
           onExplore={() => router.push('/(tabs)/league')}
         />
 
-        <Text style={styles.hint}>Swipe right to draft · left to pass · up to captain-draft</Text>
+        <Text style={styles.hint}>Swipe right to draft · left to pass · swipe up to make captain</Text>
 
         <SwipeDeck
           item={current}
@@ -101,10 +106,16 @@ const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: '#f3ead7' },
   container: { padding: 16, paddingBottom: 30, gap: 16 },
   hint: {
-    color: '#837766',
-    fontSize: 13,
-    fontWeight: '800',
+    color: '#111111',
+    fontSize: 14,
+    fontWeight: '900',
     textAlign: 'center',
+    backgroundColor: 'rgba(17,17,17,0.04)',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    alignSelf: 'center',
+    overflow: 'hidden',
   },
   card: {
     borderRadius: 8,
@@ -119,10 +130,11 @@ const styles = StyleSheet.create({
   teamMeta: { color: '#837766', fontSize: 13, fontWeight: '800' },
   thumbsRow: {
     height: 56,
-    position: 'relative',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 6,
   },
   thumb: {
-    position: 'absolute',
     width: 52,
     height: 52,
     borderRadius: 8,

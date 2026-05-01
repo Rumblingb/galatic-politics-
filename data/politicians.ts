@@ -611,9 +611,9 @@ export const teams: Team[] = [
     id: 'team-2',
     name: 'Establishment Core',
     country: 'Western Alliance',
-    memberIds: ['uk-prime-minister', 'france-president', 'germany-chancellor'],
+    memberIds: ['uk-prime-minister', 'us-president', 'india-prime-minister'],
     theme: 'stability',
-    description: 'Predictable plays with solid floors — the safe bet when you need control.',
+    description: 'Predictable, well-rounded squads with solid floors — a finished, dependable lineup.',
   },
   {
     id: 'team-3',

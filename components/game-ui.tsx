@@ -261,7 +261,7 @@ export function PoliticianCard({
       <View style={styles.statsGridFifa}>
         <StatBar label="Promise" value={politician.promiseScore} color="#2dc653" />
         <StatBar label="Truth" value={politician.integrityScore} color="#00a9a5" />
-        <StatBar label="Market" value={politician.marketOdds} color="#f7c948" />
+        <StatBar label="Market" value={politician.marketOdds} color="#b88600" />
         <StatBar label="Risk" value={damage} color="#ef233c" />
       </View>
     </View>
