@@ -8,9 +8,9 @@ import {
   useState,
 } from 'react';
 
-import { politicians, startingFeed } from '@/data/politicians';
+import { politicians, startingFeed, teams } from '@/data/politicians';
 import { MAX_ROSTER_SIZE, calculateRosterScore, createRosterSlot } from '@/lib/game';
-import { MemeEvent, Politician, RosterSlot } from '@/types/game';
+import { MemeEvent, Politician, RosterSlot, Team } from '@/types/game';
 
 type GameContextValue = {
   isLoggedIn: boolean;
@@ -19,6 +19,9 @@ type GameContextValue = {
   availablePoliticians: Politician[];
   currentPolitician: Politician | null;
   rosterFull: boolean;
+  region: string;
+  teams: Team[];
+  setRegion: (region: string) => void;
   login: () => void;
   draftPolitician: (politicianId: string, captain?: boolean) => void;
   dismissPolitician: (politicianId: string) => void;
@@ -53,10 +56,11 @@ function buildEvent(politician: Politician, captain: boolean, drafted: boolean):
 }
 
 export function GameProvider({ children }: PropsWithChildren) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(process.env.NODE_ENV !== 'production' ? true : false);
   const [roster, setRoster] = useState<RosterSlot[]>([]);
   const [dismissedIds, setDismissedIds] = useState<string[]>([]);
   const [feed, setFeed] = useState<MemeEvent[]>(startingFeed);
+  const [region, setRegion] = useState<string>('global');
 
   const rosterIds = useMemo(() => roster.map((slot) => slot.politician.id), [roster]);
   const availablePoliticians = useMemo(
@@ -124,13 +128,16 @@ export function GameProvider({ children }: PropsWithChildren) {
       availablePoliticians,
       currentPolitician,
       rosterFull,
+      region,
+      teams,
+      setRegion,
       login,
       draftPolitician,
       dismissPolitician,
       resetGame,
       totalScore,
     }),
-    [availablePoliticians, currentPolitician, dismissPolitician, draftPolitician, feed, isLoggedIn, login, resetGame, roster, rosterFull, totalScore]
+    [availablePoliticians, currentPolitician, dismissPolitician, draftPolitician, feed, isLoggedIn, login, resetGame, roster, rosterFull, totalScore, region]
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

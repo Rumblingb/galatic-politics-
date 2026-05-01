@@ -1,0 +1,41 @@
+From 0445b22567989fb4d671757bd8303859f063afd4 Mon Sep 17 00:00:00 2001
+From: Rumblingb <vishar.rumbling@gmail.com>
+Date: Fri, 1 May 2026 20:00:45 +0100
+Subject: [PATCH] feat(data): add Vijay actor-politician for Indian market demo
+
+---
+ data/politicians.ts | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/data/politicians.ts b/data/politicians.ts
+index e90f4fe..b760aa5 100644
+--- a/data/politicians.ts
++++ b/data/politicians.ts
+@@ -286,6 +286,24 @@ export const politicians: Politician[] = [
+     palette: ['#edf2f4', '#d90429'],
+     memeTitle: 'Calm Carry',
+   },
++  {
++    id: 'vijay-actor',
++    name: 'Vijay',
++    country: 'India',
++    role: 'Actor · Politician',
++    archetype: 'Mass mobilizer',
++    issues: ['Cinema', 'Jobs', 'Local development'],
++    portraitEmoji: '🎬',
++    marketOdds: 68,
++    promiseScore: 72,
++    integrityScore: 54,
++    momentum: 25,
++    volatility: 'High',
++    scoutingReport: 'Major film-star turned politician with enormous grassroots mobilization potential — ideal for local Indian market events and fandom-driven activations.',
++    signatureMove: 'Stage rallies + viral clip drops to drive momentum.',
++    palette: ['#ffb703', '#2a9d8f'],
++    memeTitle: 'Box Office Rally',
++  },
+ ];
+ 
+ export const startingFeed: MemeEvent[] = [
+-- 
+2.45.1.windows.1
+

@@ -69,3 +69,12 @@ export type LeagueEntry = {
   score: number;
   vibe: string;
 };
+
+export type Team = {
+  id: string;
+  name: string;
+  country: string;
+  memberIds: string[];
+  theme: string;
+  description: string;
+};

@@ -15,6 +15,7 @@ import {
   RosterStrip,
   ScoreTile,
   ScreenHeader,
+  RegionalPromo,
   WildCardSpotlight,
 } from '@/components/game-ui';
 import { SwipeDeck } from '@/components/swipe-deck';
@@ -78,6 +79,11 @@ export default function DraftScreen() {
       <ScrollView contentContainerStyle={styles.container}>
         <ScreenHeader kicker="GLOBAL DRAFT" title="Power Cabinet" score={totalScore} />
 
+        <RegionalPromo
+          region="Global"
+          politician={currentPolitician ?? availablePoliticians[0]}
+          onExplore={() => router.push('/(tabs)/teams')}
+        />
         <View style={styles.tickerWrap}>
           <MarketTicker items={availablePoliticians.slice(0, 5)} />
         </View>

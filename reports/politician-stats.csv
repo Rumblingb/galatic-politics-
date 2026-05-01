@@ -1,0 +1,17 @@
+id,name,promiseScore,integrityScore,marketOdds,volatility,momentum
+russia-president,Vladimir Putin,48,21,66,High,17
+us-president,Donald Trump,61,32,74,High,18
+uk-prime-minister,Keir Starmer,58,56,59,Medium,9
+india-prime-minister,Narendra Modi,67,46,72,Medium,16
+argentina-president,Javier Milei,63,41,69,High,21
+ukraine-president,Volodymyr Zelenskyy,64,62,71,Medium,14
+france-president,Emmanuel Macron,49,45,52,Medium,6
+el-salvador-president,Nayib Bukele,70,38,77,High,19
+canada-prime-minister,Mark Carney,53,58,54,Low,8
+brazil-president,Luiz Inacio Lula da Silva,60,48,57,Medium,12
+germany-chancellor,Friedrich Merz,50,52,51,Low,7
+italy-prime-minister,Giorgia Meloni,59,44,64,High,15
+mexico-president,Claudia Sheinbaum,65,57,62,Medium,13
+south-africa-president,Cyril Ramaphosa,44,47,46,Medium,5
+japan-prime-minister,Shigeru Ishiba,51,60,48,Low,4
+vijay-actor,Vijay,72,54,68,High,25
