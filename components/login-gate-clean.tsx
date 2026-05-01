@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useCallback, useEffect } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -9,7 +9,7 @@ import { useGame } from '@/providers/game-provider';
 
 export function LoginGate({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const { isLoggedIn, login, selectTeam, region, setRegion } = useGame();
+  const { isLoggedIn, login, region, setRegion } = useGame();
   const bossEvent = wildCardEvents[0];
   const bossCard = politicians.find((p) => p.id === bossEvent.politicianId) ?? politicians[0];
 
@@ -18,11 +18,11 @@ export function LoginGate({ children }: { children: ReactNode }) {
     router.replace('/');
   };
 
-  const doQuickStart = () => {
+  const doQuickStart = useCallback(() => {
     login();
     // Intentionally not auto-drafting a team here — quick start simply logs in and returns to root.
     router.replace('/');
-  };
+  }, [login, router]);
 
   const ALLOW_DEV_QUICKSTART = false;
   useEffect(() => {
@@ -35,7 +35,7 @@ export function LoginGate({ children }: { children: ReactNode }) {
       return () => clearTimeout(t);
     }
     return;
-  }, [isLoggedIn, login, selectTeam, router]);
+  }, [isLoggedIn, ALLOW_DEV_QUICKSTART, doQuickStart]);
 
   if (isLoggedIn) return <>{children}</>;
 

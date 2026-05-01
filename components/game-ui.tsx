@@ -5,12 +5,10 @@ import {
   CardRarity,
   calculateBasePoints,
   getAccountabilityDamage,
-  getCardPosition,
   getCardRarity,
   getInitials,
   getOverallRating,
   getRarityColor,
-  getReceiptSummary,
   getReceiptTone,
 } from '@/lib/game';
 import {
@@ -279,22 +277,25 @@ export function CaricaturePortrait({
 }) {
   const isLarge = size === 'large';
   const trait = getPortraitTrait(politician.id);
+  const showDecorations = !isLarge;
 
   return (
     <View style={[styles.portraitWrap, isLarge && styles.portraitWrapLarge]}>
-      <View style={[styles.portraitAura, { backgroundColor: politician.palette[0] }]} />
-      {trait === 'horseback' ? <View style={styles.horsebackShape} /> : null}
+      {showDecorations ? <View style={[styles.portraitAura, { backgroundColor: politician.palette[0] }]} /> : null}
+      {showDecorations && trait === 'horseback' ? <View style={styles.horsebackShape} /> : null}
       <View style={[styles.portraitHead, isLarge && styles.portraitHeadLarge]}>
-        <View
-          style={[
-            styles.portraitHair,
-            trait === 'hair' && styles.portraitHairTall,
-            { backgroundColor: politician.palette[0] },
-          ]}
-        />
-        {trait === 'shades' ? <View style={styles.shades} /> : null}
-        {trait === 'chainsaw' ? <View style={styles.chainsaw} /> : null}
-        {trait === 'crown' ? <View style={styles.crownShape} /> : null}
+        {showDecorations ? (
+          <View
+            style={[
+              styles.portraitHair,
+              trait === 'hair' && styles.portraitHairTall,
+              { backgroundColor: politician.palette[0] },
+            ]}
+          />
+        ) : null}
+        {showDecorations && trait === 'shades' ? <View style={styles.shades} /> : null}
+        {showDecorations && trait === 'chainsaw' ? <View style={styles.chainsaw} /> : null}
+        {showDecorations && trait === 'crown' ? <View style={styles.crownShape} /> : null}
         {politician.portraitImage ? (
           <Image
             source={politician.portraitImage}
@@ -310,7 +311,7 @@ export function CaricaturePortrait({
           </Text>
         )}
       </View>
-      {!isLarge && <Text style={styles.countryCode}>{politician.portraitEmoji}</Text>}
+      {showDecorations && <Text style={styles.countryCode}>{politician.portraitEmoji}</Text>}
     </View>
   );
 }
@@ -332,23 +333,6 @@ function getPortraitTrait(politicianId: string) {
     return 'crown';
   }
   return 'standard';
-}
-
-function getMemeSkinLabel(trait: string) {
-  switch (trait) {
-    case 'hair':
-      return 'Hair tornado skin';
-    case 'horseback':
-      return 'Horseback boss skin';
-    case 'chainsaw':
-      return 'Chainsaw skin';
-    case 'shades':
-      return 'Night-mode skin';
-    case 'crown':
-      return 'Clutch captain skin';
-    default:
-      return 'Base skin';
-  }
 }
 
 export function ReceiptStack({ receipts, compact = false }: { receipts: PromiseReceipt[]; compact?: boolean }) {
@@ -921,7 +905,11 @@ const styles = StyleSheet.create({
   },
   portraitWrapLarge: {
     width: '100%',
-    height: '100%',
+    height: undefined,
+    aspectRatio: 3 / 4,
+    maxHeight: 320,
+    borderRadius: 8,
+    overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -947,7 +935,7 @@ const styles = StyleSheet.create({
   portraitHeadLarge: {
     width: '100%',
     height: '100%',
-    borderRadius: 0,
+    borderRadius: 8,
     borderWidth: 0,
     backgroundColor: 'transparent',
     overflow: 'hidden',
@@ -960,6 +948,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     borderWidth: 2,
     borderColor: ink,
+    zIndex: 2,
   },
   portraitHairTall: {
     top: -24,
