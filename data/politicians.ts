@@ -286,6 +286,24 @@ export const politicians: Politician[] = [
     palette: ['#edf2f4', '#d90429'],
     memeTitle: 'Calm Carry',
   },
+  {
+    id: 'vijay-actor',
+    name: 'Vijay',
+    country: 'India',
+    role: 'Actor · Politician',
+    archetype: 'Mass mobilizer',
+    issues: ['Cinema', 'Jobs', 'Local development'],
+    portraitEmoji: '🎬',
+    marketOdds: 68,
+    promiseScore: 72,
+    integrityScore: 54,
+    momentum: 25,
+    volatility: 'High',
+    scoutingReport: 'Major film-star turned politician with enormous grassroots mobilization potential — ideal for local Indian market events and fandom-driven activations.',
+    signatureMove: 'Stage rallies + viral clip drops to drive momentum.',
+    palette: ['#ffb703', '#2a9d8f'],
+    memeTitle: 'Box Office Rally',
+  },
 ];
 
 export const startingFeed: MemeEvent[] = [
