@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View, Image } from 'react-native';
 
 import {
   CardRarity,
@@ -21,6 +21,8 @@ import {
   PromiseReceipt,
   RosterSlot,
   WildCardEvent,
+  PolymarketCard as PolymarketCardType,
+  AuraFarmingMoment,
 } from '@/types/game';
 
 const ink = '#111111';
@@ -29,7 +31,7 @@ const muted = '#837766';
 
 export function AppBackground() {
   return (
-    <View pointerEvents="none" style={StyleSheet.absoluteFill}>
+    <View style={[StyleSheet.absoluteFill, { pointerEvents: 'none' }]}>
       <View style={styles.stageBase} />
       <View style={[styles.stageStripe, styles.stageStripeOne]} />
       <View style={[styles.stageStripe, styles.stageStripeTwo]} />
@@ -72,11 +74,11 @@ export function ActionButton({
 }: {
   label: string;
   icon: keyof typeof Ionicons.glyphMap;
-  tone: 'good' | 'bad' | 'gold' | 'neutral';
+  tone: 'good' | 'bad' | 'gold' | 'neutral' | 'accent';
   onPress: () => void;
 }) {
   const accent =
-    tone === 'good' ? '#2dc653' : tone === 'bad' ? '#ef233c' : tone === 'gold' ? '#f7c948' : ink;
+    tone === 'good' ? '#2dc653' : tone === 'bad' ? '#ef233c' : tone === 'gold' ? '#f7c948' : tone === 'accent' ? '#00a9a5' : ink;
 
   return (
     <Pressable onPress={onPress} style={[styles.actionButton, { borderColor: accent }]}>
@@ -167,6 +169,52 @@ export function AdBanner({ label = 'Sponsored break' }: { label?: string }) {
   );
 }
 
+export function PolymarketCard({ card, onYes, onNo }: { card: PolymarketCardType; onYes?: () => void; onNo?: () => void }) {
+  return (
+    <View style={styles.polymarketCard}>
+      <Text style={styles.polymarketKicker}>PREDICTION MARKET</Text>
+      <Text style={styles.polymarketQuestion}>{card.question}</Text>
+      <View style={styles.oddsRow}>
+        <Pressable style={styles.oddsBtnYes} onPress={onYes}>
+          <Text style={styles.oddsValue}>{card.yesOdds}¢</Text>
+          <Text style={styles.oddsLabel}>YES</Text>
+        </Pressable>
+        <Pressable style={styles.oddsBtnNo} onPress={onNo}>
+          <Text style={styles.oddsValue}>{card.noOdds}¢</Text>
+          <Text style={styles.oddsLabel}>NO</Text>
+        </Pressable>
+      </View>
+      <Text style={styles.polymarketVolume}>Vol ${(card.volume24h / 1000).toFixed(1)}k</Text>
+      <View style={styles.polymarketAttribution}>
+        <Text style={styles.attributionText}>Markets on Polymarket</Text>
+        <Text style={styles.affiliateTag}>Affiliate</Text>
+      </View>
+    </View>
+  );
+}
+
+export function AuraFarmingMomentCard({ moment, onSwipe }: { moment: AuraFarmingMoment; onSwipe?: () => void }) {
+  return (
+    <View style={[styles.auraCard, { backgroundColor: '#111111' }]}>
+      {moment.imageUrl ? (
+        <Image source={{ uri: moment.imageUrl }} style={styles.auraImage} />
+      ) : (
+        <View style={styles.auraImagePlaceholder}>
+          <Ionicons name="flash" size={48} color="#f7c948" />
+        </View>
+      )}
+      <View style={styles.auraOverlay}>
+        <Text style={styles.auraKicker}>{moment.category.toUpperCase()}</Text>
+        <Text style={styles.auraTitle}>{moment.title}</Text>
+        <Text style={styles.auraPoints}>+{moment.points} pts</Text>
+        <Pressable style={styles.auraButton} onPress={onSwipe}>
+          <Text style={styles.auraButtonText}>Got it</Text>
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
 export function PoliticianCard({
   politician,
   captainPreview = false,
@@ -179,66 +227,44 @@ export function PoliticianCard({
   const rating = getOverallRating(politician);
   const rarity = getCardRarity(politician);
   const rarityColor = getRarityColor(rarity);
-  const receiptSummary = getReceiptSummary(politician.id);
   const damage = getAccountabilityDamage(politician);
 
   return (
     <View
       style={[
-        styles.cardShell,
+        styles.cardShellFifa,
         {
           borderColor: rarityColor,
           backgroundColor: politician.palette[0],
         },
       ]}>
-      <View style={styles.foilStripeA} />
-      <View style={styles.foilStripeB} />
-      <View style={styles.cardTop}>
-        <View style={styles.ratingBlock}>
-          <Text style={styles.rating}>{rating}</Text>
-          <Text style={styles.position}>{getCardPosition(politician)}</Text>
-        </View>
-        <View style={[styles.rarityTag, { backgroundColor: rarityColor }]}>
-          <Text style={styles.rarityText}>{rarity}</Text>
+      <View style={styles.cardTopFifa}>
+        <View style={[styles.ratingBlockFifa, { backgroundColor: rarityColor }]}>
+          <Text style={styles.ratingFifa}>{rating}</Text>
         </View>
       </View>
 
-      <View style={styles.cardArt}>
-        <View style={[styles.cardArtPlate, { backgroundColor: politician.palette[1] }]}>
-          <CaricaturePortrait politician={politician} size="large" />
+      <View style={[styles.cardArtFifa, { backgroundColor: politician.palette[1] }]}>
+        <CaricaturePortrait politician={politician} size="large" />
+      </View>
+
+      <View style={styles.cardBottomFifa}>
+        <View>
+          <Text numberOfLines={1} adjustsFontSizeToFit style={styles.cardNameFifa}>
+            {politician.name}
+          </Text>
+          <Text numberOfLines={1} style={styles.cardCountryFifa}>
+            {politician.country}
+          </Text>
         </View>
+        <Text style={styles.projectedFifa}>{projectedPoints}</Text>
       </View>
 
-      <View style={styles.cardNamePlate}>
-        <Text numberOfLines={1} adjustsFontSizeToFit style={styles.cardName}>
-          {politician.name}
-        </Text>
-        <Text numberOfLines={1} style={styles.cardRole}>
-          {politician.country} - {politician.archetype}
-        </Text>
-      </View>
-
-      <View style={styles.statsGrid}>
+      <View style={styles.statsGridFifa}>
         <StatBar label="Promise" value={politician.promiseScore} color="#2dc653" />
         <StatBar label="Truth" value={politician.integrityScore} color="#00a9a5" />
         <StatBar label="Market" value={politician.marketOdds} color="#f7c948" />
-        <StatBar label="Damage" value={damage} color="#ef233c" />
-      </View>
-
-      <View style={styles.cardBottom}>
-        <View style={styles.projectedRow}>
-          <View>
-            <Text style={styles.projected}>{projectedPoints}</Text>
-            <Text style={styles.projectedLabel}>{captainPreview ? 'captain pts' : 'projected pts'}</Text>
-          </View>
-          <View style={styles.receiptMini}>
-            <Text style={styles.receiptMiniGood}>+{receiptSummary.positive}</Text>
-            <Text style={styles.receiptMiniBad}>-{receiptSummary.negative}</Text>
-          </View>
-        </View>
-        <Text numberOfLines={2} style={styles.signature}>
-          {politician.signatureMove}
-        </Text>
+        <StatBar label="Risk" value={damage} color="#ef233c" />
       </View>
     </View>
   );
@@ -269,17 +295,22 @@ export function CaricaturePortrait({
         {trait === 'shades' ? <View style={styles.shades} /> : null}
         {trait === 'chainsaw' ? <View style={styles.chainsaw} /> : null}
         {trait === 'crown' ? <View style={styles.crownShape} /> : null}
-        <Text
-          adjustsFontSizeToFit
-          numberOfLines={1}
-          style={[styles.portraitInitials, isLarge && styles.portraitInitialsLarge]}>
-          {getInitials(politician.name)}
-        </Text>
+        {politician.portraitImage ? (
+          <Image
+            source={politician.portraitImage}
+            style={[styles.portraitImage, isLarge && styles.portraitImageLarge]}
+            resizeMode="cover"
+          />
+        ) : (
+          <Text
+            adjustsFontSizeToFit
+            numberOfLines={1}
+            style={[styles.portraitInitials, isLarge && styles.portraitInitialsLarge]}>
+            {getInitials(politician.name)}
+          </Text>
+        )}
       </View>
-      <Text style={[styles.countryCode, isLarge && styles.countryCodeLarge]}>{politician.portraitEmoji}</Text>
-      <Text numberOfLines={1} style={[styles.memeSkin, isLarge && styles.memeSkinLarge]}>
-        {getMemeSkinLabel(trait)}
-      </Text>
+      {!isLarge && <Text style={styles.countryCode}>{politician.portraitEmoji}</Text>}
     </View>
   );
 }
@@ -414,7 +445,6 @@ export function ChallengerOverlay({
         <Text style={styles.challengerEffect}>{event.effect}</Text>
         <View style={styles.challengerActions}>
           <ActionButton label="Swipe now" icon="flash" tone="gold" onPress={onClose} />
-          <ActionButton label="Generate GIF" icon="videocam" tone="neutral" onPress={onClose} />
         </View>
       </View>
     </View>
@@ -423,12 +453,14 @@ export function ChallengerOverlay({
 
 function StatBar({ label, value, color }: { label: string; value: number; color: string }) {
   return (
-    <View style={styles.statRow}>
-      <Text style={styles.statLabel}>{label}</Text>
-      <View style={styles.statTrack}>
-        <View style={[styles.statFill, { width: `${Math.min(100, value)}%`, backgroundColor: color }]} />
+    <View style={styles.statRowWrap}>
+      {label ? <Text style={[styles.statLabel, { color }]}>{label}</Text> : null}
+      <View style={styles.statRowCompact}>
+        <View style={styles.statTrack}>
+          <View style={[styles.statFill, { width: `${Math.min(100, value)}%`, backgroundColor: color }]} />
+        </View>
+        <Text style={[styles.statValue, { color }]}>{value}</Text>
       </View>
-      <Text style={styles.statValue}>{value}</Text>
     </View>
   );
 }
@@ -486,9 +518,15 @@ export function LeagueStandingRow({
   return (
     <View style={[styles.standingRow, isYou && styles.standingRowYou]}>
       <Text style={styles.standingRank}>#{rank}</Text>
+      <View style={styles.standingAvatar}>
+        <View style={styles.standingAvatarPlaceholder} />
+      </View>
       <View style={styles.standingBody}>
         <Text style={styles.standingName}>{entry.name}</Text>
-        <Text style={styles.standingVibe}>{entry.vibe}</Text>
+        <Text style={styles.standingTruth}>
+          {entry.policyFocus ? `${entry.policyFocus} focus` : entry.vibe}
+          {entry.truthScore !== undefined ? ` · Truth ${entry.truthScore}%` : ''}
+        </Text>
       </View>
       <Text style={styles.standingScore}>{entry.score}</Text>
     </View>
@@ -882,8 +920,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   portraitWrapLarge: {
-    width: 260,
-    height: 180,
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   portraitAura: {
     position: 'absolute',
@@ -905,9 +945,12 @@ const styles = StyleSheet.create({
     overflow: 'visible',
   },
   portraitHeadLarge: {
-    width: 128,
-    height: 128,
-    borderRadius: 38,
+    width: '100%',
+    height: '100%',
+    borderRadius: 0,
+    borderWidth: 0,
+    backgroundColor: 'transparent',
+    overflow: 'hidden',
   },
   portraitHair: {
     position: 'absolute',
@@ -930,6 +973,17 @@ const styles = StyleSheet.create({
   },
   portraitInitialsLarge: {
     fontSize: 46,
+  },
+  portraitImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 26,
+    resizeMode: 'cover',
+  },
+  portraitImageLarge: {
+    borderRadius: 0,
+    width: '100%',
+    height: '100%',
   },
   horsebackShape: {
     position: 'absolute',
@@ -1048,11 +1102,11 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   statLabel: {
-    width: 54,
-    color: ink,
     fontSize: 11,
     fontWeight: '900',
+    letterSpacing: 0.8,
     textTransform: 'uppercase',
+    minWidth: 54,
   },
   statTrack: {
     flex: 1,
@@ -1065,6 +1119,7 @@ const styles = StyleSheet.create({
   },
   statFill: {
     height: '100%',
+    borderRadius: 999,
   },
   statValue: {
     width: 26,
@@ -1072,6 +1127,9 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     fontSize: 12,
     fontWeight: '900',
+  },
+  statRowWrap: {
+    gap: 4,
   },
   cardBottom: {
     marginTop: 12,
@@ -1155,6 +1213,26 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     marginTop: 4,
   },
+  standingAvatar: {
+    width: 44,
+    height: 44,
+    marginRight: 12,
+    borderRadius: 10,
+    overflow: 'hidden',
+    backgroundColor: '#fff7e6',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  standingAvatarImage: {
+    width: '100%',
+    height: '100%',
+  },
+  standingAvatarPlaceholder: {
+    width: 34,
+    height: 34,
+    borderRadius: 6,
+    backgroundColor: '#837766',
+  },
   rosterName: {
     color: ink,
     fontSize: 11,
@@ -1214,6 +1292,12 @@ const styles = StyleSheet.create({
     fontWeight: '900',
   },
   standingVibe: {
+    color: muted,
+    fontSize: 11,
+    marginTop: 3,
+    fontWeight: '800',
+  },
+  standingTruth: {
     color: muted,
     fontSize: 11,
     marginTop: 3,
@@ -1532,5 +1616,216 @@ const styles = StyleSheet.create({
     gap: 8,
     width: '100%',
     marginTop: 4,
+  },
+  // FIFA-style card
+  cardShellFifa: {
+    minHeight: 520,
+    borderRadius: 10,
+    borderWidth: 3,
+    overflow: 'hidden',
+  },
+  cardTopFifa: {
+    paddingHorizontal: 12,
+    paddingTop: 12,
+    zIndex: 1,
+  },
+  ratingBlockFifa: {
+    width: 60,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: ink,
+    paddingVertical: 4,
+    alignItems: 'center',
+  },
+  ratingFifa: {
+    color: ink,
+    fontSize: 28,
+    fontWeight: '900',
+  },
+  cardArtFifa: {
+    marginVertical: 12,
+    marginHorizontal: 12,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: ink,
+    minHeight: 220,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  cardBottomFifa: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    gap: 12,
+  },
+  cardNameFifa: {
+    color: ink,
+    fontSize: 18,
+    fontWeight: '900',
+  },
+  cardCountryFifa: {
+    color: muted,
+    fontSize: 10,
+    fontWeight: '900',
+    marginTop: 2,
+    textTransform: 'uppercase',
+  },
+  projectedFifa: {
+    color: ink,
+    fontSize: 22,
+    fontWeight: '900',
+    minWidth: 50,
+    textAlign: 'right',
+  },
+  statsGridFifa: {
+    paddingHorizontal: 12,
+    paddingBottom: 12,
+    gap: 6,
+  },
+  statRowCompact: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    height: 6,
+  },
+  // Polymarket Card
+  polymarketCard: {
+    borderRadius: 10,
+    borderWidth: 3,
+    borderColor: '#00a9a5',
+    backgroundColor: '#fff7e6',
+    padding: 16,
+    gap: 12,
+  },
+  polymarketKicker: {
+    color: '#00a9a5',
+    fontSize: 11,
+    fontWeight: '900',
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+  },
+  polymarketQuestion: {
+    color: ink,
+    fontSize: 18,
+    fontWeight: '900',
+    lineHeight: 24,
+  },
+  oddsRow: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  oddsBtnYes: {
+    flex: 1,
+    borderRadius: 8,
+    borderWidth: 3,
+    borderColor: '#2dc653',
+    backgroundColor: '#2dc653',
+    padding: 12,
+    alignItems: 'center',
+  },
+  oddsBtnNo: {
+    flex: 1,
+    borderRadius: 8,
+    borderWidth: 3,
+    borderColor: '#ef233c',
+    backgroundColor: '#ef233c',
+    padding: 12,
+    alignItems: 'center',
+  },
+  oddsValue: {
+    color: paper,
+    fontSize: 24,
+    fontWeight: '900',
+  },
+  oddsLabel: {
+    color: paper,
+    fontSize: 12,
+    fontWeight: '900',
+    marginTop: 2,
+  },
+  polymarketVolume: {
+    color: muted,
+    fontSize: 12,
+    fontWeight: '900',
+  },
+  polymarketAttribution: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: '#e5e7eb',
+  },
+  attributionText: {
+    color: muted,
+    fontSize: 11,
+    fontWeight: '800',
+  },
+  affiliateTag: {
+    color: '#f7c948',
+    fontSize: 10,
+    fontWeight: '900',
+    textTransform: 'uppercase',
+  },
+  // Aura Farming Moment Card
+  auraCard: {
+    borderRadius: 10,
+    borderWidth: 3,
+    borderColor: '#f7c948',
+    overflow: 'hidden',
+    minHeight: 300,
+    justifyContent: 'flex-end',
+  },
+  auraImage: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  auraImagePlaceholder: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1a1a1a',
+  },
+  auraOverlay: {
+    backgroundColor: 'rgba(0,0,0,0.85)',
+    padding: 14,
+    gap: 8,
+  },
+  auraKicker: {
+    color: '#f7c948',
+    fontSize: 10,
+    fontWeight: '900',
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+  },
+  auraTitle: {
+    color: '#fff7e6',
+    fontSize: 20,
+    fontWeight: '900',
+    lineHeight: 26,
+  },
+  auraPoints: {
+    color: '#2dc653',
+    fontSize: 16,
+    fontWeight: '900',
+  },
+  auraButton: {
+    backgroundColor: '#f7c948',
+    borderRadius: 6,
+    paddingVertical: 10,
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  auraButtonText: {
+    color: ink,
+    fontSize: 14,
+    fontWeight: '900',
   },
 });
