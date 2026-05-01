@@ -7,7 +7,7 @@ import { LoginGate } from '@/components/login-gate';
 import { GameProvider } from '@/providers/game-provider';
 
 export const unstable_settings = {
-  anchor: '(tabs)',
+  initialRouteName: '(tabs)',
 };
 
 export default function RootLayout() {

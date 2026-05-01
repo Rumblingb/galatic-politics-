@@ -2,7 +2,6 @@ import { ReactNode, useEffect, useRef } from 'react';
 import {
   Animated,
   PanResponder,
-  PanResponderGestureState,
   StyleSheet,
   Text,
   View,
@@ -28,12 +27,18 @@ export function SwipeDeck<T extends { id: string }>({
 }: SwipeDeckProps<T>) {
   const position = useRef(new Animated.ValueXY()).current;
 
+  // Always-current refs so the panResponder (created once) never closes over stale props
+  const itemRef = useRef(item);
+  const onSwipeRef = useRef(onSwipe);
+  itemRef.current = item;
+  onSwipeRef.current = onSwipe;
+
   useEffect(() => {
     position.setValue({ x: 0, y: 0 });
   }, [item, position]);
 
   const animateOut = (direction: SwipeDirection) => {
-    if (!item) {
+    if (!itemRef.current) {
       return;
     }
 
@@ -50,32 +55,13 @@ export function SwipeDeck<T extends { id: string }>({
       useNativeDriver: false,
     }).start(() => {
       position.setValue({ x: 0, y: 0 });
-      onSwipe(item, direction);
+      onSwipeRef.current(itemRef.current!, direction);
     });
   };
 
-  const resolveRelease = (_: unknown, gesture: PanResponderGestureState) => {
-    if (gesture.dy < -SWIPE_THRESHOLD) {
-      animateOut('up');
-      return;
-    }
-
-    if (gesture.dx > SWIPE_THRESHOLD) {
-      animateOut('right');
-      return;
-    }
-
-    if (gesture.dx < -SWIPE_THRESHOLD) {
-      animateOut('left');
-      return;
-    }
-
-    Animated.spring(position, {
-      toValue: { x: 0, y: 0 },
-      friction: 5,
-      useNativeDriver: false,
-    }).start();
-  };
+  // Always-current ref so the panResponder closure always calls the latest animateOut
+  const animateOutRef = useRef(animateOut);
+  animateOutRef.current = animateOut;
 
   const panResponder = useRef(
     PanResponder.create({
@@ -83,7 +69,25 @@ export function SwipeDeck<T extends { id: string }>({
       onPanResponderMove: Animated.event([null, { dx: position.x, dy: position.y }], {
         useNativeDriver: false,
       }),
-      onPanResponderRelease: resolveRelease,
+      onPanResponderRelease: (_: unknown, gesture) => {
+        if (gesture.dy < -SWIPE_THRESHOLD) {
+          animateOutRef.current('up');
+          return;
+        }
+        if (gesture.dx > SWIPE_THRESHOLD) {
+          animateOutRef.current('right');
+          return;
+        }
+        if (gesture.dx < -SWIPE_THRESHOLD) {
+          animateOutRef.current('left');
+          return;
+        }
+        Animated.spring(position, {
+          toValue: { x: 0, y: 0 },
+          friction: 5,
+          useNativeDriver: false,
+        }).start();
+      },
     })
   ).current;
 

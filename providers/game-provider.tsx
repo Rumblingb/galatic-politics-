@@ -2,6 +2,7 @@ import {
   createContext,
   PropsWithChildren,
   startTransition,
+  useCallback,
   useContext,
   useMemo,
   useState,
@@ -70,23 +71,26 @@ export function GameProvider({ children }: PropsWithChildren) {
   const totalScore = calculateRosterScore(roster);
   const rosterFull = roster.length >= MAX_ROSTER_SIZE;
 
-  const draftPolitician = (politicianId: string, captain = false) => {
+  const draftPolitician = useCallback((politicianId: string, captain = false) => {
     const politician = politicians.find((entry) => entry.id === politicianId);
-    if (!politician || rosterFull) {
+    if (!politician) {
       return;
     }
 
     startTransition(() => {
       setRoster((current) => {
+        if (current.length >= MAX_ROSTER_SIZE) {
+          return current;
+        }
         const alreadyHasCaptain = current.some((slot) => slot.captain);
         const shouldCaptain = captain && !alreadyHasCaptain;
         return [...current, createRosterSlot(politician, shouldCaptain)];
       });
       setFeed((current) => [buildEvent(politician, captain, true), ...current].slice(0, 8));
     });
-  };
+  }, []);
 
-  const dismissPolitician = (politicianId: string) => {
+  const dismissPolitician = useCallback((politicianId: string) => {
     const politician = politicians.find((entry) => entry.id === politicianId);
     if (!politician) {
       return;
@@ -96,21 +100,21 @@ export function GameProvider({ children }: PropsWithChildren) {
       setDismissedIds((current) => [...current, politicianId]);
       setFeed((current) => [buildEvent(politician, false, false), ...current].slice(0, 8));
     });
-  };
+  }, []);
 
-  const resetGame = () => {
+  const resetGame = useCallback(() => {
     startTransition(() => {
       setRoster([]);
       setDismissedIds([]);
       setFeed(startingFeed);
     });
-  };
+  }, []);
 
-  const login = () => {
+  const login = useCallback(() => {
     startTransition(() => {
       setIsLoggedIn(true);
     });
-  };
+  }, []);
 
   const value = useMemo(
     () => ({
@@ -126,7 +130,7 @@ export function GameProvider({ children }: PropsWithChildren) {
       resetGame,
       totalScore,
     }),
-    [availablePoliticians, currentPolitician, feed, isLoggedIn, roster, rosterFull, totalScore]
+    [availablePoliticians, currentPolitician, dismissPolitician, draftPolitician, feed, isLoggedIn, login, resetGame, roster, rosterFull, totalScore]
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
