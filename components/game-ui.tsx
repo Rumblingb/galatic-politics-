@@ -336,7 +336,7 @@ export function ReceiptStack({ receipts, compact = false }: { receipts: PromiseR
       {visibleReceipts.map((receipt) => (
         <View key={receipt.id} style={[styles.receiptRow, { borderLeftColor: getReceiptTone(receipt) }]}>
           <View style={styles.receiptTop}>
-            <Text style={styles.receiptType}>{receipt.type.replace('-', ' ')}</Text>
+            <Text style={styles.receiptType}>{receipt.type.replace(/-/g, ' ')}</Text>
             <Text style={[styles.receiptPoints, { color: getReceiptTone(receipt) }]}>
               {receipt.points > 0 ? '+' : ''}
               {receipt.points}
