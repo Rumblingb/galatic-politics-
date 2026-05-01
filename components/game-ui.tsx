@@ -299,7 +299,7 @@ export function CaricaturePortrait({
           <Image
             source={politician.portraitImage}
             style={[styles.portraitImage, isLarge && styles.portraitImageLarge]}
-            resizeMode="cover"
+            resizeMode="contain"
           />
         ) : (
           <Text
@@ -978,7 +978,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 26,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
   portraitImageLarge: {
     borderRadius: 0,

@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AppBackground, CaricaturePortrait, ScreenHeader, RegionalPromo } from '@/components/game-ui';
+import { AppBackground, ScreenHeader, RegionalPromo } from '@/components/game-ui';
 import { SwipeDeck } from '@/components/swipe-deck';
 import { politicians } from '@/data/politicians';
 import { useGame } from '@/providers/game-provider';
@@ -25,7 +25,11 @@ function TeamCard({
       <View style={styles.thumbsRow}>
         {sampleMembers.map((member, idx) => (
           <View key={member.id} style={[styles.thumb, { left: idx * 38 }]}>
-            <CaricaturePortrait politician={member} size="small" />
+            {member.portraitImage ? (
+              <Image source={member.portraitImage} style={styles.thumbImage} resizeMode="contain" />
+            ) : (
+              <Text style={styles.thumbEmoji}>{member.portraitEmoji}</Text>
+            )}
           </View>
         ))}
       </View>
@@ -125,6 +129,16 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 2,
     borderColor: '#111111',
+    backgroundColor: '#fff7e6',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  thumbImage: {
+    width: '100%',
+    height: '100%',
+  },
+  thumbEmoji: {
+    fontSize: 24,
   },
   empty: {
     borderRadius: 8,
