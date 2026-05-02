@@ -9,11 +9,13 @@ Generated: 2026-05-02
 - `npm run doctor` - pass, 17/17 checks
 - `npm run export:web` - pass
 - Xcode simulator build - pass, `PowerCabinet` Debug / iPhone 17 simulator
+- Xcode simulator release build - pass, `PowerCabinet` Release / iPhone 17 simulator with embedded JS bundle
 - Android production build - pass, EAS build `961072bd-a5db-4751-973b-4bdf7243b0f3`
 - Android `.aab` integrity - pass, `unzip -t` no errors
 
 ## Manual Checks
 
+- First-run native login/store hero screen captured at `store/screenshots/native/ios-store-login-ready.png`.
 - Draft tab opens without login blockers.
 - Swipe actions respond: right drafts, left passes, up marks captain.
 - League tab renders standings and current score.

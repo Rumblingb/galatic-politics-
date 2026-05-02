@@ -31,7 +31,7 @@ export default function RootLayout() {
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack>
         </LoginGate>
-        <StatusBar style="dark" />
+        <StatusBar style="light" />
       </ThemeProvider>
     </GameProvider>
   );

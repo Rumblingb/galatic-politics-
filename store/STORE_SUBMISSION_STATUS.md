@@ -21,6 +21,7 @@ Generated: 2026-05-02
 
 - `npm run qa` passed after EAS project link and export-compliance update.
 - Xcode simulator build passed for `PowerCabinet`.
+- Xcode Release simulator build passed and embedded the JS bundle; first-run native store hero was captured at `store/screenshots/native/ios-store-login-ready.png`.
 - Android `.aab` downloaded and validated with `unzip -t`.
 
 ## Not Submitted Yet
