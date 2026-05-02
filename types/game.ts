@@ -39,6 +39,7 @@ export type MarketSignal = {
   probability: number;
   change: number;
   linkLabel: string;
+  marketUrl?: string;
 };
 
 export type WildCardEvent = {
@@ -81,6 +82,7 @@ export type PolymarketCard = {
   yesOdds: number;
   noOdds: number;
   volume24h: number;
+  affiliateUrl?: string;
 };
 
 export type AuraFarmingMoment = {

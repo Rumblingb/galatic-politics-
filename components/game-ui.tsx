@@ -1,6 +1,8 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { openBrowserAsync } from 'expo-web-browser';
 import { Pressable, StyleSheet, Text, View, Image } from 'react-native';
 
+import { ADMOB_BANNER_STATUS, POLYMARKET_AFFILIATE_URL } from '@/constants/revenue';
 import {
   CardRarity,
   calculateBasePoints,
@@ -120,6 +122,10 @@ export function MarketTicker({ items }: { items: Politician[] }) {
 }
 
 export function MarketSignalCard({ signal }: { signal?: MarketSignal }) {
+  const openMarket = () => {
+    void openBrowserAsync(signal?.marketUrl ?? POLYMARKET_AFFILIATE_URL);
+  };
+
   if (!signal) {
     return (
       <View style={styles.marketSignal}>
@@ -146,13 +152,22 @@ export function MarketSignalCard({ signal }: { signal?: MarketSignal }) {
         <View style={[styles.marketFill, { width: `${signal.probability}%` }]} />
       </View>
       <Text style={styles.marketSignalNote}>
-        {signal.probability}% crowd price - {signal.linkLabel}
+        {signal.probability}% crowd price - display only, no bets inside the app.
       </Text>
+      <Pressable style={styles.marketAffiliateCta} onPress={openMarket}>
+        <Ionicons name="open-outline" size={15} color={ink} />
+        <Text style={styles.marketAffiliateText}>{signal.linkLabel}</Text>
+        <Text style={styles.marketAffiliateDisclosure}>Affiliate</Text>
+      </Pressable>
     </View>
   );
 }
 
 export function AdBanner({ label = 'Sponsored break' }: { label?: string }) {
+  const caption = ADMOB_BANNER_STATUS.enabled
+    ? `${ADMOB_BANNER_STATUS.provider} ${ADMOB_BANNER_STATUS.format}`
+    : 'AdMob banner slot ready - add live unit IDs before release';
+
   return (
     <View style={styles.adBanner}>
       <View style={styles.adIcon}>
@@ -160,7 +175,7 @@ export function AdBanner({ label = 'Sponsored break' }: { label?: string }) {
       </View>
       <View style={styles.adCopy}>
         <Text style={styles.adLabel}>{label}</Text>
-        <Text style={styles.adCaption}>300x50 inventory rail</Text>
+        <Text style={styles.adCaption}>{caption}</Text>
       </View>
       <Text style={styles.adTag}>AD</Text>
     </View>
@@ -168,6 +183,10 @@ export function AdBanner({ label = 'Sponsored break' }: { label?: string }) {
 }
 
 export function PolymarketCard({ card, onYes, onNo }: { card: PolymarketCardType; onYes?: () => void; onNo?: () => void }) {
+  const openMarket = () => {
+    void openBrowserAsync(card.affiliateUrl ?? POLYMARKET_AFFILIATE_URL);
+  };
+
   return (
     <View style={styles.polymarketCard}>
       <Text style={styles.polymarketKicker}>PREDICTION MARKET</Text>
@@ -187,6 +206,10 @@ export function PolymarketCard({ card, onYes, onNo }: { card: PolymarketCardType
         <Text style={styles.attributionText}>Markets on Polymarket</Text>
         <Text style={styles.affiliateTag}>Affiliate</Text>
       </View>
+      <Pressable style={styles.polymarketAffiliateCta} onPress={openMarket}>
+        <Ionicons name="open-outline" size={16} color={ink} />
+        <Text style={styles.polymarketAffiliateText}>Open Polymarket</Text>
+      </Pressable>
     </View>
   );
 }
@@ -776,6 +799,29 @@ const styles = StyleSheet.create({
     color: muted,
     fontSize: 11,
     fontWeight: '800',
+  },
+  marketAffiliateCta: {
+    minHeight: 38,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: ink,
+    backgroundColor: '#f7c948',
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+  },
+  marketAffiliateText: {
+    color: ink,
+    fontSize: 12,
+    fontWeight: '900',
+    flex: 1,
+  },
+  marketAffiliateDisclosure: {
+    color: ink,
+    fontSize: 9,
+    fontWeight: '900',
+    textTransform: 'uppercase',
   },
   adBanner: {
     borderRadius: 8,
@@ -1759,6 +1805,23 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: '900',
     textTransform: 'uppercase',
+  },
+  polymarketAffiliateCta: {
+    minHeight: 42,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: ink,
+    backgroundColor: '#f7c948',
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  polymarketAffiliateText: {
+    color: ink,
+    fontSize: 13,
+    fontWeight: '900',
   },
   // Aura Farming Moment Card
   auraCard: {
