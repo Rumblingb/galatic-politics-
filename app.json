@@ -3,15 +3,20 @@
     "name": "Power Cabinet",
     "slug": "power-cabinet",
     "version": "1.0.0",
+    "description": "Draft a fantasy cabinet of world leaders, chase promise points, and survive the truth tax.",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "powercabinet",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.agentpay.powercabinet",
+      "buildNumber": "1"
     },
     "android": {
+      "package": "com.agentpay.powercabinet",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -38,7 +43,8 @@
             "backgroundColor": "#f3ead7"
           }
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
