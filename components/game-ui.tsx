@@ -3,6 +3,7 @@ import { openBrowserAsync } from 'expo-web-browser';
 import { Pressable, StyleSheet, Text, View, Image } from 'react-native';
 
 import { ADMOB_BANNER_STATUS, POLYMARKET_AFFILIATE_URL } from '@/constants/revenue';
+import { NativeAdBanner } from '@/components/native-ad-banner';
 import {
   CardRarity,
   calculateBasePoints,
@@ -170,14 +171,17 @@ export function AdBanner({ label = 'Sponsored break' }: { label?: string }) {
 
   return (
     <View style={styles.adBanner}>
-      <View style={styles.adIcon}>
-        <Ionicons name="radio-outline" size={18} color={ink} />
+      <View style={styles.adBannerHeader}>
+        <View style={styles.adIcon}>
+          <Ionicons name="radio-outline" size={18} color={ink} />
+        </View>
+        <View style={styles.adCopy}>
+          <Text style={styles.adLabel}>{label}</Text>
+          <Text style={styles.adCaption}>{caption}</Text>
+        </View>
+        <Text style={styles.adTag}>AD</Text>
       </View>
-      <View style={styles.adCopy}>
-        <Text style={styles.adLabel}>{label}</Text>
-        <Text style={styles.adCaption}>{caption}</Text>
-      </View>
-      <Text style={styles.adTag}>AD</Text>
+      <NativeAdBanner />
     </View>
   );
 }
@@ -830,6 +834,9 @@ const styles = StyleSheet.create({
     borderColor: '#837766',
     backgroundColor: '#fff7e6',
     padding: 12,
+    gap: 10,
+  },
+  adBannerHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,

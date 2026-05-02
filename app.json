@@ -46,7 +46,16 @@
           }
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-2087477661680036~5812166270",
+          "iosAppId": "ca-app-pub-2087477661680036~6821995611",
+          "optimizeInitialization": true,
+          "optimizeAdLoading": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
@@ -59,5 +68,11 @@
       }
     },
     "owner": "rumblingb"
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-2087477661680036~5812166270",
+    "ios_app_id": "ca-app-pub-2087477661680036~6821995611",
+    "optimize_initialization": true,
+    "optimize_ad_loading": true
   }
 }

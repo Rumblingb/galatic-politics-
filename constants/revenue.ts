@@ -4,7 +4,7 @@ export const POLYMARKET_AFFILIATE_URL =
 
 export const ADMOB_BANNER_STATUS = {
   provider: 'Google AdMob',
-  format: 'anchored adaptive banner',
+  format: 'large anchored adaptive banner',
   sdk: 'react-native-google-mobile-ads',
   enabled: process.env.EXPO_PUBLIC_ENABLE_ADMOB === 'true',
   androidAppId: process.env.EXPO_PUBLIC_ADMOB_ANDROID_APP_ID ?? 'ca-app-pub-2087477661680036~5812166270',
