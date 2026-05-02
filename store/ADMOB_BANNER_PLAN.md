@@ -10,25 +10,26 @@ Use `react-native-google-mobile-ads` for real Google AdMob banners. Do not use `
 
 - The visible ad rail remains a safe placeholder in `AdBanner`.
 - The rail now reads as an AdMob-ready slot.
-- Live AdMob SDK wiring is intentionally gated until real AdMob app IDs and banner ad-unit IDs exist.
+- Real AdMob app IDs and banner ad-unit IDs now exist in AdMob and are recorded in `constants/revenue.ts`.
+- Live AdMob SDK wiring is gated only on installing the native package and rebuilding with EAS.
 
-## Required Credentials
+## AdMob IDs
 
-- Android AdMob app ID for `com.agentpay.powercabinet`
-- iOS AdMob app ID for `com.agentpay.powercabinet`
-- Android banner ad unit ID
-- iOS banner ad unit ID
+- Publisher ID: `pub-2087477661680036`
+- Android app ID: `ca-app-pub-2087477661680036~5812166270`
+- Android banner ad unit ID: `ca-app-pub-2087477661680036/3425676084`
+- iOS app ID: `ca-app-pub-2087477661680036~6821995611`
+- iOS banner ad unit ID: `ca-app-pub-2087477661680036/1976863044`
 
 ## Implementation Path
 
-1. Create/select the Android and iOS apps in AdMob.
-2. Create anchored adaptive banner ad units for each platform.
-3. Install `react-native-google-mobile-ads`.
-4. Add the Expo config plugin with `androidAppId` and `iosAppId`.
-5. Add a native banner component using the platform-specific banner unit ID.
-6. Use Google demo ad units only during development/test builds.
-7. Replace demo IDs with real IDs before store submission.
-8. In Google Play Console, mark that the app contains ads under App content.
+1. Install `react-native-google-mobile-ads`.
+2. Add the Expo config plugin with `androidAppId` and `iosAppId`.
+3. Add a native banner component using the platform-specific banner unit ID.
+4. Use Google demo ad units only during development/test builds.
+5. Use the real IDs for production builds.
+6. In Google Play Console, mark that the app contains ads under App content.
+7. Complete the AdMob payment profile so AdMob can review the apps and begin normal ad serving.
 
 ## Official References
 

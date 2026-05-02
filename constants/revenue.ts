@@ -7,6 +7,9 @@ export const ADMOB_BANNER_STATUS = {
   format: 'anchored adaptive banner',
   sdk: 'react-native-google-mobile-ads',
   enabled: process.env.EXPO_PUBLIC_ENABLE_ADMOB === 'true',
-  androidAdUnitId: process.env.EXPO_PUBLIC_ADMOB_ANDROID_BANNER_UNIT_ID ?? '',
-  iosAdUnitId: process.env.EXPO_PUBLIC_ADMOB_IOS_BANNER_UNIT_ID ?? '',
+  androidAppId: process.env.EXPO_PUBLIC_ADMOB_ANDROID_APP_ID ?? 'ca-app-pub-2087477661680036~5812166270',
+  iosAppId: process.env.EXPO_PUBLIC_ADMOB_IOS_APP_ID ?? 'ca-app-pub-2087477661680036~6821995611',
+  androidAdUnitId:
+    process.env.EXPO_PUBLIC_ADMOB_ANDROID_BANNER_UNIT_ID ?? 'ca-app-pub-2087477661680036/3425676084',
+  iosAdUnitId: process.env.EXPO_PUBLIC_ADMOB_IOS_BANNER_UNIT_ID ?? 'ca-app-pub-2087477661680036/1976863044',
 };

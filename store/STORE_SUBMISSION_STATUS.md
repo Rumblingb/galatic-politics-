@@ -12,6 +12,10 @@ Generated: 2026-05-02
 - Export compliance flag: `ITSAppUsesNonExemptEncryption=false`
 - Production Android AAB: `store/builds/power-cabinet-android-v2.aab`
 - EAS Android build: `https://expo.dev/accounts/rumblingb/projects/power-cabinet/builds/961072bd-a5db-4751-973b-4bdf7243b0f3`
+- AdMob Android app: `ca-app-pub-2087477661680036~5812166270`
+- AdMob Android banner unit: `ca-app-pub-2087477661680036/3425676084`
+- AdMob iOS app: `ca-app-pub-2087477661680036~6821995611`
+- AdMob iOS banner unit: `ca-app-pub-2087477661680036/1976863044`
 
 ## Verified
 
@@ -23,6 +27,7 @@ Generated: 2026-05-02
 
 - Google Play: EAS Submit stopped at the required Google Service Account JSON key prompt. The Play Console is logged in and shows one existing draft app, but `Power Cabinet` has not been created/uploaded there yet.
 - Apple App Store: Xcode archive stopped because no development team/signing identity is configured locally. Apple Developer web access is blocked by the updated program license agreement review requirement.
+- AdMob: Android and iOS Power Cabinet apps plus banner units are created. AdMob still shows payment setup incomplete, so app review/ad serving will remain limited until the payment profile is completed.
 
 ## Next Human Gates
 
