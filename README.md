@@ -1,6 +1,6 @@
-# Welcome to your Expo app 👋
+# Power Cabinet
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Power Cabinet is a political fantasy-card game built with Expo and React Native. Players draft a five-card cabinet of world leaders, score promise receipts, and climb the league table through momentum, market-style signals, and the truth tax.
 
 ## Get started
 
@@ -25,11 +25,49 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Quick demo (auto-start)
+## QA
 
-In development the app auto-logs-in and auto-drafts a starter team for a quick demo. Open the web UI at `http://localhost:8082` and you should see the demo roster already populated. Use the `Teams` page to pick other pre-made country teams or draft manually.
+Run the full release QA:
 
-## Automation scripts
+```bash
+npm run qa
+```
+
+Individual checks:
+
+```bash
+npm run lint
+npm run typecheck
+npm run doctor
+npm run export:web
+```
+
+## Quick Demo
+
+Open the web UI and use the `Draft`, `League`, `Teams`, and `Clips` tabs. The app is entertainment only and does not provide betting, trading, financial advice, or real-money market execution.
+
+## Release
+
+The production bundle identifiers are:
+
+- Android: `com.agentpay.powercabinet`
+- iOS: `com.agentpay.powercabinet`
+
+Build with EAS after logging in to Expo and connecting the Apple/Google developer accounts:
+
+```bash
+npx eas-cli build --platform android --profile production
+npx eas-cli build --platform ios --profile production
+```
+
+Submit only after the production builds pass QA and the final store submission is approved:
+
+```bash
+npx eas-cli submit --platform android --profile production
+npx eas-cli submit --platform ios --profile production
+```
+
+## Automation Scripts
 
 Several helper scripts are provided in `scripts/`:
 
@@ -46,7 +84,7 @@ Run them with `node scripts/<script>.js`.
 
 A GitHub Action `.github/workflows/generate-assets.yml` regenerates leaders, downloads portraits, and writes reports on push to `main`.
 
-## Get a fresh project
+## Get A Fresh Project
 
 When you're ready, run:
 

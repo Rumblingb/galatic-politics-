@@ -1,3 +1,4 @@
+import { POLYMARKET_AFFILIATE_URL } from '@/constants/revenue';
 import { LeagueEntry, MarketSignal, MemeEvent, Politician, PromiseReceipt, WildCardEvent, Team } from '@/types/game';
 
 export const politicians: Politician[] = [
@@ -515,7 +516,8 @@ export const marketSignals: MarketSignal[] = [
     question: 'Will sanctions pressure increase this quarter?',
     probability: 73,
     change: 8,
-    linkLabel: 'External market only',
+    linkLabel: 'Open Polymarket',
+    marketUrl: `${POLYMARKET_AFFILIATE_URL}&topic=sanctions`,
   },
   {
     id: 'market-us-1',
@@ -523,7 +525,8 @@ export const marketSignals: MarketSignal[] = [
     question: 'Will tariff pledge survive next quarter?',
     probability: 64,
     change: 7,
-    linkLabel: 'External market only',
+    linkLabel: 'Open Polymarket',
+    marketUrl: `${POLYMARKET_AFFILIATE_URL}&topic=tariffs`,
   },
   {
     id: 'market-in-1',
@@ -531,7 +534,8 @@ export const marketSignals: MarketSignal[] = [
     question: 'Will infrastructure target hit 70% by Q4?',
     probability: 71,
     change: 4,
-    linkLabel: 'External market only',
+    linkLabel: 'Open Polymarket',
+    marketUrl: `${POLYMARKET_AFFILIATE_URL}&topic=india_infrastructure`,
   },
   {
     id: 'market-ar-1',
@@ -539,7 +543,8 @@ export const marketSignals: MarketSignal[] = [
     question: 'Will inflation milestone improve this quarter?',
     probability: 58,
     change: -6,
-    linkLabel: 'External market only',
+    linkLabel: 'Open Polymarket',
+    marketUrl: `${POLYMARKET_AFFILIATE_URL}&topic=argentina_inflation`,
   },
   {
     id: 'market-ua-1',
@@ -547,7 +552,8 @@ export const marketSignals: MarketSignal[] = [
     question: 'Will alliance funding package clear?',
     probability: 76,
     change: 9,
-    linkLabel: 'External market only',
+    linkLabel: 'Open Polymarket',
+    marketUrl: `${POLYMARKET_AFFILIATE_URL}&topic=ukraine_alliance`,
   },
   {
     id: 'market-sv-1',
@@ -555,7 +561,8 @@ export const marketSignals: MarketSignal[] = [
     question: 'Will security approval stay above threshold?',
     probability: 69,
     change: 3,
-    linkLabel: 'External market only',
+    linkLabel: 'Open Polymarket',
+    marketUrl: `${POLYMARKET_AFFILIATE_URL}&topic=el_salvador_security`,
   },
 ];
 

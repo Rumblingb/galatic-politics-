@@ -1,0 +1,9 @@
+.git
+node_modules
+dist
+ios/build
+ios/Pods
+android/.gradle
+android/app/build
+android/build
+*.xcarchive

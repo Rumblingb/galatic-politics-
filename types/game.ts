@@ -1,3 +1,5 @@
+import type { ImageSourcePropType } from 'react-native';
+
 export type SwipeDirection = 'left' | 'right' | 'up';
 
 export type Politician = {
@@ -8,6 +10,7 @@ export type Politician = {
   archetype: string;
   issues: string[];
   portraitEmoji: string;
+  portraitImage?: ImageSourcePropType | null;
   marketOdds: number;
   promiseScore: number;
   integrityScore: number;
@@ -36,6 +39,7 @@ export type MarketSignal = {
   probability: number;
   change: number;
   linkLabel: string;
+  marketUrl?: string;
 };
 
 export type WildCardEvent = {
@@ -68,6 +72,25 @@ export type LeagueEntry = {
   name: string;
   score: number;
   vibe: string;
+  policyFocus?: string;
+  truthScore?: number;
+};
+
+export type PolymarketCard = {
+  id: string;
+  question: string;
+  yesOdds: number;
+  noOdds: number;
+  volume24h: number;
+  affiliateUrl?: string;
+};
+
+export type AuraFarmingMoment = {
+  id: string;
+  title: string;
+  category: string;
+  points: number;
+  imageUrl?: string | null;
 };
 
 export type Team = {
