@@ -20,7 +20,9 @@
       "env": {
         "EXPO_PUBLIC_SUPABASE_URL": "https://dvydvgfnlnjmbavjavmr.supabase.co",
         "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2eWR2Z2ZubG5qbWJhdmphdm1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyNDExNzUsImV4cCI6MjA5NDgxNzE3NX0.nnMC9szSNuLXKW5H7A6Z6ZXu_Enu2slMvvtaEGE0pMU",
-        "EXPO_NO_TYPESCRIPT_CHECK": "1"
+        "EXPO_NO_TYPESCRIPT_CHECK": "1",
+        "EXPO_DEBUG": "1",
+        "GRADLE_OPTS": "-Dorg.gradle.jvmargs=-Xmx4096m -Dorg.gradle.parallel=true"
       }
     },
     "production": {
