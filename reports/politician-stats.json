@@ -1,0 +1,146 @@
+[
+  {
+    "id": "russia-president",
+    "name": "Vladimir Putin",
+    "promiseScore": 48,
+    "integrityScore": 21,
+    "marketOdds": 66,
+    "volatility": "High",
+    "momentum": 17
+  },
+  {
+    "id": "us-president",
+    "name": "Donald Trump",
+    "promiseScore": 61,
+    "integrityScore": 32,
+    "marketOdds": 74,
+    "volatility": "High",
+    "momentum": 18
+  },
+  {
+    "id": "uk-prime-minister",
+    "name": "Keir Starmer",
+    "promiseScore": 58,
+    "integrityScore": 56,
+    "marketOdds": 59,
+    "volatility": "Medium",
+    "momentum": 9
+  },
+  {
+    "id": "india-prime-minister",
+    "name": "Narendra Modi",
+    "promiseScore": 67,
+    "integrityScore": 46,
+    "marketOdds": 72,
+    "volatility": "Medium",
+    "momentum": 16
+  },
+  {
+    "id": "argentina-president",
+    "name": "Javier Milei",
+    "promiseScore": 63,
+    "integrityScore": 41,
+    "marketOdds": 69,
+    "volatility": "High",
+    "momentum": 21
+  },
+  {
+    "id": "ukraine-president",
+    "name": "Volodymyr Zelenskyy",
+    "promiseScore": 64,
+    "integrityScore": 62,
+    "marketOdds": 71,
+    "volatility": "Medium",
+    "momentum": 14
+  },
+  {
+    "id": "france-president",
+    "name": "Emmanuel Macron",
+    "promiseScore": 49,
+    "integrityScore": 45,
+    "marketOdds": 52,
+    "volatility": "Medium",
+    "momentum": 6
+  },
+  {
+    "id": "el-salvador-president",
+    "name": "Nayib Bukele",
+    "promiseScore": 70,
+    "integrityScore": 38,
+    "marketOdds": 77,
+    "volatility": "High",
+    "momentum": 19
+  },
+  {
+    "id": "canada-prime-minister",
+    "name": "Mark Carney",
+    "promiseScore": 53,
+    "integrityScore": 58,
+    "marketOdds": 54,
+    "volatility": "Low",
+    "momentum": 8
+  },
+  {
+    "id": "brazil-president",
+    "name": "Luiz Inacio Lula da Silva",
+    "promiseScore": 60,
+    "integrityScore": 48,
+    "marketOdds": 57,
+    "volatility": "Medium",
+    "momentum": 12
+  },
+  {
+    "id": "germany-chancellor",
+    "name": "Friedrich Merz",
+    "promiseScore": 50,
+    "integrityScore": 52,
+    "marketOdds": 51,
+    "volatility": "Low",
+    "momentum": 7
+  },
+  {
+    "id": "italy-prime-minister",
+    "name": "Giorgia Meloni",
+    "promiseScore": 59,
+    "integrityScore": 44,
+    "marketOdds": 64,
+    "volatility": "High",
+    "momentum": 15
+  },
+  {
+    "id": "mexico-president",
+    "name": "Claudia Sheinbaum",
+    "promiseScore": 65,
+    "integrityScore": 57,
+    "marketOdds": 62,
+    "volatility": "Medium",
+    "momentum": 13
+  },
+  {
+    "id": "south-africa-president",
+    "name": "Cyril Ramaphosa",
+    "promiseScore": 44,
+    "integrityScore": 47,
+    "marketOdds": 46,
+    "volatility": "Medium",
+    "momentum": 5
+  },
+  {
+    "id": "japan-prime-minister",
+    "name": "Shigeru Ishiba",
+    "promiseScore": 51,
+    "integrityScore": 60,
+    "marketOdds": 48,
+    "volatility": "Low",
+    "momentum": 4
+  },
+  {
+    "id": "vijay-actor",
+    "name": "Vijay",
+    "promiseScore": 72,
+    "integrityScore": 54,
+    "marketOdds": 68,
+    "volatility": "High",
+    "momentum": 25
+  }
+]

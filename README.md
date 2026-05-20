@@ -25,6 +25,27 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
+## Quick demo (auto-start)
+
+In development the app auto-logs-in and auto-drafts a starter team for a quick demo. Open the web UI at `http://localhost:8082` and you should see the demo roster already populated. Use the `Teams` page to pick other pre-made country teams or draft manually.
+
+## Automation scripts
+
+Several helper scripts are provided in `scripts/`:
+
+- `scripts/wikidata_fetch.js` — exports `reports/leaders_wikidata.json` via SPARQL.
+- `scripts/fetch_portraits_rate_limited.js` — download politician portraits (rate-limited).
+- `scripts/fetch_portraits_backoff.js` — robust portrait downloader with exponential backoff.
+- `scripts/generate_promise_report.js` — regenerates `reports/promise_report.json`.
+- `scripts/generate_wikipedia_patches.js` — writes suggested wiki patches to `reports/wiki_patches/`.
+- `scripts/generate_teams.js` — generates `data/teams.ts` grouped by country.
+
+Run them with `node scripts/<script>.js`.
+
+## CI
+
+A GitHub Action `.github/workflows/generate-assets.yml` regenerates leaders, downloads portraits, and writes reports on push to `main`.
+
 ## Get a fresh project
 
 When you're ready, run:

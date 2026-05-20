@@ -2,7 +2,6 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import {
   Animated,
   PanResponder,
-  PanResponderGestureState,
   StyleSheet,
   Text,
   View,
@@ -164,6 +163,7 @@ export function SwipeDeck<T extends { id: string }>({
 const styles = StyleSheet.create({
   deckArea: {
     gap: 18,
+    paddingBottom: 160,
   },
   nextCard: {
     position: 'absolute',
@@ -221,6 +221,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 12,
+    position: 'relative',
+    zIndex: 999,
+    marginBottom: 0,
   },
   emptyDeck: {
     borderRadius: 8,

@@ -1,0 +1,942 @@
+{
+  "russia-president.jpg": {
+    "name": "Vladimir Putin",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/6/65/%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%BC%D0%B8%D1%80_%D0%9F%D1%83%D1%82%D0%B8%D0%BD_%2808-03-2024%29_%28cropped%29_%28higher_res%29_2.jpg",
+    "page": "https://en.wikipedia.org/wiki/Vladimir_Putin"
+  },
+  "us-president.jpg": {
+    "name": "Donald Trump",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/1/16/Official_Presidential_Portrait_of_President_Donald_J._Trump_%282025%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Donald_Trump"
+  },
+  "uk-prime-minister.jpg": {
+    "name": "Keir Starmer",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/9/91/Prime_Minister_Keir_Starmer_Portrait_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Keir_Starmer"
+  },
+  "india-prime-minister.jpg": {
+    "name": "Narendra Modi",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/5/5f/The_official_portrait_of_Shri_Narendra_Modi%2C_the_Prime_Minister_of_the_Republic_of_India.jpg",
+    "page": "https://en.wikipedia.org/wiki/Narendra_Modi"
+  },
+  "argentina-president.jpg": {
+    "name": "Javier Milei",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/76/Javier_Milei_in_pull-aside_meeting_at_the_United_Nations_Headquarters_%283x4_cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Javier_Milei"
+  },
+  "france-president.jpg": {
+    "name": "Emmanuel Macron",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Emmanuel_Macron_2025_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Emmanuel_Macron"
+  },
+  "ukraine-president.jpg": {
+    "name": "Volodymyr Zelenskyy",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Volodymyr_Zelensky_2022_official_portrait_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Volodymyr_Zelenskyy"
+  },
+  "el-salvador-president.jpg": {
+    "name": "Nayib Bukele",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Presidente_Nayib_Bukele_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Nayib_Bukele"
+  },
+  "canada-prime-minister.jpg": {
+    "name": "Mark Carney",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/2/22/2025-11-14_InaugurationREM_Deux-Montagnes_Mark_Carney.jpg",
+    "page": "https://en.wikipedia.org/wiki/Mark_Carney"
+  },
+  "brazil-president.jpg": {
+    "name": "Luiz Inacio Lula da Silva",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Foto_oficial_de_Luiz_In%C3%A1cio_Lula_da_Silva_%28ombros%29_denoise_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Luiz_In%C3%A1cio_Lula_da_Silva"
+  },
+  "germany-chancellor.jpg": {
+    "name": "Friedrich Merz",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/0/0b/2024-08-21_Friedrich_Merz_in_Erfurt_2024_STP_3041_by_Stepro_%283x4_cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Friedrich_Merz"
+  },
+  "italy-prime-minister.jpg": {
+    "name": "Giorgia Meloni",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/9/96/Giorgia_Meloni_Official_2024_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Giorgia_Meloni"
+  },
+  "south-africa-president.jpg": {
+    "name": "Cyril Ramaphosa",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/5/58/21.11.2025_%E2%80%93_Presidente_da_Rep%C3%BAblica_da_%C3%81frica_do_Sul%2C_Cyril_Ramaphosa_%2854938010569%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Cyril_Ramaphosa"
+  },
+  "mexico-president.jpg": {
+    "name": "Claudia Sheinbaum",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Claudia_Sheinbaum_in_2025_%283x4_cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Claudia_Sheinbaum"
+  },
+  "japan-prime-minister.jpg": {
+    "name": "Shigeru Ishiba",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/1/17/Ishiba_Shigeru_20241001_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Shigeru_Ishiba"
+  },
+  "mahmoud-abbas.jpg": {
+    "name": "Mahmoud Abbas",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Mahmoud_Abbas_2024.jpg",
+    "page": "https://en.wikipedia.org/wiki/Mahmoud_Abbas"
+  },
+  "william-alexander-of-the-netherlands.jpeg": {
+    "name": "William Alexander of the Netherlands",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/1/18/Zijne_Majesteit_Koning_Willem-Alexander_met_koningsmantel_april_2013_%28cropped%29.jpeg",
+    "page": "https://en.wikipedia.org/wiki/Willem-Alexander_of_the_Netherlands"
+  },
+  "julius-maada-bio.jpg": {
+    "name": "Julius Maada Bio",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/b/b0/Julius_Maada_Bio_-_2023_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Julius_Maada_Bio"
+  },
+  "hassan-sheikh-mohamud.jpg": {
+    "name": "Hassan Sheikh Mohamud",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/0/09/H.E_President_Hassan_Sheikh_Mohamud_of_The_Federal_Republic_Of_Somalia_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Hassan_Sheikh_Mohamud"
+  },
+  "salman-bin-abdulaziz-al-saud.jpg": {
+    "name": "Salman bin Abdulaziz Al Saud",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/0/03/Salman_of_Saudi_Arabia_-_2020_%2849563590728%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Salman_of_Saudi_Arabia"
+  },
+  "jennifer-geerlings-simons.jpg": {
+    "name": "Jennifer Geerlings-Simons",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Jennifer_Geerlings-Simons%2C_November_2025.jpg",
+    "page": "https://en.wikipedia.org/wiki/Jennifer_Geerlings-Simons"
+  },
+  "albin-kurti.jpg": {
+    "name": "Albin Kurti",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Albin_Kurti_2025.jpg",
+    "page": "https://en.wikipedia.org/wiki/Albin_Kurti"
+  },
+  "emmerson-mnangagwa.jpg": {
+    "name": "Emmerson Mnangagwa",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Emmerson_Mnangagwa_at_US-Africa_Business_Summit%2C_2023_%283x4%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Emmerson_Mnangagwa"
+  },
+  "azali-assoumani.jpg": {
+    "name": "Azali Assoumani",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/3/36/Azali_Assoumani_in_New_York_City_on_September_19%2C_2023_-_53199606411_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Azali_Assoumani"
+  },
+  "netumbo-nandi-ndaitwah.jpg": {
+    "name": "Netumbo Nandi-Ndaitwah",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Netumbo_Nandi-Ndaitwah_2025.jpg",
+    "page": "https://en.wikipedia.org/wiki/Netumbo_Nandi-Ndaitwah"
+  },
+  "vajiralongkorn.png": {
+    "name": "Vajiralongkorn",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/a/ab/King_Rama_X_official_%28cropped%29.png",
+    "page": "https://en.wikipedia.org/wiki/Vajiralongkorn"
+  },
+  "isaac-herzog.JPG": {
+    "name": "Isaac Herzog",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/75/Isaac_Herzog%2C_July_2021_%28D1233-049%29.JPG",
+    "page": "https://en.wikipedia.org/wiki/Isaac_Herzog"
+  },
+  "mohammed-bin-zayed-al-nahyan.jpg": {
+    "name": "Mohammed Bin Zayed Al Nahyan",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/1/10/Mohamed_bin_Zayed_Al_Nahyan_-_2024_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Mohamed_bin_Zayed_Al_Nahyan"
+  },
+  "eugene-holiday.jpg": {
+    "name": "Eugene Holiday",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/f/fa/GovEugeneHoliday.jpg",
+    "page": "https://en.wikipedia.org/wiki/Eugene_Holiday"
+  },
+  "joseph-boakai.jpg": {
+    "name": "Joseph Boakai",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/a/a5/President_Joseph_Boakai_2025.jpg",
+    "page": "https://en.wikipedia.org/wiki/Joseph_Boakai"
+  },
+  "ibrahim-iskandar-of-johor.jpg": {
+    "name": "Ibrahim Iskandar of Johor",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/9/9b/King_Ibrahim_of_Malaysia_August_2025.jpg",
+    "page": "https://en.wikipedia.org/wiki/Ibrahim_Iskandar_of_Johor"
+  },
+  "ram-chandra-poudel.jpg": {
+    "name": "Ram Chandra Poudel",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/8/8c/President_Ram_Chandra_Poudel%2C_Official_portrait_%28January_2024%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Ram_Chandra_Paudel"
+  },
+  "myint-swe.jpg": {
+    "name": "Myint Swe",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Myint_Swe_-_02_%2813-12-2018%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Myint_Swe"
+  },
+  "abdirahman-mohamed-abdullahi.png": {
+    "name": "Abdirahman Mohamed Abdullahi",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/1/1a/President_Abdullahi_%28Irro%29.png",
+    "page": "https://en.wikipedia.org/wiki/Abdirahman_Mohamed_Abdullahi"
+  },
+  "abdul-latif-rashid.jpg": {
+    "name": "Abdul Latif Rashid",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/5/52/Abdul_Latif_Rashid_in_Davos_-_2025_-_02_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Abdul_Latif_Rashid"
+  },
+  "ahmed-al-sharaa.jpg": {
+    "name": "Ahmed al-Sharaa",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Ahmed_al-Sharaa_in_November_2025.jpg",
+    "page": "https://en.wikipedia.org/wiki/Ahmed_al-Sharaa"
+  },
+  "mohamed-ould-ghazouani.jpg": {
+    "name": "Mohamed Ould Ghazouani",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Mohamed_Ould_Ghazouani_2025_%28alt_crop%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Mohamed_Ould_Ghazouani"
+  },
+  "kais-saied.jpg": {
+    "name": "Kais Saied",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/1/14/Kais_Saied_2023.jpg",
+    "page": "https://en.wikipedia.org/wiki/Kais_Saied"
+  },
+  "patrick-herminie.jpg": {
+    "name": "Patrick Herminie",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/77/Patrick_Herminie_-_President_of_Seychelles_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Patrick_Herminie"
+  },
+  "samia-suluhu-hassan.jpg": {
+    "name": "Samia Suluhu Hassan",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/3/35/International_leaders_sign_joint_statement_at_COP26_%2851649202102%29_%28Suluhu_crop%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Samia_Suluhu_Hassan"
+  },
+  "patrice-talon.jpg": {
+    "name": "Patrice Talon",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Patrice_Talon_at_USAID_HQ_%284%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Patrice_Talon"
+  },
+  "jos-m-rio-vaz.jpg": {
+    "name": "José Mário Vaz",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/49/Jos%C3%A9_M%C3%A1rio_Vaz_2014.jpg",
+    "page": "https://en.wikipedia.org/wiki/Jos%C3%A9_M%C3%A1rio_Vaz"
+  },
+  "nayib-bukele.jpg": {
+    "name": "Nayib Bukele",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Presidente_Nayib_Bukele_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Nayib_Bukele"
+  },
+  "duma-boko.jpg": {
+    "name": "Duma Boko",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/72/Duma_Boko_2025_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Duma_Boko"
+  },
+  "santiago-pe-a-palacios.jpg": {
+    "name": "Santiago Peña Palacios",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/4d/President_Santiago_Pe%C3%B1a.jpg",
+    "page": "https://en.wikipedia.org/wiki/Santiago_Pe%C3%B1a"
+  },
+  "taneti-maamau.jpg": {
+    "name": "Taneti Maamau",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Taneti_Maamau_Feb_2023.jpg",
+    "page": "https://en.wikipedia.org/wiki/Taneti_Maamau"
+  },
+  "evelyn-wever-croes.jpg": {
+    "name": "Evelyn Wever-Croes",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Evelyn_Wever-Croes%2C_2022.jpg",
+    "page": "https://en.wikipedia.org/wiki/Evelyn_Wever-Croes"
+  },
+  "hibatullah-akhundzada.jpg": {
+    "name": "Hibatullah Akhundzada",
+    "source": "https://upload.wikimedia.org/wikipedia/en/3/3a/Hibatullah_Akhundzada.jpg",
+    "page": "https://en.wikipedia.org/wiki/Hibatullah_Akhundzada"
+  },
+  "rob-jetten.jpg": {
+    "name": "Rob Jetten",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Rob_Jetten%2C_March_2026_-_02.jpg",
+    "page": "https://en.wikipedia.org/wiki/Rob_Jetten"
+  },
+  "f-lix-tshisekedi.jpg": {
+    "name": "Félix Tshisekedi",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Felix_Tshisekedi%2C_President_of_the_Democratic_Republic_of_the_Congo_%2855078564106%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/F%C3%A9lix_Tshisekedi"
+  },
+  "serdar-berdimuhamedow.jpg": {
+    "name": "Serdar Berdimuhamedow",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Serdar_Berdimuhamedov_on_December_20%2C_2025_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Serdar_Berdimuhamedow"
+  },
+  "abdel-fattah-al-burhan.jpg": {
+    "name": "Abdel Fattah al-Burhan",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/3/37/Abdel_Fattah_al-Burhan_in_April_2025_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Abdel_Fattah_al-Burhan"
+  },
+  "irfaan-ali.jpg": {
+    "name": "Irfaan Ali",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/8/85/Secretary_Blinken_Holds_a_Joint_Press_Availability_with_Guyanese_President_Irfaan_Ali_%2853028421586%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Irfaan_Ali"
+  },
+  "assimi-go-ta.jpg": {
+    "name": "Assimi Goïta",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/3/34/Assimi_Go%C3%AFta_in_July_2023.jpg",
+    "page": "https://en.wikipedia.org/wiki/Assimi_Go%C3%AFta"
+  },
+  "mamady-doumbouya.jpg": {
+    "name": "Mamady Doumbouya",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Mamadi_Doumbouya_2022.jpg",
+    "page": "https://en.wikipedia.org/wiki/Mamady_Doumbouya"
+  },
+  "wiliame-katonivere.jpg": {
+    "name": "Wiliame Katonivere",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/78/Wiliame_Katonivere_2022.jpg",
+    "page": "https://en.wikipedia.org/wiki/Wiliame_Katonivere"
+  },
+  "mohamed-muizzu.jpg": {
+    "name": "Mohamed Muizzu",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Dr_Muizzu_in_December_2023.jpg",
+    "page": "https://en.wikipedia.org/wiki/Mohamed_Muizzu"
+  },
+  "abdourahamane-tchiani.jpg": {
+    "name": "Abdourahamane Tchiani",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/0/02/Abdourahamane_Tchiani_in_2025_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Abdourahamane_Tchiani"
+  },
+  "luis-abinader.jpg": {
+    "name": "Luis Abinader",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/7f/Luis_Abinader_%2825-04-2024%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Luis_Abinader"
+  },
+  "jos-ra-l-mulino.jpg": {
+    "name": "José Raúl Mulino",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/3/35/Jos%C3%A9_Ra%C3%BAl_Mulino_2025_%282%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Jos%C3%A9_Ra%C3%BAl_Mulino"
+  },
+  "rodrigo-paz-pereira.jpg": {
+    "name": "Rodrigo Paz Pereira",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/1/18/Rodrigo_Paz_Pereira_-_Presidente_del_Estado_Plurinacional_de_Bolivia_2025_-_2030.jpg",
+    "page": "https://en.wikipedia.org/wiki/Rodrigo_Paz"
+  },
+  "charles-iii.jpg": {
+    "name": "Charles III",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/a/ac/King_Charles_III_%28July_2023%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Charles_III"
+  },
+  "salva-kiir-mayardit.jpg": {
+    "name": "Salva Kiir Mayardit",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/3/39/Salva_Kiir_Mayardit_South_Sudan_2015_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Salva_Kiir_Mayardit"
+  },
+  "isaias-afwerki.jpg": {
+    "name": "Isaias Afwerki",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Isaias_Afwerki_%282023-05-31%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Isaias_Afwerki"
+  },
+  "daniel-ortega.jpg": {
+    "name": "Daniel Ortega",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Daniel_Ortega_on_July_20%2C_2024.jpg",
+    "page": "https://en.wikipedia.org/wiki/Daniel_Ortega"
+  },
+  "frank-walter-steinmeier.jpg": {
+    "name": "Frank-Walter Steinmeier",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/8/8d/2025-05-28_Event%2C_Politik-_Besuch_des_Pr%C3%A4sidenten_der_Ukraine_Wolodymyr_Selenskyj_beim_deutschen_Bundespr%C3%A4sidenten_Frank-Walter_Steinmeier_STP_5822_%28Frank-Walter_Steinmeier%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Frank-Walter_Steinmeier"
+  },
+  "philippe-of-belgium.jpg": {
+    "name": "Philippe of Belgium",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/a/a5/King_Philippe_of_Belgium_%28January_2025%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Philippe_of_Belgium"
+  },
+  "qasym-jomart-toqaev.jpg": {
+    "name": "Qasym-Jomart Toqaev",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/4f/President_Masato_Kanda_meets_with_Kazakhstan_President_Kassym-Jomart_Tokayev_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Kassym-Jomart_Tokayev"
+  },
+  "naruhito.jpg": {
+    "name": "Naruhito",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/e/ec/Emperor_Naruhito_20250611_%2854582524056%2C_cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Naruhito"
+  },
+  "salome-zourabichvili.jpg": {
+    "name": "Salome Zourabichvili",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/3/39/Salome_Zourabichvili_in_2024_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Salom%C3%A9_Zourabichvili"
+  },
+  "abdel-fattah-el-sisi.jpg": {
+    "name": "Abdel Fattah el-Sisi",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/8/85/AbdelFattah_Elsisi_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Abdel_Fattah_el-Sisi"
+  },
+  "edi-rama.jpg": {
+    "name": "Edi Rama",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Edi_Rama%2C_press_conference%2C_ITB_2025%2C_Berlin_%28ITB56291%29_%28cropped_1%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Edi_Rama"
+  },
+  "iliyana-yotova.jpg": {
+    "name": "Iliyana Yotova",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/49/President_Iliyana_Yotova_%283x4_cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Iliyana_Yotova"
+  },
+  "giorgia-meloni.jpg": {
+    "name": "Giorgia Meloni",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/9/96/Giorgia_Meloni_Official_2024_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Giorgia_Meloni"
+  },
+  "alexander-stubb.jpg": {
+    "name": "Alexander Stubb",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/42/Finnish_President_Alexander_Stubb_arrives_to_the_South_Portico_of_the_White_House_for_a_meeting_with_President_Donald_Trump_%2854732037329%29_%28cropped_2%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Alexander_Stubb"
+  },
+  "andrew-holness.jpg": {
+    "name": "Andrew Holness",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/78/Secretary_Rubio_Holds_Joint_Press_Availability_with_Jamaican_Prime_Minister_%2854412137881%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Andrew_Holness"
+  },
+  "friedrich-merz.jpg": {
+    "name": "Friedrich Merz",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/0/0b/2024-08-21_Friedrich_Merz_in_Erfurt_2024_STP_3041_by_Stepro_%283x4_cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Friedrich_Merz"
+  },
+  "sitiveni-rabuka.jpg": {
+    "name": "Sitiveni Rabuka",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/8/85/2025_Sitiveni_Rabuka_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Sitiveni_Rabuka"
+  },
+  "tharman-shanmugaratnam.jpg": {
+    "name": "Tharman Shanmugaratnam",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Tharman_Shanmugaratnam_Official_photo_2023.tif/lossy-page1-1920px-Tharman_Shanmugaratnam_Official_photo_2023.tif.jpg",
+    "page": "https://en.wikipedia.org/wiki/Tharman_Shanmugaratnam"
+  },
+  "frederik-x-of-denmark.jpg": {
+    "name": "Frederik X of Denmark",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/5/5e/King_Frederik_X_in_2025.jpg",
+    "page": "https://en.wikipedia.org/wiki/Frederik_X"
+  },
+  "prabowo-subianto.jpg": {
+    "name": "Prabowo Subianto",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Prabowo_Subianto_2024_official_portrait.jpg/3840px-Prabowo_Subianto_2024_official_portrait.jpg",
+    "page": "https://en.wikipedia.org/wiki/Prabowo_Subianto"
+  },
+  "ali-lamine-zeine.jpg": {
+    "name": "Ali Lamine Zeine",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/6/64/Ali_Lamine_Zeine_%282024%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Ali_Lamine_Zeine"
+  },
+  "abdelmadjid-tebboune.jpg": {
+    "name": "Abdelmadjid Tebboune",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Abdelmadjid_Tebboune_in_2024_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Abdelmadjid_Tebboune"
+  },
+  "min-aung-hlaing.jpg": {
+    "name": "Min Aung Hlaing",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Min_Aun_Hlaing_at_Tianjin_%282025%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Min_Aung_Hlaing"
+  },
+  "volodymyr-zelenskyy.jpg": {
+    "name": "Volodymyr Zelenskyy",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Volodymyr_Zelensky_2022_official_portrait_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Volodymyr_Zelenskyy"
+  },
+  "sergio-mattarella.jpg": {
+    "name": "Sergio Mattarella",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Sergio_Mattarella_Presidente_della_Repubblica_Italiana.jpg",
+    "page": "https://en.wikipedia.org/wiki/Sergio_Mattarella"
+  },
+  "akylbek-japarov.jpg": {
+    "name": "Akylbek Japarov",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/f/f5/%D0%90%D0%BA%D1%8B%D0%BB%D0%B1%D0%B5%D0%BA_%D0%96%D0%B0%D0%BF%D0%B0%D1%80%D0%BE%D0%B2_%2819-11-2021%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Akylbek_Japarov"
+  },
+  "catherine-connolly.jpg": {
+    "name": "Catherine Connolly",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/3/38/President_Connolly_hosts_a_Reception_celebrating_Seachtain_na_Gaeilge_%E2%80%9CCiorcal_Comhr%C3%A1_an_%C3%81rais%E2%80%9D_2_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Catherine_Connolly"
+  },
+  "fatafehi-fakaf-nua-8th-lord-fakaf-nua.jpg": {
+    "name": "Fatafehi Fakafānua, 8th Lord Fakafānua",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/8/8b/Lord_Fakaf%C4%81nua_in_2024_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Fatafehi_Fakaf%C4%81nua"
+  },
+  "masoud-pezeshkian.jpg": {
+    "name": "Masoud Pezeshkian",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/47/Masoud_Pezeshkian_2025_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Masoud_Pezeshkian"
+  },
+  "jos-antonio-kast.jpg": {
+    "name": "José Antonio Kast",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/9/91/Presidente_Jos%C3%A9_Antonio_Kast_en_marzo_de_2026.jpg",
+    "page": "https://en.wikipedia.org/wiki/Jos%C3%A9_Antonio_Kast"
+  },
+  "petteri-orpo.jpg": {
+    "name": "Petteri Orpo",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Petteri-Orpo-01_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Petteri_Orpo"
+  },
+  "pedro-s-nchez.jpg": {
+    "name": "Pedro Sánchez",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Pedro_S%C3%A1nchez_in_2026.jpg",
+    "page": "https://en.wikipedia.org/wiki/Pedro_S%C3%A1nchez"
+  },
+  "james-marape.jpg": {
+    "name": "James Marape",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/b/b4/Papua_New_Guinea_Prime_Minister_James_Marape_in_Port_Moresby%2C_Papua_New_Guinea_on_July_27%2C_2023_-_230727-D-TT977-0140_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/James_Marape"
+  },
+  "jeremiah-manele.jpg": {
+    "name": "Jeremiah Manele",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Head_of_the_Solomon_Islander_Delegation_to_the_12th_World_Trade_Organization_Ministerial_Conference_Jeremiah_Manele.jpg/3840px-Head_of_the_Solomon_Islander_Delegation_to_the_12th_World_Trade_Organization_Ministerial_Conference_Jeremiah_Manele.jpg",
+    "page": "https://en.wikipedia.org/wiki/Jeremiah_Manele"
+  },
+  "johnny-brice-o.jpg": {
+    "name": "Johnny Briceño",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/0/00/Johnny_Brice%C3%B1o_%2852135383761%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Johnny_Brice%C3%B1o"
+  },
+  "keir-starmer.jpg": {
+    "name": "Keir Starmer",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/9/91/Prime_Minister_Keir_Starmer_Portrait_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Keir_Starmer"
+  },
+  "lawrence-wong.jpg": {
+    "name": "Lawrence Wong",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/6/66/Prime_Minister_of_Singapore_Lawrence_Wong_250530-D-PM193-4275_%282025%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Lawrence_Wong"
+  },
+  "mia-mottley.jpg": {
+    "name": "Mia Mottley",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/0/0c/06.11.2025_%E2%80%93_Recep%C3%A7%C3%A3o_Oficial_dos_Chefes_de_Delega%C3%A7%C3%A3o_da_C%C3%BApula_do_Clima_%2854906293485%29_%28Mia_Mottley%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Mia_Mottley"
+  },
+  "nikol-pashinyan.jpg": {
+    "name": "Nikol Pashinyan",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Zayed_Award_for_Human_Fraternity_awarding_ceremony_-_02_%28cropped_3%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Nikol_Pashinyan"
+  },
+  "tshering-tobgay.jpg": {
+    "name": "Tshering Tobgay",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/7a/2025-11-22_Bhutanese_Prime_Minister_Tshering_Tobgay_speech_at_state_banquet_in_capital_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Tshering_Tobgay"
+  },
+  "wesley-simina.jpg": {
+    "name": "Wesley Simina",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/c/ce/T.H._Wesley_W._Simina.jpg",
+    "page": "https://en.wikipedia.org/wiki/Wesley_Simina"
+  },
+  "gitanas-naus-da.jpg": {
+    "name": "Gitanas Nausėda",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Gitanas_Naus%C4%97da_in_2024.jpg",
+    "page": "https://en.wikipedia.org/wiki/Gitanas_Naus%C4%97da"
+  },
+  "sandra-mason.jpg": {
+    "name": "Sandra Mason",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Sandra_of_Barbados.jpg",
+    "page": "https://en.wikipedia.org/wiki/Sandra_Mason"
+  },
+  "nicu-or-dan.jpg": {
+    "name": "Nicușor Dan",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/9/99/Nicu%C8%99or_Dan%2C_Sept._2025.jpg",
+    "page": "https://en.wikipedia.org/wiki/Nicu%C8%99or_Dan"
+  },
+  "alar-karis.jpg": {
+    "name": "Alar Karis",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Alar_Karis%2C_February_18%2C_2026_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Alar_Karis"
+  },
+  "ali-asadov.jpg": {
+    "name": "Ali Asadov",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/f/f5/%D0%90%D0%BB%D0%B8_%D0%90%D1%81%D0%B0%D0%B4%D0%BE%D0%B2_%2825-08-2022%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Ali_Asadov"
+  },
+  "hun-manet.jpg": {
+    "name": "Hun Manet",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Hun_Manet_on_May_30%2C_2025_%28cropped_2%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Hun_Manet"
+  },
+  "paetongtarn-shinawatra.jpg": {
+    "name": "Paetongtarn Shinawatra",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Paetongtarn_Shinawatra_HoS_Davos.jpg",
+    "page": "https://en.wikipedia.org/wiki/Paetongtarn_Shinawatra"
+  },
+  "albulena-haxhiu.png": {
+    "name": "Albulena Haxhiu",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Albulena_Haxhiu.png",
+    "page": "https://en.wikipedia.org/wiki/Albulena_Haxhiu"
+  },
+  "denis-be-irovi.jpg": {
+    "name": "Denis Bećirović",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/43/Denis_Be%C4%87irovi%C4%87_-_March_2026.jpg",
+    "page": "https://en.wikipedia.org/wiki/Denis_Be%C4%87irovi%C4%87"
+  },
+  "jens-frederik-nielsen.jpg": {
+    "name": "Jens-Frederik Nielsen",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Jens-Frederik_Nielsen_by_Christian_Ursilva.jpg/3840px-Jens-Frederik_Nielsen_by_Christian_Ursilva.jpg",
+    "page": "https://en.wikipedia.org/wiki/Jens-Frederik_Nielsen"
+  },
+  "peter-pellegrini.jpg": {
+    "name": "Peter Pellegrini",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Peter_Pellegrini%2C_2024_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Peter_Pellegrini"
+  },
+  "karol-nawrocki.jpg": {
+    "name": "Karol Nawrocki",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Karol_Nawrocki_%282025%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Karol_Nawrocki"
+  },
+  "ilie-bolojan.jpg": {
+    "name": "Ilie Bolojan",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Ilie_Bolojan_-_6_March_2025_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Ilie_Bolojan"
+  },
+  "robert-golob.jpg": {
+    "name": "Robert Golob",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Robert_Golob_-_55101223158.jpg",
+    "page": "https://en.wikipedia.org/wiki/Robert_Golob"
+  },
+  "konstantinos-tasoulas.jpg": {
+    "name": "Konstantinos Tasoulas",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/9/93/KonstantinosTasoulas_%28cropped2%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Konstantinos_Tasoulas"
+  },
+  "hristijan-mickoski.jpg": {
+    "name": "Hristijan Mickoski",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Hristijan_Mickoski_official_portrait_2024_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Hristijan_Mickoski"
+  },
+  "abiy-ahmed.jpg": {
+    "name": "Abiy Ahmed",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Prime_Minister_of_Ethiopia_Abiy_Ahmed_Ali_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Abiy_Ahmed"
+  },
+  "javier-milei.jpg": {
+    "name": "Javier Milei",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/76/Javier_Milei_in_pull-aside_meeting_at_the_United_Nations_Headquarters_%283x4_cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Javier_Milei"
+  },
+  "mostafa-madbouly.jpg": {
+    "name": "Mostafa Madbouly",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/48/Mostafa_Madbouly_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Mostafa_Madbouly"
+  },
+  "lihan-smaiylov.jpg": {
+    "name": "Älihan Smaiylov",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/5/5d/%D0%90%D0%BB%D0%B8%D1%85%D0%B0%D0%BD_%D0%A1%D0%BC%D0%B0%D0%B8%D0%BB%D0%BE%D0%B2_%2830-03-2022%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/%C3%84lihan_Smaiylov"
+  },
+  "rosen-zhelyazkov.jpg": {
+    "name": "Rosen Zhelyazkov",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/5/59/Rosen_Zhelyazkov_2025_%28cropped_2%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Rosen_Zhelyazkov"
+  },
+  "joseph-ngute.jpg": {
+    "name": "Joseph Ngute",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/5/5c/BOOK_OF_CONDOLENCE_%2852364883717%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Joseph_Ngute"
+  },
+  "yulia-svyrydenko.jpg": {
+    "name": "Yulia Svyrydenko",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/7d/%D0%A1%D0%92%D0%98%D0%A0%D0%98%D0%94%D0%95%D0%9D%D0%9A%D0%9E_%D0%AE%D0%BB%D1%96%D1%8F_%D0%90%D0%BD%D0%B0%D1%82%D0%BE%D0%BB%D1%96%D1%97%D0%B2%D0%BD%D0%B0_%28cropped_2%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Yulia_Svyrydenko"
+  },
+  "evika-sili-a.jpg": {
+    "name": "Evika Siliņa",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Evika_Sili%C5%86a_%282024%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Evika_Sili%C5%86a"
+  },
+  "f-lix-moloua.png": {
+    "name": "Félix Moloua",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/b/be/Felix_Moloua.png",
+    "page": "https://en.wikipedia.org/wiki/F%C3%A9lix_Moloua"
+  },
+  "josep-llu-s-serrano-pentinat.jpg": {
+    "name": "Josep-Lluís Serrano Pentinat",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/b/b6/JLSerranoP.jpg",
+    "page": "https://en.wikipedia.org/wiki/Josep-Llu%C3%ADs_Serrano_Pentinat"
+  },
+  "kubatbek-boronov.jpg": {
+    "name": "Kubatbek Boronov",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/3/37/Kubatbek_Boronov_%282017-08-24%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Kubatbek_Boronov"
+  },
+  "mark-phillips.jpg": {
+    "name": "Mark Phillips",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/2/29/Mark_Phillips_1980.jpg",
+    "page": "https://en.wikipedia.org/wiki/Mark_Phillips"
+  },
+  "bajram-begaj.jpg": {
+    "name": "Bajram Begaj",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Prime_Minister_Keir_Starmer_meets_Albania_President_Bajram_Begaj_%2854521430145%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Bajram_Begaj"
+  },
+  "jos-mar-a-balc-zar.jpg": {
+    "name": "José María Balcázar",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/46/Jos%C3%A9_Mar%C3%ADa_Balc%C3%A1zar_2026.jpg",
+    "page": "https://en.wikipedia.org/wiki/Jos%C3%A9_Mar%C3%ADa_Balc%C3%A1zar"
+  },
+  "mohammad-hasan-akhund.png": {
+    "name": "Mohammad Hasan Akhund",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/c/c4/Hasan_Akhund.png",
+    "page": "https://en.wikipedia.org/wiki/Hasan_Akhund"
+  },
+  "dickon-mitchell.jpg": {
+    "name": "Dickon Mitchell",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Prime_Minister_of_Grenada_Mr._Dickon_Mitchell.jpg",
+    "page": "https://en.wikipedia.org/wiki/Dickon_Mitchell"
+  },
+  "nikenike-vurobaravu.png": {
+    "name": "Nikenike Vurobaravu",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Vurobaravu_ceremony_%28cropped%29.png",
+    "page": "https://en.wikipedia.org/wiki/Nikenike_Vurobaravu"
+  },
+  "sam-matekane.jpg": {
+    "name": "Sam Matekane",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Sam_Matekane.jpg",
+    "page": "https://en.wikipedia.org/wiki/Sam_Matekane"
+  },
+  "apollinaire-joachim-ky-lem-de-tamb-la.png": {
+    "name": "Apollinaire Joachim Kyélem de Tambèla",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Apollinaire_Kyelem_de_Tamb%C3%A8la_%28cropped%29.png",
+    "page": "https://en.wikipedia.org/wiki/Apollinaire_J._Ky%C3%A9lem_de_Tamb%C3%A8la"
+  },
+  "alix-didier-fils-aim.jpg": {
+    "name": "Alix Didier Fils-Aimé",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/e/e1/2026_Alix_Didier_Fils-Aim%C3%A9_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Alix_Didier_Fils-Aim%C3%A9"
+  },
+  "am-rico-ramos.jpg": {
+    "name": "Américo Ramos",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/9/98/Am%C3%A9rico_Ramos_%2814-01-2025%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Am%C3%A9rico_Ramos"
+  },
+  "ruphin-zafisambo.jpg": {
+    "name": "Ruphin Zafisambo",
+    "source": "https://upload.wikimedia.org/wikipedia/en/9/9c/Ruphin_Zafisambo_2025.jpg",
+    "page": "https://en.wikipedia.org/wiki/Ruphin_Zafisambo"
+  },
+  "alexandru-munteanu.jpg": {
+    "name": "Alexandru Munteanu",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/2/26/Alexandru_Munteanu_official_portrait.jpg",
+    "page": "https://en.wikipedia.org/wiki/Alexandru_Munteanu"
+  },
+  "sebasti-n-pi-era.jpg": {
+    "name": "Sebastián Piñera",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Retrato_Oficial_Presidente_Pi%C3%B1era_2018.jpg",
+    "page": "https://en.wikipedia.org/wiki/Sebasti%C3%A1n_Pi%C3%B1era"
+  },
+  "michelle-bachelet.jpg": {
+    "name": "Michelle Bachelet",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/8/8e/24.07.2024_-_Audi%C3%AAncia_com_a_Vice-Presidenta_do_Clube_de_Madri%2C_Michelle_Bachelet_%2853878915676%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Michelle_Bachelet"
+  },
+  "donald-tusk.jpg": {
+    "name": "Donald Tusk",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Donald_Tusk_2025_%282%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Donald_Tusk"
+  },
+  "narendra-modi.jpg": {
+    "name": "Narendra Modi",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/5/5f/The_official_portrait_of_Shri_Narendra_Modi%2C_the_Prime_Minister_of_the_Republic_of_India.jpg",
+    "page": "https://en.wikipedia.org/wiki/Narendra_Modi"
+  },
+  "faure-essozimna-gnassingb.jpg": {
+    "name": "Faure Essozimna Gnassingbé",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Fumio_Kishida_and_Faure_Gnassingb%C3%A9_before_the_funeral_of_Shinzo_Abe_%281%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Faure_Gnassingb%C3%A9"
+  },
+  "mette-frederiksen.jpg": {
+    "name": "Mette Frederiksen",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Mette_Frederiksen_by_Christian_Ursilva_%282026%29.jpg/3840px-Mette_Frederiksen_by_Christian_Ursilva_%282026%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Mette_Frederiksen"
+  },
+  "donald-trump.jpg": {
+    "name": "Donald Trump",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/1/16/Official_Presidential_Portrait_of_President_Donald_J._Trump_%282025%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Donald_Trump"
+  },
+  "swiss-federal-council.jpg": {
+    "name": "Swiss Federal Council",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Gruppenbild_Bundesrat_2026.jpg/3840px-Gruppenbild_Bundesrat_2026.jpg",
+    "page": "https://en.wikipedia.org/wiki/Federal_Council_(Switzerland)"
+  },
+  "benjamin-netanyahu.jpg": {
+    "name": "Benjamin Netanyahu",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/74/Benjamin_Netanyahu%2C_February_2023.jpg",
+    "page": "https://en.wikipedia.org/wiki/Benjamin_Netanyahu"
+  },
+  "sylvanie-burton.jpg": {
+    "name": "Sylvanie Burton",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Sylvanie_Burton_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Sylvanie_Burton"
+  },
+  "transitional-presidential-council.png": {
+    "name": "Transitional Presidential Council",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Presidential_Standard_of_Haiti.svg/1280px-Presidential_Standard_of_Haiti.svg.png",
+    "page": "https://en.wikipedia.org/wiki/Transitional_Presidential_Council"
+  },
+  "dharam-gokhool.jpg": {
+    "name": "Dharam Gokhool",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/0/04/Dharam_Gokhool_on_March_11%2C_2025_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Dharam_Gokhool"
+  },
+  "michael-randrianirina.jpg": {
+    "name": "Michael Randrianirina",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/75/Michael_Randrianirina_in_February_2026.jpg",
+    "page": "https://en.wikipedia.org/wiki/Michael_Randrianirina"
+  },
+  "paul-biya.jpg": {
+    "name": "Paul Biya",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Paul_Biya_in_December_14th%2C_2022.jpg",
+    "page": "https://en.wikipedia.org/wiki/Paul_Biya"
+  },
+  "asif-ali-zardari.jpg": {
+    "name": "Asif Ali Zardari",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/1/13/Asif_Ali_Zardari_-_2024_%283x4_cropped%29_%28b%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Asif_Ali_Zardari"
+  },
+  "ismail-omar-guelleh.jpg": {
+    "name": "Ismail Omar Guelleh",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Ismail_Omar_Guelleh_2018.jpg",
+    "page": "https://en.wikipedia.org/wiki/Isma%C3%AFl_Omar_Guelleh"
+  },
+  "alassane-ouattara.jpg": {
+    "name": "Alassane Ouattara",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Alassane_Ouattara_-_2024_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Alassane_Ouattara"
+  },
+  "denis-sassou-nguesso.jpg": {
+    "name": "Denis Sassou-Nguesso",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/8/86/Denis_Sassou-Nguesso_in_January_28th%2C_2024.jpg",
+    "page": "https://en.wikipedia.org/wiki/Denis_Sassou_Nguesso"
+  },
+  "manuel-serifo-nhamadjo.jpg": {
+    "name": "Manuel Serifo Nhamadjo",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/73/Manuel_Serifo_Nhamadjo_2015.jpg",
+    "page": "https://en.wikipedia.org/wiki/Manuel_Serifo_Nhamadjo"
+  },
+  "abdullah-ii-of-jordan.jpg": {
+    "name": "Abdullah II of Jordan",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Abdullah_II_portrait_crop_2_at_10_Downing_Street_June_2025.jpg",
+    "page": "https://en.wikipedia.org/wiki/Abdullah_II_of_Jordan"
+  },
+  "letsie-iii-of-lesotho.jpg": {
+    "name": "Letsie III of Lesotho",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/7b/King_Letsie_III_at_the_Enthronement_of_Naruhito_%281%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Letsie_III"
+  },
+  "mohammed-vi-of-morocco.jpg": {
+    "name": "Mohammed VI of Morocco",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Pedro_S%C3%A1nchez_se_re%C3%BAne_con_el_rey_de_Marruecos%2C_Mohamed_VI_%281%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Mohammed_VI_of_Morocco"
+  },
+  "aziz-akhannouch.jpg": {
+    "name": "Aziz Akhannouch",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/9/99/Fumio_Kishida_and_Aziz_Akhannouch_before_the_funeral_of_Shinzo_Abe_%281%29_%28cropped_2%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Aziz_Akhannouch"
+  },
+  "myriam-spiteri-debono.jpg": {
+    "name": "Myriam Spiteri Debono",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Myriam_Spiteri_Debono_on_April_20%2C_2024_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Myriam_Spiteri_Debono"
+  },
+  "sanae-takaichi.jpg": {
+    "name": "Sanae Takaichi",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Official_portrait_of_Sanae_Takaichi%2C_Prime_Minister_of_Japan_%28HD%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Sanae_Takaichi"
+  },
+  "ulf-kristersson.jpg": {
+    "name": "Ulf Kristersson",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/44/Ulf_Kristersson_June_2025_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Ulf_Kristersson"
+  },
+  "miguel-d-az-canel.jpg": {
+    "name": "Miguel Díaz-Canel",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Miguel_Diaz-Canel_on_July_7%2C_2025_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Miguel_D%C3%ADaz-Canel"
+  },
+  "godwin-friday.jpg": {
+    "name": "Godwin Friday",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Godwin_Friday_2019.jpg",
+    "page": "https://en.wikipedia.org/wiki/Godwin_Friday"
+  },
+  "tam-s-sulyok.jpg": {
+    "name": "Tamás Sulyok",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Sulyok_Tam%C3%A1s_hivatalos_portr%C3%A9ja_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Tam%C3%A1s_Sulyok"
+  },
+  "sapar-isakov.jpg": {
+    "name": "Sapar Isakov",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/8/86/Sapar_Isakov_%282017-10-11%29_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Sapar_Isakov"
+  },
+  "muhammetkaliy-abulgaziyev.jpg": {
+    "name": "Muhammetkaliy Abulgaziyev",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Mukhammedkalyi_Abylgaziev_in_January_2019.jpg",
+    "page": "https://en.wikipedia.org/wiki/Mukhammedkalyi_Abylgaziev"
+  },
+  "mohammed-bin-rashid-al-maktoum.jpg": {
+    "name": "Mohammed bin Rashid Al Maktoum",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Mohammed_bin_Rashid_Al_Maktoum_%2815-02-2021%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Mohammed_bin_Rashid_Al_Maktoum"
+  },
+  "dileita-mohamed-dileita.jpg": {
+    "name": "Dileita Mohamed Dileita",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/2/28/Dileita_Mohamed_Dileita_detail_090114-F-3682S-269.jpg",
+    "page": "https://en.wikipedia.org/wiki/Dileita_Mohamed_Dileita"
+  },
+  "zoran-milanovi.jpg": {
+    "name": "Zoran Milanović",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/2/22/Slu%C5%BEbena_fotografija_predsjednika_Republike_Hrvatske_Zorana_Milanovi%C4%87a.jpg",
+    "page": "https://en.wikipedia.org/wiki/Zoran_Milanovi%C4%87"
+  },
+  "kamla-persad-bissessar.jpg": {
+    "name": "Kamla Persad-Bissessar",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/2/27/Kamla_Persad-Bissessar%2C_2025.jpg",
+    "page": "https://en.wikipedia.org/wiki/Kamla_Persad-Bissessar"
+  },
+  "tuila-epa-sa-ilele-malielegaoi.jpg": {
+    "name": "Tuilaʻepa Saʻilele Malielegaoi",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Tuilaepa_Aiono_Sailele_Malielegaoi_2018.jpg",
+    "page": "https://en.wikipedia.org/wiki/Tuila%CA%BBepa_Sa%CA%BBilele_Malielegaoi"
+  },
+  "shavkat-mirziyoyev.jpg": {
+    "name": "Shavkat Mirziyoyev",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Shavkat_Mirziyoyev_official_portrait_%28cropped_2%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Shavkat_Mirziyoyev"
+  },
+  "raymond-ndong-sima.jpg": {
+    "name": "Raymond Ndong Sima",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/f/f0/Raymond_Ndong_Sima_2024.jpg",
+    "page": "https://en.wikipedia.org/wiki/Raymond_Ndong_Sima"
+  },
+  "david-adeang.jpg": {
+    "name": "David Adeang",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/c/cc/David_Adeang_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/David_Adeang"
+  },
+  "carl-xvi-gustaf-of-sweden.jpg": {
+    "name": "Carl XVI Gustaf of Sweden",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/42/06.11.2025_%E2%80%93_Recep%C3%A7%C3%A3o_Oficial_dos_Chefes_de_Delega%C3%A7%C3%A3o_da_C%C3%BApula_do_Clima_%2854906269035%29_%28Carlos_XVI_Gustavo%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Carl_XVI_Gustaf"
+  },
+  "kim-jong-un.jpg": {
+    "name": "Kim Jong-un",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/0/06/Kim_Jong-un_and_Vladimir_Putin_%282023-09-13%29_12_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Kim_Jong_Un"
+  },
+  "norodom-sihamoni.jpg": {
+    "name": "Norodom Sihamoni",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/5/59/Ceremonial_Reception_of_the_King_of_Cambodia%2C_Norodom_Sihamoni_on_May_30%2C_2023_%283x4_cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Norodom_Sihamoni"
+  },
+  "mswati-iii.jpg": {
+    "name": "Mswati III",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/5/54/Mswati_III_in_Yokohama_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Mswati_III"
+  },
+  "idriss-d-by.jpg": {
+    "name": "Idriss Déby",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Idriss_D%C3%A9by_at_the_White_House_in_2014.jpg",
+    "page": "https://en.wikipedia.org/wiki/Idriss_D%C3%A9by"
+  },
+  "ilham-aliyev.jpg": {
+    "name": "Ilham Aliyev",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Ilham_Aliyev%2C_December_2025_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Ilham_Aliyev"
+  },
+  "hans-adam-ii-prince-of-liechtenstein.jpg": {
+    "name": "Hans-Adam II, Prince of Liechtenstein",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/7/78/Hans-Adam_II_2025_%28cropped%29.jpg",
+    "page": "https://en.wikipedia.org/wiki/Hans-Adam_II%2C_Prince_of_Liechtenstein"
+  },
+  "robert-fico.jpg": {
+    "name": "Robert Fico",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Robert_Fico_portrait%2C_2025_large.jpg",
+    "page": "https://en.wikipedia.org/wiki/Robert_Fico"
+  }
+}

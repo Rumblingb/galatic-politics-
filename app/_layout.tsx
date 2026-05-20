@@ -8,7 +8,7 @@ import { AuthProvider } from '@/providers/auth-provider';
 import { GameProvider } from '@/providers/game-provider';
 
 export const unstable_settings = {
-  anchor: '(tabs)',
+  initialRouteName: '(tabs)',
 };
 
 const AppTheme = {

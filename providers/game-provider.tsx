@@ -2,6 +2,7 @@ import {
   createContext,
   PropsWithChildren,
   startTransition,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -147,7 +148,7 @@ export function GameProvider({ children }: PropsWithChildren) {
       });
       setFeed((current) => [buildEvent(politician, captain, true), ...current].slice(0, 10));
     });
-  };
+  }, []);
 
   const dismissPolitician = (politicianId: string) => {
     const politician = politicians.find((p) => p.id === politicianId);
@@ -157,15 +158,15 @@ export function GameProvider({ children }: PropsWithChildren) {
       setDismissedIds((current) => [...current, politicianId]);
       setFeed((current) => [buildEvent(politician, false, false), ...current].slice(0, 10));
     });
-  };
+  }, []);
 
-  const resetGame = () => {
+  const resetGame = useCallback(() => {
     startTransition(() => {
       setRoster([]);
       setDismissedIds([]);
       setFeed(startingFeed);
     });
-  };
+  }, []);
 
   const value = useMemo(
     () => ({
