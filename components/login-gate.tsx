@@ -1,182 +1,257 @@
-import { useRouter } from 'expo-router';
+import * as AppleAuthentication from 'expo-apple-authentication';
+import * as WebBrowser from 'expo-web-browser';
 import { ReactNode } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Linking,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ActionButton, AppBackground, CaricaturePortrait } from '@/components/game-ui';
+import { AppBackground, CaricaturePortrait } from '@/components/game-ui';
 import { politicians, wildCardEvents } from '@/data/politicians';
-import { useGame } from '@/providers/game-provider';
+import { useAuth } from '@/providers/auth-provider';
+
+WebBrowser.maybeCompleteAuthSession();
 
 export function LoginGate({ children }: { children: ReactNode }) {
-  const router = useRouter();
-  const { isLoggedIn, login } = useGame();
-  const bossEvent = wildCardEvents[0];
-  const bossCard = politicians.find((politician) => politician.id === bossEvent.politicianId) ?? politicians[0];
+  const { user, isLoading, signInWithApple, signInWithGoogle } = useAuth();
 
-  if (isLoggedIn) {
-    return children;
+  if (isLoading) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#f7c948" />
+      </View>
+    );
   }
 
-  const handleLogin = () => {
-    login();
-    router.replace('/');
-  };
+  if (user) {
+    return <>{children}</>;
+  }
+
+  const bossEvent = wildCardEvents[0];
+  const bossCard = politicians.find((p) => p.id === bossEvent.politicianId) ?? politicians[0];
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={styles.root}>
       <AppBackground />
-      <View style={styles.container}>
-        <View style={styles.titlePlate}>
-          <View style={styles.livePill}>
-            <Text style={styles.liveDot}>LIVE</Text>
-            <Text style={styles.liveText}>GLOBAL DRAFT</Text>
-          </View>
-          <Text style={styles.kicker}>POWER CABINET</Text>
-          <Text style={styles.title}>Enter the arena.</Text>
-          <Text style={styles.subtitle}>Build a five-card cabinet before the receipts hit.</Text>
+
+      <View style={styles.header}>
+        <View style={styles.livePill}>
+          <View style={styles.liveDot} />
+          <Text style={styles.liveText}>GLOBAL DRAFT OPEN</Text>
         </View>
-        <View style={styles.bossCard}>
-          <View style={styles.challengerBar}>
-            <Text style={styles.challenger}>CHALLENGER APPROACHING</Text>
-            <Text style={styles.clipTag}>GIF READY</Text>
-          </View>
-          <CaricaturePortrait politician={bossCard} size="large" />
-          <Text style={styles.bossName}>{bossCard.name}</Text>
-          <Text style={styles.bossCopy}>{bossEvent.effect}</Text>
-        </View>
-        <View style={styles.actionWrap}>
-          <ActionButton label="Login and draft" icon="flash" tone="gold" onPress={handleLogin} />
-        </View>
-        <Text style={styles.footer}>Swipe right to draft. Swipe left to pass. Swipe up to captain.</Text>
       </View>
+
+      <View style={styles.titleBlock}>
+        <Text style={styles.kicker}>POWER CABINET</Text>
+        <Text style={styles.headline}>Build your{'\n'}global cabinet.</Text>
+        <Text style={styles.sub}>
+          Draft world leaders. Chase promise points.{'\n'}Survive the truth tax.
+        </Text>
+      </View>
+
+      <View style={styles.bossCard}>
+        <View style={styles.bossTopRow}>
+          <Text style={styles.challengerLabel}>CHALLENGER APPROACHING</Text>
+          <View style={styles.rarityBadge}>
+            <Text style={styles.rarityText}>MYTHIC</Text>
+          </View>
+        </View>
+        <CaricaturePortrait politician={bossCard} size="large" />
+        <Text style={styles.bossName}>{bossCard.name}</Text>
+        <Text style={styles.bossCopy}>{bossEvent.effect}</Text>
+      </View>
+
+      <View style={styles.authBlock}>
+        {Platform.OS === 'ios' && (
+          <AppleAuthentication.AppleAuthenticationButton
+            buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+            buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+            cornerRadius={10}
+            style={styles.appleBtn}
+            onPress={signInWithApple}
+          />
+        )}
+
+        <Pressable
+          style={({ pressed }) => [styles.googleBtn, pressed && { opacity: 0.85 }]}
+          onPress={signInWithGoogle}>
+          <Text style={styles.googleIcon}>G</Text>
+          <Text style={styles.googleLabel}>Continue with Google</Text>
+        </Pressable>
+
+        <Text style={styles.hint}>
+          Swipe right to draft · left to pass · up to captain
+        </Text>
+      </View>
+
+      <Pressable
+        onPress={() =>
+          Linking.openURL(
+            'https://rumblingb.github.io/agentpay-labs-hub/privacy/power-cabinet.html'
+          )
+        }>
+        <Text style={styles.privacy}>Privacy Policy</Text>
+      </Pressable>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
+  root: {
     flex: 1,
-    backgroundColor: '#f3ead7',
-  },
-  container: {
-    flex: 1,
-    padding: 18,
-    justifyContent: 'center',
-    gap: 12,
-  },
-  titlePlate: {
-    borderRadius: 8,
-    borderWidth: 4,
-    borderColor: '#111111',
     backgroundColor: '#111111',
-    padding: 16,
-    gap: 8,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    paddingBottom: 16,
+  },
+  loader: {
+    flex: 1,
+    backgroundColor: '#111111',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  header: {
+    paddingTop: 8,
   },
   livePill: {
-    alignSelf: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 7,
-    borderRadius: 8,
-    borderWidth: 2,
+    gap: 6,
+    borderWidth: 1.5,
     borderColor: '#f7c948',
-    paddingHorizontal: 9,
-    paddingVertical: 6,
+    borderRadius: 99,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    alignSelf: 'flex-start',
   },
   liveDot: {
-    color: '#111111',
+    width: 6,
+    height: 6,
+    borderRadius: 3,
     backgroundColor: '#f7c948',
-    overflow: 'hidden',
-    borderRadius: 5,
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-    fontSize: 10,
-    fontWeight: '900',
   },
   liveText: {
     color: '#f7c948',
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '900',
-    letterSpacing: 1,
+    letterSpacing: 1.2,
+  },
+  titleBlock: {
+    gap: 6,
   },
   kicker: {
     color: '#f7c948',
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '900',
-    letterSpacing: 1.5,
+    letterSpacing: 2,
   },
-  title: {
+  headline: {
     color: '#fff7e6',
-    fontSize: 48,
-    lineHeight: 50,
+    fontSize: 44,
     fontWeight: '900',
+    lineHeight: 46,
     textShadowColor: '#ef233c',
     textShadowOffset: { width: 3, height: 3 },
     textShadowRadius: 0,
   },
-  subtitle: {
-    color: '#fff7e6',
-    fontSize: 15,
+  sub: {
+    color: '#837766',
+    fontSize: 14,
+    fontWeight: '700',
     lineHeight: 20,
-    fontWeight: '800',
   },
   bossCard: {
-    borderRadius: 8,
-    borderWidth: 5,
+    borderWidth: 3,
     borderColor: '#ef233c',
-    backgroundColor: '#111111',
-    padding: 18,
+    borderRadius: 12,
+    backgroundColor: '#1a1a1a',
+    padding: 16,
     alignItems: 'center',
-    gap: 10,
+    gap: 8,
   },
-  challengerBar: {
-    width: '100%',
+  bossTopRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 10,
+    width: '100%',
   },
-  challenger: {
+  challengerLabel: {
     color: '#f7c948',
-    fontSize: 12,
-    fontWeight: '900',
-    letterSpacing: 1.4,
-  },
-  clipTag: {
-    color: '#111111',
-    backgroundColor: '#f7c948',
-    overflow: 'hidden',
-    borderRadius: 6,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
     fontSize: 10,
     fontWeight: '900',
+    letterSpacing: 1.5,
+  },
+  rarityBadge: {
+    backgroundColor: '#f7c948',
+    borderRadius: 4,
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+  },
+  rarityText: {
+    color: '#111111',
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 1,
   },
   bossName: {
     color: '#fff7e6',
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: '900',
     textAlign: 'center',
   },
   bossCopy: {
-    color: '#fff7e6',
-    fontSize: 14,
-    lineHeight: 20,
-    fontWeight: '800',
-    textAlign: 'center',
-  },
-  actionWrap: {
-    width: '100%',
-  },
-  footer: {
-    color: '#fff7e6',
-    backgroundColor: '#111111',
-    overflow: 'hidden',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    color: '#837766',
     fontSize: 13,
-    fontWeight: '900',
+    fontWeight: '700',
     textAlign: 'center',
+    lineHeight: 18,
+  },
+  authBlock: {
+    gap: 10,
+  },
+  appleBtn: {
+    width: '100%',
+    height: 52,
+  },
+  googleBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    backgroundColor: '#fff7e6',
+    borderRadius: 10,
+    height: 52,
+    borderWidth: 2,
+    borderColor: '#2a2a2a',
+  },
+  googleIcon: {
+    fontSize: 18,
+    fontWeight: '900',
+    color: '#4285F4',
+  },
+  googleLabel: {
+    color: '#111111',
+    fontSize: 16,
+    fontWeight: '800',
+  },
+  hint: {
+    color: '#555544',
+    fontSize: 11,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginTop: 2,
+  },
+  privacy: {
+    color: '#555544',
+    fontSize: 11,
+    fontWeight: '700',
+    textAlign: 'center',
+    textDecorationLine: 'underline',
   },
 });

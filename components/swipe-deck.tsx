@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import {
   Animated,
   PanResponder,
@@ -27,54 +27,54 @@ export function SwipeDeck<T extends { id: string }>({
   onSwipe,
 }: SwipeDeckProps<T>) {
   const position = useRef(new Animated.ValueXY()).current;
+  const [hasHinted, setHasHinted] = useState(false);
+  const hintAnim = useRef(new Animated.Value(0)).current;
 
+  // Keep latest item/onSwipe in refs so panResponder closure never goes stale
+  const itemRef = useRef(item);
+  const onSwipeRef = useRef(onSwipe);
+  itemRef.current = item;
+  onSwipeRef.current = onSwipe;
+
+  // Bounce hint animation on first card load
   useEffect(() => {
     position.setValue({ x: 0, y: 0 });
-  }, [item, position]);
-
-  const animateOut = (direction: SwipeDirection) => {
-    if (!item) {
-      return;
+    if (!hasHinted && item) {
+      setHasHinted(true);
+      Animated.sequence([
+        Animated.delay(600),
+        Animated.timing(hintAnim, { toValue: 1, duration: 300, useNativeDriver: false }),
+        Animated.timing(position, { toValue: { x: 55, y: 0 }, duration: 320, useNativeDriver: false }),
+        Animated.timing(position, { toValue: { x: 0, y: 0 }, duration: 280, useNativeDriver: false }),
+        Animated.timing(hintAnim, { toValue: 0, duration: 200, useNativeDriver: false }),
+      ]).start();
     }
+  }, [item]);
 
+  // animateOut uses refs so it's always current — safe to call from stable panResponder
+  const animateOutRef = useRef<(direction: SwipeDirection) => void>(() => {});
+  animateOutRef.current = (direction: SwipeDirection) => {
+    const current = itemRef.current;
+    if (!current) return;
     const target =
       direction === 'left'
         ? { x: -420, y: 40 }
         : direction === 'right'
           ? { x: 420, y: 40 }
           : { x: 0, y: -420 };
-
-    Animated.timing(position, {
-      toValue: target,
-      duration: 200,
-      useNativeDriver: false,
-    }).start(() => {
+    Animated.timing(position, { toValue: target, duration: 200, useNativeDriver: false }).start(() => {
       position.setValue({ x: 0, y: 0 });
-      onSwipe(item, direction);
+      onSwipeRef.current(current, direction);
     });
   };
 
-  const resolveRelease = (_: unknown, gesture: PanResponderGestureState) => {
-    if (gesture.dy < -SWIPE_THRESHOLD) {
-      animateOut('up');
-      return;
-    }
-
-    if (gesture.dx > SWIPE_THRESHOLD) {
-      animateOut('right');
-      return;
-    }
-
-    if (gesture.dx < -SWIPE_THRESHOLD) {
-      animateOut('left');
-      return;
-    }
-
-    Animated.spring(position, {
-      toValue: { x: 0, y: 0 },
-      friction: 5,
-      useNativeDriver: false,
-    }).start();
+  // Stable ref for resolveRelease so panResponder.create (run once) never uses a stale closure
+  const resolveReleaseRef = useRef<(_: unknown, gesture: PanResponderGestureState) => void>(() => {});
+  resolveReleaseRef.current = (_: unknown, gesture: PanResponderGestureState) => {
+    if (gesture.dy < -SWIPE_THRESHOLD) { animateOutRef.current('up'); return; }
+    if (gesture.dx > SWIPE_THRESHOLD) { animateOutRef.current('right'); return; }
+    if (gesture.dx < -SWIPE_THRESHOLD) { animateOutRef.current('left'); return; }
+    Animated.spring(position, { toValue: { x: 0, y: 0 }, friction: 5, useNativeDriver: false }).start();
   };
 
   const panResponder = useRef(
@@ -83,7 +83,8 @@ export function SwipeDeck<T extends { id: string }>({
       onPanResponderMove: Animated.event([null, { dx: position.x, dy: position.y }], {
         useNativeDriver: false,
       }),
-      onPanResponderRelease: resolveRelease,
+      // Delegate to ref — always calls the latest resolveRelease
+      onPanResponderRelease: (e, gesture) => resolveReleaseRef.current(e, gesture),
     })
   ).current;
 
@@ -106,6 +107,9 @@ export function SwipeDeck<T extends { id: string }>({
     inputRange: [-160, -60, 0],
     outputRange: [1, 0.4, 0],
   });
+
+  // First-use hint arrow opacity (fades in/out with hintAnim)
+  const hintOpacity = hintAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.75] });
 
   if (!item) {
     return (
@@ -141,13 +145,17 @@ export function SwipeDeck<T extends { id: string }>({
         <Animated.View style={[styles.overlayBadge, styles.overlayTop, { opacity: upOpacity }]}>
           <Text style={styles.overlayTextUp}>CAPTAIN</Text>
         </Animated.View>
+        {/* First-use swipe hint arrow */}
+        <Animated.View style={[styles.hintArrow, { opacity: hintOpacity }]}>
+          <Text style={styles.hintText}>→ Swipe to draft</Text>
+        </Animated.View>
         {renderCard(item)}
       </Animated.View>
 
       <View style={styles.actionRow}>
-        <ActionButton label="Pass" icon="close" tone="bad" onPress={() => animateOut('left')} />
-        <ActionButton label="Captain" icon="star" tone="gold" onPress={() => animateOut('up')} />
-        <ActionButton label="Draft" icon="checkmark" tone="good" onPress={() => animateOut('right')} />
+        <ActionButton label="Pass" icon="close" tone="bad" onPress={() => animateOutRef.current('left')} />
+        <ActionButton label="Captain" icon="star" tone="gold" onPress={() => animateOutRef.current('up')} />
+        <ActionButton label="Draft" icon="checkmark" tone="good" onPress={() => animateOutRef.current('right')} />
       </View>
     </View>
   );
@@ -231,5 +239,23 @@ const styles = StyleSheet.create({
     color: '#837766',
     fontSize: 15,
     lineHeight: 22,
+  },
+  hintArrow: {
+    position: 'absolute',
+    bottom: 14,
+    right: 16,
+    zIndex: 5,
+    backgroundColor: 'rgba(8, 12, 20, 0.75)',
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#8bd450',
+  },
+  hintText: {
+    color: '#8bd450',
+    fontSize: 13,
+    fontWeight: '800',
+    letterSpacing: 0.3,
   },
 });

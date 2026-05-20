@@ -3,26 +3,37 @@ import {
   PropsWithChildren,
   startTransition,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
 
 import { politicians, startingFeed } from '@/data/politicians';
-import { MAX_ROSTER_SIZE, calculateRosterScore, createRosterSlot } from '@/lib/game';
+import { loadRoster, saveRoster } from '@/lib/supabase';
+import {
+  MAX_ROSTER_SIZE,
+  calculateRosterScore,
+  createRosterSlot,
+  getPromiseHitRate,
+} from '@/lib/game';
 import { MemeEvent, Politician, RosterSlot } from '@/types/game';
+import { useAuth } from '@/providers/auth-provider';
+
+// Free tier: first 8 politicians. Pro: all 16.
+const FREE_POLITICIAN_IDS = politicians.slice(0, 8).map((p) => p.id);
 
 type GameContextValue = {
-  isLoggedIn: boolean;
   roster: RosterSlot[];
   feed: MemeEvent[];
   availablePoliticians: Politician[];
+  lockedPoliticians: Politician[];
   currentPolitician: Politician | null;
   rosterFull: boolean;
-  login: () => void;
+  totalScore: number;
+  isSyncing: boolean;
   draftPolitician: (politicianId: string, captain?: boolean) => void;
   dismissPolitician: (politicianId: string) => void;
   resetGame: () => void;
-  totalScore: number;
 };
 
 const GameContext = createContext<GameContextValue | null>(null);
@@ -34,36 +45,90 @@ function buildEvent(politician: Politician, captain: boolean, drafted: boolean):
       politicianId: politician.id,
       tone: 'hype',
       title: `${politician.name} Skipped`,
-      detail: `${politician.country} just hit the transfer market. Somebody else can hold the volatility bag.`,
+      detail: `${politician.country} hits the transfer market. Someone else holds the volatility bag.`,
       scoreDelta: 0,
     };
   }
-
   return {
     id: `${politician.id}-${Date.now()}`,
     politicianId: politician.id,
     tone: captain ? 'buff' : 'hype',
     title: captain ? `${politician.memeTitle} Captain Buff` : `${politician.memeTitle} Drafted`,
     detail: captain
-      ? `${politician.name} gets the 1.8x captain multiplier. Maximum clip potential unlocked.`
-      : `${politician.name} joins your global cabinet with ${politician.promiseScore} promise pace and ${politician.marketOdds}% market heat.`,
+      ? `${politician.name} gets the 1.8× captain multiplier. Maximum clip potential.`
+      : `${politician.name} joins your cabinet with ${politician.promiseScore} promise pace.`,
     scoreDelta: createRosterSlot(politician, captain).points,
   };
 }
 
 export function GameProvider({ children }: PropsWithChildren) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user, isPro } = useAuth();
+
   const [roster, setRoster] = useState<RosterSlot[]>([]);
   const [dismissedIds, setDismissedIds] = useState<string[]>([]);
   const [feed, setFeed] = useState<MemeEvent[]>(startingFeed);
+  const [isSyncing, setIsSyncing] = useState(false);
 
-  const rosterIds = useMemo(() => roster.map((slot) => slot.politician.id), [roster]);
+  // Load roster from Supabase when user signs in
+  useEffect(() => {
+    if (!user) {
+      setRoster([]);
+      setDismissedIds([]);
+      setFeed(startingFeed);
+      return;
+    }
+
+    setIsSyncing(true);
+    loadRoster(user.id).then((row) => {
+      if (row) {
+        const loadedRoster = row.politician_ids
+          .map((id, idx) => {
+            const pol = politicians.find((p) => p.id === id);
+            if (!pol) return null;
+            return createRosterSlot(pol, id === row.captain_id);
+          })
+          .filter(Boolean) as RosterSlot[];
+
+        setRoster(loadedRoster);
+        setDismissedIds(row.dismissed_ids ?? []);
+      }
+      setIsSyncing(false);
+    });
+  }, [user?.id]);
+
+  // Persist roster to Supabase on every change
+  useEffect(() => {
+    if (!user || isSyncing) return;
+
+    const politicianIds = roster.map((s) => s.politician.id);
+    const captainId = roster.find((s) => s.captain)?.politician.id ?? null;
+    const score = calculateRosterScore(roster);
+
+    saveRoster(user.id, {
+      politician_ids: politicianIds,
+      captain_id: captainId,
+      dismissed_ids: dismissedIds,
+      total_score: score,
+      season: 'S1-2026',
+    });
+  }, [roster, dismissedIds]);
+
+  const rosterIds = useMemo(() => roster.map((s) => s.politician.id), [roster]);
+
+  // Available = not drafted, not dismissed, and visible to this tier
+  const visiblePool = useMemo(
+    () => (isPro ? politicians : politicians.filter((p) => FREE_POLITICIAN_IDS.includes(p.id))),
+    [isPro]
+  );
+
+  const lockedPoliticians = useMemo(
+    () => (!isPro ? politicians.filter((p) => !FREE_POLITICIAN_IDS.includes(p.id)) : []),
+    [isPro]
+  );
+
   const availablePoliticians = useMemo(
-    () =>
-      politicians.filter(
-        (politician) => !rosterIds.includes(politician.id) && !dismissedIds.includes(politician.id)
-      ),
-    [dismissedIds, rosterIds]
+    () => visiblePool.filter((p) => !rosterIds.includes(p.id) && !dismissedIds.includes(p.id)),
+    [visiblePool, rosterIds, dismissedIds]
   );
 
   const currentPolitician = availablePoliticians[0] ?? null;
@@ -71,30 +136,26 @@ export function GameProvider({ children }: PropsWithChildren) {
   const rosterFull = roster.length >= MAX_ROSTER_SIZE;
 
   const draftPolitician = (politicianId: string, captain = false) => {
-    const politician = politicians.find((entry) => entry.id === politicianId);
-    if (!politician || rosterFull) {
-      return;
-    }
+    const politician = politicians.find((p) => p.id === politicianId);
+    if (!politician || rosterFull) return;
 
     startTransition(() => {
       setRoster((current) => {
-        const alreadyHasCaptain = current.some((slot) => slot.captain);
+        const alreadyHasCaptain = current.some((s) => s.captain);
         const shouldCaptain = captain && !alreadyHasCaptain;
         return [...current, createRosterSlot(politician, shouldCaptain)];
       });
-      setFeed((current) => [buildEvent(politician, captain, true), ...current].slice(0, 8));
+      setFeed((current) => [buildEvent(politician, captain, true), ...current].slice(0, 10));
     });
   };
 
   const dismissPolitician = (politicianId: string) => {
-    const politician = politicians.find((entry) => entry.id === politicianId);
-    if (!politician) {
-      return;
-    }
+    const politician = politicians.find((p) => p.id === politicianId);
+    if (!politician) return;
 
     startTransition(() => {
       setDismissedIds((current) => [...current, politicianId]);
-      setFeed((current) => [buildEvent(politician, false, false), ...current].slice(0, 8));
+      setFeed((current) => [buildEvent(politician, false, false), ...current].slice(0, 10));
     });
   };
 
@@ -106,38 +167,28 @@ export function GameProvider({ children }: PropsWithChildren) {
     });
   };
 
-  const login = () => {
-    startTransition(() => {
-      setIsLoggedIn(true);
-    });
-  };
-
   const value = useMemo(
     () => ({
-      isLoggedIn,
       roster,
       feed,
       availablePoliticians,
+      lockedPoliticians,
       currentPolitician,
       rosterFull,
-      login,
+      totalScore,
+      isSyncing,
       draftPolitician,
       dismissPolitician,
       resetGame,
-      totalScore,
     }),
-    [availablePoliticians, currentPolitician, feed, isLoggedIn, roster, rosterFull, totalScore]
+    [availablePoliticians, lockedPoliticians, currentPolitician, feed, roster, rosterFull, totalScore, isSyncing]
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 }
 
 export function useGame() {
-  const context = useContext(GameContext);
-
-  if (!context) {
-    throw new Error('useGame must be used inside GameProvider');
-  }
-
-  return context;
+  const ctx = useContext(GameContext);
+  if (!ctx) throw new Error('useGame must be used inside GameProvider');
+  return ctx;
 }

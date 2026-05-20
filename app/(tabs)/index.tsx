@@ -17,14 +17,17 @@ import {
   ScreenHeader,
   WildCardSpotlight,
 } from '@/components/game-ui';
+import { ProUpgradeBanner } from '@/components/pro-gate';
 import { SwipeDeck } from '@/components/swipe-deck';
 import { marketSignals, politicians, promiseReceipts, wildCardEvents } from '@/data/politicians';
 import { getPromiseHitRate, getReceiptsForPolitician, getTruthPressure } from '@/lib/game';
+import { useAuth } from '@/providers/auth-provider';
 import { useGame } from '@/providers/game-provider';
 import { SwipeDirection } from '@/types/game';
 
 export default function DraftScreen() {
   const router = useRouter();
+  const { isPro } = useAuth();
   const {
     currentPolitician,
     availablePoliticians,
@@ -35,21 +38,20 @@ export default function DraftScreen() {
     totalScore,
     resetGame,
   } = useGame();
+
+  const [showChallenger, setShowChallenger] = useState(false);
+
   const promiseRate = getPromiseHitRate(roster);
-  const [showChallenger, setShowChallenger] = useState(true);
   const truthPressure = getTruthPressure(roster);
+
   const currentSignal = marketSignals.find(
     (signal) => signal.politicianId === currentPolitician?.id
   );
   const topWildCard = wildCardEvents[0];
-  const wildPolitician = politicians.find(
-    (politician) => politician.id === topWildCard.politicianId
-  );
+  const wildPolitician = politicians.find((p) => p.id === topWildCard.politicianId);
 
   const handleSwipe = (direction: SwipeDirection) => {
-    if (!currentPolitician) {
-      return;
-    }
+    if (!currentPolitician) return;
 
     void Haptics.impactAsync(
       direction === 'left' ? Haptics.ImpactFeedbackStyle.Light : Haptics.ImpactFeedbackStyle.Medium
@@ -61,7 +63,9 @@ export default function DraftScreen() {
     }
 
     draftPolitician(currentPolitician.id, direction === 'up');
-    if (roster.length === 1 || direction === 'up') {
+
+    // Show challenger overlay after first draft or captain
+    if (roster.length === 0 || direction === 'up') {
       setShowChallenger(true);
     }
   };
@@ -69,12 +73,16 @@ export default function DraftScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <AppBackground />
-      <ChallengerOverlay
-        visible={showChallenger}
-        event={topWildCard}
-        politician={wildPolitician}
-        onClose={() => setShowChallenger(false)}
-      />
+
+      {isPro && (
+        <ChallengerOverlay
+          visible={showChallenger}
+          event={topWildCard}
+          politician={wildPolitician}
+          onClose={() => setShowChallenger(false)}
+        />
+      )}
+
       <ScrollView contentContainerStyle={styles.container}>
         <ScreenHeader kicker="GLOBAL DRAFT" title="Power Cabinet" score={totalScore} />
 
@@ -96,14 +104,14 @@ export default function DraftScreen() {
           <View style={styles.lockedPanel}>
             <Text style={styles.lockedTitle}>Squad locked</Text>
             <Text style={styles.lockedCopy}>
-              {totalScore} projected points with a {promiseRate}% promise pace.
+              {totalScore} projected points · {promiseRate}% promise pace.
             </Text>
             <View style={styles.lockedActions}>
               <Text onPress={() => router.push('/(tabs)/league')} style={styles.primaryCta}>
                 League table
               </Text>
               <Text onPress={() => router.push('/(tabs)/clips')} style={styles.secondaryCta}>
-                Card pack
+                Clips
               </Text>
               <Text onPress={resetGame} style={styles.secondaryCta}>
                 Redraft
@@ -126,12 +134,17 @@ export default function DraftScreen() {
               <ReceiptStack
                 compact
                 receipts={
-                  currentPolitician ? getReceiptsForPolitician(currentPolitician.id) : promiseReceipts.slice(0, 2)
+                  currentPolitician
+                    ? getReceiptsForPolitician(currentPolitician.id)
+                    : promiseReceipts.slice(0, 2)
                 }
               />
             </View>
           </View>
         )}
+
+        {/* Pro upsell banner for free users */}
+        {!isPro && <ProUpgradeBanner />}
 
         <AdBanner label="Pack break" />
       </ScrollView>
@@ -140,34 +153,13 @@ export default function DraftScreen() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#f3ead7',
-  },
-  container: {
-    padding: 16,
-    paddingBottom: 30,
-    gap: 16,
-  },
-  tickerWrap: {
-    marginTop: -4,
-  },
-  draftStack: {
-    gap: 12,
-  },
-  scoreRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  receiptsPanel: {
-    gap: 8,
-  },
-  sectionTitle: {
-    color: '#111111',
-    fontSize: 20,
-    fontWeight: '900',
-  },
+  safeArea: { flex: 1, backgroundColor: '#f3ead7' },
+  container: { padding: 16, paddingBottom: 30, gap: 16 },
+  tickerWrap: { marginTop: -4 },
+  draftStack: { gap: 12 },
+  scoreRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  receiptsPanel: { gap: 8 },
+  sectionTitle: { color: '#111111', fontSize: 20, fontWeight: '900' },
   lockedPanel: {
     borderRadius: 8,
     borderWidth: 3,
@@ -176,22 +168,9 @@ const styles = StyleSheet.create({
     padding: 16,
     gap: 10,
   },
-  lockedTitle: {
-    color: '#111111',
-    fontSize: 28,
-    fontWeight: '900',
-  },
-  lockedCopy: {
-    color: '#837766',
-    fontSize: 15,
-    fontWeight: '800',
-  },
-  lockedActions: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginTop: 4,
-  },
+  lockedTitle: { color: '#111111', fontSize: 28, fontWeight: '900' },
+  lockedCopy: { color: '#837766', fontSize: 15, fontWeight: '800' },
+  lockedActions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 4 },
   primaryCta: {
     color: '#111111',
     backgroundColor: '#f7c948',
