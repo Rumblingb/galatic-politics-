@@ -148,7 +148,7 @@ export function GameProvider({ children }: PropsWithChildren) {
       });
       setFeed((current) => [buildEvent(politician, captain, true), ...current].slice(0, 10));
     });
-  }, []);
+  };
 
   const dismissPolitician = (politicianId: string) => {
     const politician = politicians.find((p) => p.id === politicianId);
@@ -158,7 +158,7 @@ export function GameProvider({ children }: PropsWithChildren) {
       setDismissedIds((current) => [...current, politicianId]);
       setFeed((current) => [buildEvent(politician, false, false), ...current].slice(0, 10));
     });
-  }, []);
+  };
 
   const resetGame = useCallback(() => {
     startTransition(() => {
