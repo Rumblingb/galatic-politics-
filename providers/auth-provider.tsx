@@ -41,17 +41,31 @@ export function AuthProvider({ children }: PropsWithChildren) {
   };
 
   useEffect(() => {
-    // Restore session on mount
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setUser({ id: session.user.id, email: session.user.email });
-        getOrCreateProfile(
-          session.user.id,
-          session.user.user_metadata?.full_name ?? session.user.user_metadata?.name
-        ).then(setProfile);
-      }
+    // Safety net: if Supabase hangs or env vars are missing, never stay on the
+    // loading screen forever — fall through to the login screen after 8s.
+    const loadingTimeout = setTimeout(() => {
+      console.warn('[AuthProvider] Session check timed out — showing login screen');
       setIsLoading(false);
-    });
+    }, 8000);
+
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        clearTimeout(loadingTimeout);
+        if (session?.user) {
+          setUser({ id: session.user.id, email: session.user.email });
+          getOrCreateProfile(
+            session.user.id,
+            session.user.user_metadata?.full_name ?? session.user.user_metadata?.name
+          ).then(setProfile);
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        clearTimeout(loadingTimeout);
+        console.error('[AuthProvider] Session check failed:', err);
+        setIsLoading(false);
+      });
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -67,7 +81,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      clearTimeout(loadingTimeout);
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signInWithApple = async () => {
@@ -88,7 +105,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
         if (error) throw error;
       }
     } catch (err: any) {
-      // ERR_CANCELED means user dismissed — not an error
       if (err?.code !== 'ERR_REQUEST_CANCELED') {
         console.error('Apple sign-in error:', err);
       }
