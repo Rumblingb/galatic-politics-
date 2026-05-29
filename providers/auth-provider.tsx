@@ -130,12 +130,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
         const url = new URL(result.url);
         const access_token = url.searchParams.get('access_token');
         const refresh_token = url.searchParams.get('refresh_token');
-        if (access_token && refresh_token) {
-          await supabase.auth.setSession({ access_token, refresh_token });
+        if (!access_token || !refresh_token) {
+          throw new Error('OAuth callback missing tokens');
         }
+        await supabase.auth.setSession({ access_token, refresh_token });
       }
     } catch (err) {
       console.error('Google sign-in error:', err);
+      throw err;
     }
   };
 

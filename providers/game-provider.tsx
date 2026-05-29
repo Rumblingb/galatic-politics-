@@ -97,22 +97,24 @@ export function GameProvider({ children }: PropsWithChildren) {
     });
   }, [user?.id]);
 
-  // Persist roster to Supabase on every change
+  // Persist roster to Supabase on every change (debounced to avoid rapid writes)
   useEffect(() => {
-    if (!user || isSyncing) return;
-
-    const politicianIds = roster.map((s) => s.politician.id);
-    const captainId = roster.find((s) => s.captain)?.politician.id ?? null;
-    const score = calculateRosterScore(roster);
-
-    saveRoster(user.id, {
-      politician_ids: politicianIds,
-      captain_id: captainId,
-      dismissed_ids: dismissedIds,
-      total_score: score,
-      season: 'S1-2026',
-    });
-  }, [roster, dismissedIds]);
+    if (!user) return;
+    const timer = setTimeout(async () => {
+      try {
+        await saveRoster(user.id, {
+          politician_ids: roster.map((s) => s.politician.id),
+          captain_id: roster.find((s) => s.captain)?.politician.id ?? null,
+          dismissed_ids: dismissedIds,
+          total_score: calculateRosterScore(roster),
+          season: 'S1-2026',
+        });
+      } catch (err) {
+        console.error('[Roster] Save failed:', err);
+      }
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [roster, dismissedIds, user]);
 
   const rosterIds = useMemo(() => roster.map((s) => s.politician.id), [roster]);
 
@@ -146,7 +148,22 @@ export function GameProvider({ children }: PropsWithChildren) {
         const shouldCaptain = captain && !alreadyHasCaptain;
         return [...current, createRosterSlot(politician, shouldCaptain)];
       });
-      setFeed((current) => [buildEvent(politician, captain, true), ...current].slice(0, 10));
+
+      if (captain && roster.some((s) => s.captain)) {
+        setFeed((current) => [
+          {
+            id: `captain-taken-${Date.now()}`,
+            politicianId,
+            tone: 'crash' as const,
+            title: 'Captain Already Set',
+            detail: 'Drafted without captain multiplier — you already have one.',
+            scoreDelta: 0,
+          },
+          ...current,
+        ].slice(0, 10));
+      } else {
+        setFeed((current) => [buildEvent(politician, captain, true), ...current].slice(0, 10));
+      }
     });
   };
 

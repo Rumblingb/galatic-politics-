@@ -1,6 +1,7 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 
 import {
   AdBanner,
@@ -16,6 +17,7 @@ import {
 } from '@/components/game-ui';
 import { marketSignals, politicians, promiseReceipts, wildCardEvents } from '@/data/politicians';
 import { buildStandings, getPromiseHitRate, getTruthPressure } from '@/lib/game';
+import { getLeaderboard } from '@/lib/supabase';
 import { useGame } from '@/providers/game-provider';
 
 export default function LeagueScreen() {
@@ -25,6 +27,14 @@ export default function LeagueScreen() {
   const hitRate = getPromiseHitRate(roster);
   const truthPressure = getTruthPressure(roster);
   const rank = standings.findIndex((entry) => entry.id === 'you') + 1;
+
+  const [liveEntries, setLiveEntries] = useState<any[]>([]);
+
+  useEffect(() => {
+    getLeaderboard(20)
+      .then((rows) => setLiveEntries(rows))
+      .catch((err) => console.warn('[League] Fetch failed:', err));
+  }, [totalScore]);
   const activeWildCard = wildCardEvents[1];
   const wildPolitician = politicians.find(
     (politician) => politician.id === activeWildCard.politicianId
@@ -75,7 +85,15 @@ export default function LeagueScreen() {
         <View style={styles.band}>
           <Text style={styles.sectionTitle}>Standings</Text>
           <View style={styles.stack}>
-            {standings.map((entry, index) => (
+            {(liveEntries.length > 0
+              ? liveEntries.map((row, index) => ({
+                  id: `live-${index}`,
+                  name: row.display_name ?? 'Anonymous',
+                  score: row.total_score ?? 0,
+                  vibe: '',
+                }))
+              : standings
+            ).map((entry, index) => (
               <LeagueStandingRow
                 key={entry.id}
                 entry={entry}

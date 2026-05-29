@@ -49,9 +49,14 @@ export default function DraftScreen() {
   const [showWildCardGate, setShowWildCardGate] = useState(false);
 
   useEffect(() => {
-    AsyncStorage.getItem('tutorial_seen').then((val) => {
-      if (!val) setShowTutorial(true);
-    });
+    (async () => {
+      try {
+        const val = await AsyncStorage.getItem('tutorial_seen');
+        if (!val) setShowTutorial(true);
+      } catch (e) {
+        console.warn('[Tutorial] Storage read failed:', e);
+      }
+    })();
   }, []);
 
   const dismissTutorial = () => {
