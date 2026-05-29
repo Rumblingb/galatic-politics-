@@ -11,7 +11,9 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.agentpaylabs.powercabinet",
+      "buildNumber": "1",
       "usesAppleSignIn": true,
+      "privacyPolicyUrl": "https://rumblingb.github.io/agentpay-labs-hub/privacy/power-cabinet.html",
       "infoPlist": {
         "NSCameraUsageDescription": "Used for uploading card art.",
         "NSPhotoLibraryUsageDescription": "Used for saving and sharing cabinet cards."
@@ -19,6 +21,7 @@
     },
     "android": {
       "package": "com.agentpaylabs.powercabinet",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#111111",
         "foregroundImage": "./assets/images/android-icon-foreground.png",

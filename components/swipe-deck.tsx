@@ -1,3 +1,4 @@
+import * as Haptics from 'expo-haptics';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import {
   Animated,
@@ -70,9 +71,21 @@ export function SwipeDeck<T extends { id: string }>({
   // Stable ref for resolveRelease so panResponder.create (run once) never uses a stale closure
   const resolveReleaseRef = useRef<(_: unknown, gesture: PanResponderGestureState) => void>(() => {});
   resolveReleaseRef.current = (_: unknown, gesture: PanResponderGestureState) => {
-    if (gesture.dy < -SWIPE_THRESHOLD) { animateOutRef.current('up'); return; }
-    if (gesture.dx > SWIPE_THRESHOLD) { animateOutRef.current('right'); return; }
-    if (gesture.dx < -SWIPE_THRESHOLD) { animateOutRef.current('left'); return; }
+    if (gesture.dy < -SWIPE_THRESHOLD) {
+      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+      animateOutRef.current('up');
+      return;
+    }
+    if (gesture.dx > SWIPE_THRESHOLD) {
+      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      animateOutRef.current('right');
+      return;
+    }
+    if (gesture.dx < -SWIPE_THRESHOLD) {
+      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      animateOutRef.current('left');
+      return;
+    }
     Animated.spring(position, { toValue: { x: 0, y: 0 }, friction: 5, useNativeDriver: false }).start();
   };
 

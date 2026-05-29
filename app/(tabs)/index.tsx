@@ -1,7 +1,8 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import {
@@ -41,6 +42,18 @@ export default function DraftScreen() {
   } = useGame();
 
   const [showChallenger, setShowChallenger] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
+
+  useEffect(() => {
+    AsyncStorage.getItem('tutorial_seen').then((val) => {
+      if (!val) setShowTutorial(true);
+    });
+  }, []);
+
+  const dismissTutorial = () => {
+    void AsyncStorage.setItem('tutorial_seen', 'true');
+    setShowTutorial(false);
+  };
 
   const promiseRate = getPromiseHitRate(roster);
   const truthPressure = getTruthPressure(roster);
@@ -55,7 +68,11 @@ export default function DraftScreen() {
     if (!currentPolitician) return;
 
     void Haptics.impactAsync(
-      direction === 'left' ? Haptics.ImpactFeedbackStyle.Light : Haptics.ImpactFeedbackStyle.Medium
+      direction === 'left'
+        ? Haptics.ImpactFeedbackStyle.Light
+        : direction === 'up'
+          ? Haptics.ImpactFeedbackStyle.Heavy
+          : Haptics.ImpactFeedbackStyle.Medium
     );
 
     if (direction === 'left') {
@@ -71,8 +88,34 @@ export default function DraftScreen() {
     }
   };
 
+  const TUTORIAL_TIPS = [
+    { icon: '→', action: 'Swipe right', label: 'Draft a politician to your cabinet' },
+    { icon: '←', action: 'Swipe left', label: 'Pass on a politician' },
+    { icon: '↑', action: 'Swipe up', label: 'Captain — doubles their score multiplier' },
+  ];
+
   return (
     <SafeAreaView style={styles.safeArea}>
+      <Modal visible={showTutorial} transparent animationType="fade" statusBarTranslucent>
+        <View style={styles.tutorialOverlay}>
+          <View style={styles.tutorialCard}>
+            <Text style={styles.tutorialTitle}>How to play</Text>
+            {TUTORIAL_TIPS.map((tip) => (
+              <View key={tip.action} style={styles.tutorialRow}>
+                <Text style={styles.tutorialIcon}>{tip.icon}</Text>
+                <View style={styles.tutorialTextWrap}>
+                  <Text style={styles.tutorialAction}>{tip.action}</Text>
+                  <Text style={styles.tutorialLabel}>{tip.label}</Text>
+                </View>
+              </View>
+            ))}
+            <Pressable style={styles.tutorialBtn} onPress={dismissTutorial}>
+              <Text style={styles.tutorialBtnText}>Got it →</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
       <AppBackground />
 
       {isPro && (
@@ -198,5 +241,67 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#111111',
     fontWeight: '900',
+  },
+  tutorialOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(8, 12, 20, 0.88)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  tutorialCard: {
+    backgroundColor: '#1a1f2e',
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: '#2a2f3e',
+    padding: 28,
+    width: '100%',
+    maxWidth: 360,
+    gap: 20,
+  },
+  tutorialTitle: {
+    color: '#f7c948',
+    fontSize: 22,
+    fontWeight: '900',
+    letterSpacing: 0.5,
+  },
+  tutorialRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
+  tutorialIcon: {
+    color: '#f7c948',
+    fontSize: 28,
+    fontWeight: '900',
+    width: 36,
+    textAlign: 'center',
+  },
+  tutorialTextWrap: {
+    flex: 1,
+    gap: 2,
+  },
+  tutorialAction: {
+    color: '#ffffff',
+    fontSize: 15,
+    fontWeight: '800',
+  },
+  tutorialLabel: {
+    color: '#8a8fa8',
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  tutorialBtn: {
+    backgroundColor: '#f7c948',
+    borderRadius: 10,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  tutorialBtnText: {
+    color: '#111111',
+    fontSize: 16,
+    fontWeight: '900',
+    letterSpacing: 0.3,
   },
 });
