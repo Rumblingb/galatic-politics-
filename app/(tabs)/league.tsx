@@ -1,5 +1,6 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 
 import {
   AdBanner,
@@ -18,6 +19,7 @@ import { buildStandings, getPromiseHitRate, getTruthPressure } from '@/lib/game'
 import { useGame } from '@/providers/game-provider';
 
 export default function LeagueScreen() {
+  const router = useRouter();
   const { roster, totalScore, feed } = useGame();
   const standings = buildStandings(totalScore);
   const hitRate = getPromiseHitRate(roster);
@@ -27,6 +29,21 @@ export default function LeagueScreen() {
   const wildPolitician = politicians.find(
     (politician) => politician.id === activeWildCard.politicianId
   );
+
+  if (roster.length === 0) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <AppBackground />
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyTitle}>No scores yet.</Text>
+          <Text style={styles.emptySub}>Be the first. Draft your cabinet to join the league.</Text>
+          <Pressable style={styles.emptyBtn} onPress={() => router.push('/(tabs)/index')}>
+            <Text style={styles.emptyBtnText}>Draft cabinet →</Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -116,5 +133,39 @@ const styles = StyleSheet.create({
   },
   stack: {
     gap: 8,
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 32,
+    gap: 14,
+  },
+  emptyTitle: {
+    color: '#111111',
+    fontSize: 26,
+    fontWeight: '900',
+    textAlign: 'center',
+  },
+  emptySub: {
+    color: '#837766',
+    fontSize: 15,
+    fontWeight: '800',
+    textAlign: 'center',
+    lineHeight: 22,
+  },
+  emptyBtn: {
+    marginTop: 4,
+    backgroundColor: '#f7c948',
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#111111',
+    paddingHorizontal: 24,
+    paddingVertical: 13,
+  },
+  emptyBtnText: {
+    color: '#111111',
+    fontSize: 15,
+    fontWeight: '900',
   },
 });

@@ -7,7 +7,42 @@ import { AppBackground, ScreenHeader, RegionalPromo } from '@/components/game-ui
 import { SwipeDeck } from '@/components/swipe-deck';
 import { politicians } from '@/data/politicians';
 import { useGame } from '@/providers/game-provider';
+import { MAX_ROSTER_SIZE } from '@/lib/game';
 import { Team, Politician } from '@/types/game';
+
+function SquadSlots() {
+  const { roster } = useGame();
+  const router = useRouter();
+  const slots = Array.from({ length: MAX_ROSTER_SIZE });
+
+  return (
+    <View style={styles.squadSection}>
+      <Text style={styles.squadLabel}>YOUR SQUAD</Text>
+      <View style={styles.squadRow}>
+        {slots.map((_, i) => {
+          const slot = roster[i];
+          if (slot) {
+            return (
+              <View key={i} style={styles.squadSlotFilled}>
+                <Text style={styles.squadSlotEmoji}>{slot.politician.portraitEmoji}</Text>
+                {slot.captain && <Text style={styles.captainMark}>★</Text>}
+              </View>
+            );
+          }
+          return (
+            <Pressable
+              key={i}
+              style={styles.squadSlotGhost}
+              onPress={() => router.push('/(tabs)/index')}
+            >
+              <Text style={styles.squadSlotPlus}>+</Text>
+            </Pressable>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
 
 function TeamCard({
   team,
@@ -67,6 +102,8 @@ export default function TeamsScreen() {
       <AppBackground />
       <ScrollView contentContainerStyle={styles.container}>
         <ScreenHeader kicker="TEAM DRAFT" title="Pick a Squad" />
+
+        <SquadSlots />
 
         <RegionalPromo
           region="Teams"
@@ -151,6 +188,58 @@ const styles = StyleSheet.create({
   },
   thumbEmoji: {
     fontSize: 24,
+  },
+  squadSection: {
+    gap: 10,
+  },
+  squadLabel: {
+    color: '#837766',
+    fontSize: 11,
+    fontWeight: '900',
+    letterSpacing: 1.2,
+  },
+  squadRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  squadSlotFilled: {
+    width: 52,
+    height: 52,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#111111',
+    backgroundColor: '#fff7e6',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  squadSlotEmoji: {
+    fontSize: 24,
+  },
+  captainMark: {
+    position: 'absolute',
+    top: -6,
+    right: -6,
+    color: '#f7c948',
+    fontSize: 12,
+    fontWeight: '900',
+  },
+  squadSlotGhost: {
+    width: 52,
+    height: 52,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#c0b89a',
+    borderStyle: 'dashed',
+    backgroundColor: 'rgba(255,247,230,0.4)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  squadSlotPlus: {
+    color: '#c0b89a',
+    fontSize: 22,
+    fontWeight: '900',
+    lineHeight: 24,
   },
   empty: {
     borderRadius: 8,

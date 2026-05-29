@@ -1,9 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
+import * as WebBrowser from 'expo-web-browser';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 import {
   AdBanner,
@@ -19,7 +21,7 @@ import {
   RegionalPromo,
   WildCardSpotlight,
 } from '@/components/game-ui';
-import { ProUpgradeBanner } from '@/components/pro-gate';
+import { ProUpgradeBanner, ProFeatureList } from '@/components/pro-gate';
 import { SwipeDeck } from '@/components/swipe-deck';
 import { marketSignals, politicians, promiseReceipts, wildCardEvents } from '@/data/politicians';
 import { getPromiseHitRate, getReceiptsForPolitician, getTruthPressure } from '@/lib/game';
@@ -43,6 +45,8 @@ export default function DraftScreen() {
 
   const [showChallenger, setShowChallenger] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [showFifthSlotBanner, setShowFifthSlotBanner] = useState(false);
+  const [showWildCardGate, setShowWildCardGate] = useState(false);
 
   useEffect(() => {
     AsyncStorage.getItem('tutorial_seen').then((val) => {
@@ -81,6 +85,11 @@ export default function DraftScreen() {
     }
 
     draftPolitician(currentPolitician.id, direction === 'up');
+
+    // 5th slot upsell: show banner when free user is about to fill last free slot
+    if (!isPro && roster.length === 3) {
+      setShowFifthSlotBanner(true);
+    }
 
     // Show challenger overlay after first draft or captain
     if (roster.length === 0 || direction === 'up') {
@@ -139,7 +148,13 @@ export default function DraftScreen() {
           <MarketTicker items={availablePoliticians.slice(0, 5)} />
         </View>
 
-        <WildCardSpotlight event={topWildCard} politician={wildPolitician} />
+        {isPro ? (
+          <WildCardSpotlight event={topWildCard} politician={wildPolitician} />
+        ) : (
+          <Pressable onPress={() => setShowWildCardGate(true)}>
+            <WildCardSpotlight event={topWildCard} politician={wildPolitician} />
+          </Pressable>
+        )}
 
         <View style={styles.scoreRow}>
           <ScoreTile label="Squad" value={`${roster.length}/5`} accent="#ef233c" />
@@ -192,11 +207,60 @@ export default function DraftScreen() {
           </View>
         )}
 
+        {/* 5th-slot Pro upsell — appears after drafting 4th politician */}
+        {!isPro && showFifthSlotBanner && (
+          <Pressable
+            style={styles.fifthSlotBanner}
+            onPress={() => WebBrowser.openBrowserAsync('https://buy.stripe.com/bJe00la1xbg05zG5QT1oI1g')}
+          >
+            <Ionicons name="star" size={16} color="#111111" />
+            <Text style={styles.fifthSlotBannerText}>Unlock 3 more slots with Pro →</Text>
+            <Pressable onPress={() => setShowFifthSlotBanner(false)} hitSlop={8}>
+              <Ionicons name="close" size={16} color="#111111" />
+            </Pressable>
+          </Pressable>
+        )}
+
         {/* Pro upsell banner for free users */}
         {!isPro && <ProUpgradeBanner />}
 
         <AdBanner label="Pack break" />
       </ScrollView>
+
+      {/* Wild card Pro gate bottom sheet */}
+      <Modal
+        visible={showWildCardGate}
+        transparent
+        animationType="slide"
+        statusBarTranslucent
+        onRequestClose={() => setShowWildCardGate(false)}
+      >
+        <Pressable style={styles.sheetBackdrop} onPress={() => setShowWildCardGate(false)} />
+        <View style={styles.sheet}>
+          <View style={styles.sheetHandle} />
+          <View style={styles.sheetLockRow}>
+            <Ionicons name="lock-closed" size={18} color="#f7c948" />
+            <Text style={styles.sheetLockLabel}>PRO ONLY</Text>
+          </View>
+          <Text style={styles.sheetTitle}>Wild card events</Text>
+          <Text style={styles.sheetSub}>
+            Live score shakers that can double or crash your cabinet — exclusive to Pro.
+          </Text>
+          <ProFeatureList />
+          <Pressable
+            style={({ pressed }) => [styles.sheetUpgradeBtn, pressed && { opacity: 0.88 }]}
+            onPress={() => {
+              setShowWildCardGate(false);
+              void WebBrowser.openBrowserAsync('https://buy.stripe.com/bJe00la1xbg05zG5QT1oI1g');
+            }}
+          >
+            <Text style={styles.sheetUpgradeBtnText}>Upgrade to Pro — $9/mo</Text>
+          </Pressable>
+          <Pressable style={styles.sheetDismiss} onPress={() => setShowWildCardGate(false)}>
+            <Text style={styles.sheetDismissText}>Not now</Text>
+          </Pressable>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -204,6 +268,90 @@ export default function DraftScreen() {
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: '#f3ead7' },
   container: { padding: 16, paddingBottom: 30, gap: 16 },
+  // 5th slot banner
+  fifthSlotBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#f7c948',
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#111111',
+    paddingHorizontal: 14,
+    paddingVertical: 11,
+  },
+  fifthSlotBannerText: {
+    flex: 1,
+    color: '#111111',
+    fontSize: 14,
+    fontWeight: '900',
+  },
+  // Wild card bottom sheet
+  sheetBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(8,12,20,0.5)',
+  },
+  sheet: {
+    backgroundColor: '#1a1f2e',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderTopWidth: 2,
+    borderColor: '#f7c948',
+    padding: 24,
+    paddingTop: 16,
+    gap: 14,
+  },
+  sheetHandle: {
+    width: 40,
+    height: 4,
+    backgroundColor: '#3a3f52',
+    borderRadius: 2,
+    alignSelf: 'center',
+    marginBottom: 8,
+  },
+  sheetLockRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  sheetLockLabel: {
+    color: '#f7c948',
+    fontSize: 11,
+    fontWeight: '900',
+    letterSpacing: 1.5,
+  },
+  sheetTitle: {
+    color: '#fff7e6',
+    fontSize: 22,
+    fontWeight: '900',
+  },
+  sheetSub: {
+    color: '#8a8fa8',
+    fontSize: 13,
+    lineHeight: 18,
+    fontWeight: '700',
+  },
+  sheetUpgradeBtn: {
+    backgroundColor: '#f7c948',
+    borderRadius: 10,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  sheetUpgradeBtnText: {
+    color: '#111111',
+    fontSize: 16,
+    fontWeight: '900',
+  },
+  sheetDismiss: {
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  sheetDismissText: {
+    color: '#8a8fa8',
+    fontSize: 14,
+    fontWeight: '700',
+  },
   tickerWrap: { marginTop: -4 },
   draftStack: { gap: 12 },
   scoreRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },

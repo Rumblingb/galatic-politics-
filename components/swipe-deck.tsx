@@ -29,6 +29,8 @@ export function SwipeDeck<T extends { id: string }>({
   const position = useRef(new Animated.ValueXY()).current;
   const [hasHinted, setHasHinted] = useState(false);
   const hintAnim = useRef(new Animated.Value(0)).current;
+  const entranceScale = useRef(new Animated.Value(0.92)).current;
+  const flashOpacity = useRef(new Animated.Value(0)).current;
 
   // Keep latest item/onSwipe in refs so panResponder closure never goes stale
   const itemRef = useRef(item);
@@ -36,9 +38,19 @@ export function SwipeDeck<T extends { id: string }>({
   itemRef.current = item;
   onSwipeRef.current = onSwipe;
 
-  // Bounce hint animation on first card load
+  // Bounce hint animation on first card load + entrance spring on each new card
   useEffect(() => {
     position.setValue({ x: 0, y: 0 });
+
+    // Entrance scale spring: 0.92 → 1.0 in ~200ms
+    entranceScale.setValue(0.92);
+    Animated.spring(entranceScale, {
+      toValue: 1,
+      tension: 200,
+      friction: 12,
+      useNativeDriver: true,
+    }).start();
+
     if (!hasHinted && item) {
       setHasHinted(true);
       Animated.sequence([
@@ -62,6 +74,13 @@ export function SwipeDeck<T extends { id: string }>({
         : direction === 'right'
           ? { x: 420, y: 40 }
           : { x: 0, y: -420 };
+
+    // Green flash on draft (right or up)
+    if (direction === 'right' || direction === 'up') {
+      flashOpacity.setValue(0.45);
+      Animated.timing(flashOpacity, { toValue: 0, duration: 150, useNativeDriver: false }).start();
+    }
+
     Animated.timing(position, { toValue: target, duration: 200, useNativeDriver: false }).start(() => {
       position.setValue({ x: 0, y: 0 });
       onSwipeRef.current(current, direction);
@@ -144,7 +163,7 @@ export function SwipeDeck<T extends { id: string }>({
         style={[
           styles.cardWrap,
           {
-            transform: [...position.getTranslateTransform(), { rotate: rotation }],
+            transform: [...position.getTranslateTransform(), { rotate: rotation }, { scale: entranceScale }],
           },
         ]}
         {...panResponder.panHandlers}>
@@ -157,6 +176,13 @@ export function SwipeDeck<T extends { id: string }>({
         <Animated.View style={[styles.overlayBadge, styles.overlayTop, { opacity: upOpacity }]}>
           <Text style={styles.overlayTextUp}>CAPTAIN</Text>
         </Animated.View>
+        {/* Green flash on draft */}
+        <Animated.View
+          style={[
+            StyleSheet.absoluteFill,
+            { backgroundColor: '#2dc653', borderRadius: 8, zIndex: 6, opacity: flashOpacity, pointerEvents: 'none' },
+          ]}
+        />
         {/* First-use swipe hint arrow */}
         <Animated.View style={[styles.hintArrow, { opacity: hintOpacity }]}>
           <Text style={styles.hintText}>→ Swipe to draft</Text>

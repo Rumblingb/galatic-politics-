@@ -1,5 +1,14 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View, Image } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withSequence,
+  withTiming,
+  Easing,
+} from 'react-native-reanimated';
 
 import {
   CardRarity,
@@ -449,12 +458,61 @@ function StatBar({ label, value, color }: { label: string; value: number; color:
   );
 }
 
+function CaptainSeat({ slot, rarity }: { slot: RosterSlot; rarity: CardRarity }) {
+  const glow = useSharedValue(1.0);
+
+  useEffect(() => {
+    glow.value = withRepeat(
+      withSequence(
+        withTiming(1.4, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
+        withTiming(1.0, { duration: 1000, easing: Easing.inOut(Easing.ease) })
+      ),
+      -1,
+      false
+    );
+  }, []);
+
+  const glowStyle = useAnimatedStyle(() => ({
+    shadowOpacity: glow.value * 0.5,
+    shadowRadius: glow.value * 8,
+  }));
+
+  return (
+    <Animated.View
+      style={[
+        styles.rosterSeat,
+        {
+          borderColor: '#f7c948',
+          backgroundColor: slot.politician.palette[0],
+          shadowColor: '#f7c948',
+          shadowOffset: { width: 0, height: 0 },
+          elevation: 6,
+        },
+        glowStyle,
+      ]}
+    >
+      <Text style={styles.rosterRating}>{getOverallRating(slot.politician)}</Text>
+      <Text numberOfLines={1} style={styles.rosterInitials}>
+        {getInitials(slot.politician.name)}
+      </Text>
+      <Text numberOfLines={1} style={styles.rosterName}>{slot.politician.name}</Text>
+      <Text style={styles.rosterPoints}>{slot.points} pts</Text>
+      <Text style={styles.captainTag}>C</Text>
+    </Animated.View>
+  );
+}
+
 export function RosterStrip({ roster }: { roster: RosterSlot[] }) {
   return (
     <View style={styles.rosterStrip}>
       {Array.from({ length: 5 }).map((_, index) => {
         const slot = roster[index];
         const rarity = slot ? getCardRarity(slot.politician) : undefined;
+
+        if (slot?.captain) {
+          return <CaptainSeat key={`slot-${index}`} slot={slot} rarity={rarity as CardRarity} />;
+        }
+
         return (
           <View
             key={`slot-${index}`}
@@ -475,7 +533,6 @@ export function RosterStrip({ roster }: { roster: RosterSlot[] }) {
                   {slot.politician.name}
                 </Text>
                 <Text style={styles.rosterPoints}>{slot.points} pts</Text>
-                {slot.captain ? <Text style={styles.captainTag}>C</Text> : null}
               </>
             ) : (
               <>

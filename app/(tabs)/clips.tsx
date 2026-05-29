@@ -60,8 +60,8 @@ export default function ClipsScreen() {
             ))
           ) : (
             <View style={styles.emptyState}>
-              <Text style={styles.emptyTitle}>No cards pulled</Text>
-              <Text style={styles.emptyCopy}>Draft a squad and this becomes your share pack.</Text>
+              <Text style={styles.emptyTitle}>No clips yet.</Text>
+              <Text style={styles.emptyCopy}>Share your cabinet to generate clips.</Text>
             </View>
           )}
         </View>

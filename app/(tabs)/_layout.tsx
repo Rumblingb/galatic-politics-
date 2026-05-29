@@ -66,6 +66,13 @@ export default function TabLayout() {
           },
         }}
       />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color }) => <Ionicons size={22} name="settings-outline" color={color} />,
+        }}
+      />
       {/* Hidden — packs is v2 */}
       <Tabs.Screen name="packs" options={{ href: null }} />
     </Tabs>
