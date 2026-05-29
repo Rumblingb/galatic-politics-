@@ -86,8 +86,8 @@ export default function DraftScreen() {
 
     draftPolitician(currentPolitician.id, direction === 'up');
 
-    // 5th slot upsell: show banner when free user is about to fill last free slot
-    if (!isPro && roster.length === 3) {
+    // 5th slot upsell: when user drafts 5th politician (roster.length === 4 pre-update = drafting slot 5)
+    if (!isPro && roster.length === 4) {
       setShowFifthSlotBanner(true);
     }
 
