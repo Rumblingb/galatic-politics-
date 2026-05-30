@@ -2,6 +2,7 @@ import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { LoginGate } from '@/components/login-gate';
 import { AuthProvider } from '@/providers/auth-provider';
@@ -25,17 +26,19 @@ const AppTheme = {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <GameProvider>
-        <ThemeProvider value={AppTheme}>
-          <LoginGate>
-            <Stack screenOptions={{ contentStyle: { backgroundColor: '#f3ead7' } }}>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            </Stack>
-          </LoginGate>
-          <StatusBar style="dark" />
-        </ThemeProvider>
-      </GameProvider>
-    </AuthProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AuthProvider>
+        <GameProvider>
+          <ThemeProvider value={AppTheme}>
+            <LoginGate>
+              <Stack screenOptions={{ contentStyle: { backgroundColor: '#f3ead7' } }}>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              </Stack>
+            </LoginGate>
+            <StatusBar style="dark" />
+          </ThemeProvider>
+        </GameProvider>
+      </AuthProvider>
+    </GestureHandlerRootView>
   );
 }

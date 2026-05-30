@@ -1,6 +1,8 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Image } from 'expo-image';
 import { useEffect } from 'react';
-import { Pressable, StyleSheet, Text, View, Image } from 'react-native';
+import { Pressable, StyleSheet, Text, View, Image as RNImage } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -12,8 +14,6 @@ import Animated, {
 
 import {
   CardRarity,
-  calculateBasePoints,
-  getAccountabilityDamage,
   getCardRarity,
   getInitials,
   getOverallRating,
@@ -229,49 +229,101 @@ export function PoliticianCard({
   politician: Politician;
   captainPreview?: boolean;
 }) {
-  const basePoints = calculateBasePoints(politician);
-  const projectedPoints = captainPreview ? Math.round(basePoints * 1.8) : basePoints;
-  const rating = getOverallRating(politician);
   const rarity = getCardRarity(politician);
   const rarityColor = getRarityColor(rarity);
-  const damage = getAccountabilityDamage(politician);
+  const initials = getInitials(politician.name);
+
+  // Photo precedence: remote `photo` URL > local `portraitImage` require > initials fallback
+  const hasRemotePhoto = !!politician.photo;
+  const hasLocalPhoto = !!politician.portraitImage;
+
+  // Rarity badge background
+  const rarityBg =
+    rarity === 'Mythic'
+      ? '#7c3aed'
+      : rarity === 'Icon'
+        ? '#a78bfa'
+        : rarity === 'Gold'
+          ? '#f7c948'
+          : rarity === 'Silver'
+            ? '#c0c0c0'
+            : '#92624a';
+
+  const truthTaxCount = Math.ceil((100 - politician.integrityScore) / 33); // 0–3 skulls
+  const volatilityBolts =
+    politician.volatility === 'High' ? 3 : politician.volatility === 'Medium' ? 2 : 1;
 
   return (
-    <View
-      style={[
-        styles.cardShellFifa,
-        {
-          borderColor: rarityColor,
-          backgroundColor: politician.palette[0],
-        },
-      ]}>
-      <View style={styles.cardTopFifa}>
-        <View style={[styles.ratingBlockFifa, { backgroundColor: rarityColor }]}>
-          <Text style={styles.ratingFifa}>{rating}</Text>
-        </View>
+    <View style={[styles.hingeCard, { borderColor: rarityColor }]}>
+      {/* Full-bleed photo */}
+      {hasRemotePhoto ? (
+        <Image
+          source={{ uri: politician.photo! }}
+          style={StyleSheet.absoluteFill}
+          contentFit="cover"
+        />
+      ) : hasLocalPhoto ? (
+        <RNImage
+          source={politician.portraitImage!}
+          style={StyleSheet.absoluteFill}
+          resizeMode="cover"
+        />
+      ) : (
+        // Gradient fallback with initials
+        <LinearGradient
+          colors={[politician.palette[0], politician.palette[1]]}
+          style={[StyleSheet.absoluteFill, styles.hingePhotoFallback]}>
+          <Text style={styles.hingeInitials}>{initials}</Text>
+        </LinearGradient>
+      )}
+
+      {/* Rarity badge — top right */}
+      <View style={[styles.hingeRarityBadge, { backgroundColor: rarityBg }]}>
+        <Text style={styles.hingeRarityText}>{rarity}</Text>
       </View>
 
-      <View style={[styles.cardArtFifa, { backgroundColor: politician.palette[1] }]}>
-        <CaricaturePortrait politician={politician} size="large" />
-      </View>
+      {/* Bottom gradient overlay */}
+      <LinearGradient
+        colors={['transparent', 'rgba(0,0,0,0.9)']}
+        style={styles.hingeGradient}
+      />
 
-      <View style={styles.cardBottomFifa}>
-        <View>
-          <Text numberOfLines={1} adjustsFontSizeToFit style={styles.cardNameFifa}>
-            {politician.name}
+      {/* Bottom info over gradient */}
+      <View style={styles.hingeBottom}>
+        <Text numberOfLines={1} style={styles.hingeName}>
+          {politician.name}
+        </Text>
+        <Text numberOfLines={1} style={styles.hingeRole}>
+          {politician.portraitEmoji}  {politician.country} · {politician.role}
+        </Text>
+
+        {/* Stats row */}
+        <View style={styles.hingeStatsRow}>
+          {/* Promise rate bar */}
+          <View style={styles.hingePromiseWrap}>
+            <View style={styles.hingePromiseTrack}>
+              <View style={[styles.hingePromiseFill, { width: `${politician.promiseScore}%` }]} />
+            </View>
+            <Text style={styles.hingeStatLabel}>{politician.promiseScore}%</Text>
+          </View>
+
+          {/* Truth tax skulls */}
+          <Text style={styles.hingeTruthTax}>
+            {'💀'.repeat(truthTaxCount)}
           </Text>
-          <Text numberOfLines={1} style={styles.cardCountryFifa}>
-            {politician.country}
-          </Text>
-        </View>
-        <Text style={styles.projectedFifa}>{projectedPoints}</Text>
-      </View>
 
-      <View style={styles.statsGridFifa}>
-        <StatBar label="Promise" value={politician.promiseScore} color="#2dc653" />
-        <StatBar label="Truth" value={politician.integrityScore} color="#00a9a5" />
-        <StatBar label="Market" value={politician.marketOdds} color="#b88600" />
-        <StatBar label="Risk" value={damage} color="#ef233c" />
+          {/* Volatility bolts */}
+          <Text style={styles.hingeVolatility}>
+            {'⚡'.repeat(volatilityBolts)}
+          </Text>
+
+          {/* Captain multiplier indicator */}
+          {captainPreview && (
+            <View style={styles.hingeCaptainBadge}>
+              <Text style={styles.hingeCaptainText}>C ×1.8</Text>
+            </View>
+          )}
+        </View>
       </View>
     </View>
   );
@@ -306,7 +358,7 @@ export function CaricaturePortrait({
         {showDecorations && trait === 'chainsaw' ? <View style={styles.chainsaw} /> : null}
         {showDecorations && trait === 'crown' ? <View style={styles.crownShape} /> : null}
         {politician.portraitImage ? (
-          <Image
+          <RNImage
             source={politician.portraitImage}
             style={[styles.portraitImage, isLarge && styles.portraitImageLarge]}
             resizeMode="contain"
@@ -1894,6 +1946,119 @@ const styles = StyleSheet.create({
   promoSubtitle: {
     color: ink,
     fontSize: 14,
+    fontWeight: '900',
+  },
+
+  // ── Hinge-style politician card ──────────────────────────────────────────
+  hingeCard: {
+    borderRadius: 20,
+    borderWidth: 2,
+    overflow: 'hidden',
+    aspectRatio: 3 / 4,
+    backgroundColor: '#111111',
+    minHeight: 440,
+  },
+  hingePhotoFallback: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+  },
+  hingeInitials: {
+    color: 'rgba(255,255,255,0.9)',
+    fontSize: 80,
+    fontWeight: '900',
+  },
+  hingeRarityBadge: {
+    position: 'absolute',
+    top: 14,
+    right: 14,
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    zIndex: 3,
+  },
+  hingeRarityText: {
+    color: '#111111',
+    fontSize: 11,
+    fontWeight: '900',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  hingeGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '50%',
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+  hingeBottom: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 18,
+    paddingBottom: 20,
+    gap: 4,
+  },
+  hingeName: {
+    color: '#ffffff',
+    fontSize: 28,
+    fontWeight: '900',
+    lineHeight: 32,
+  },
+  hingeRole: {
+    color: '#d1d5db',
+    fontSize: 16,
+    fontWeight: '600',
+    marginTop: 2,
+  },
+  hingeStatsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginTop: 10,
+  },
+  hingePromiseWrap: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  hingePromiseTrack: {
+    flex: 1,
+    height: 4,
+    borderRadius: 999,
+    backgroundColor: 'rgba(255,255,255,0.25)',
+    overflow: 'hidden',
+  },
+  hingePromiseFill: {
+    height: '100%',
+    backgroundColor: '#22c55e',
+    borderRadius: 999,
+  },
+  hingeStatLabel: {
+    color: '#d1d5db',
+    fontSize: 11,
+    fontWeight: '700',
+    minWidth: 26,
+  },
+  hingeTruthTax: {
+    fontSize: 14,
+  },
+  hingeVolatility: {
+    fontSize: 14,
+  },
+  hingeCaptainBadge: {
+    backgroundColor: '#f7c948',
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  hingeCaptainText: {
+    color: '#111111',
+    fontSize: 11,
     fontWeight: '900',
   },
 });

@@ -8,6 +8,10 @@ export type Politician = {
   archetype: string;
   issues: string[];
   portraitEmoji: string;
+  /** Local require() image asset — legacy, lower priority than `photo` */
+  portraitImage?: number | null;
+  /** Remote Wikimedia photo URL — takes priority over portraitImage */
+  photo?: string | null;
   marketOdds: number;
   promiseScore: number;
   integrityScore: number;

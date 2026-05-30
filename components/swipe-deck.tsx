@@ -1,17 +1,29 @@
 import * as Haptics from 'expo-haptics';
-import { ReactNode, useEffect, useRef, useState } from 'react';
-import {
-  Animated,
-  PanResponder,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { ReactNode, useCallback } from 'react';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 
 import { ActionButton } from '@/components/game-ui';
+import { useSwipeSounds } from '@/lib/sounds';
 import { SwipeDirection } from '@/types/game';
 
-const SWIPE_THRESHOLD = 120;
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+const COMMIT_X_THRESHOLD = SCREEN_WIDTH * 0.30;
+const COMMIT_VELOCITY = 800;
+const CAPTAIN_Y_THRESHOLD = -80;
+const CAPTAIN_X_MAX = 60;
+
+const SPRING_BACK = { stiffness: 120, damping: 15, mass: 0.5 };
+const SPRING_FLY = { stiffness: 80, damping: 20 };
 
 type SwipeDeckProps<T extends { id: string }> = {
   item: T | null;
@@ -26,174 +38,236 @@ export function SwipeDeck<T extends { id: string }>({
   renderCard,
   onSwipe,
 }: SwipeDeckProps<T>) {
-  const position = useRef(new Animated.ValueXY()).current;
-  const [hasHinted, setHasHinted] = useState(false);
-  const hintAnim = useRef(new Animated.Value(0)).current;
-  const entranceScale = useRef(new Animated.Value(0.92)).current;
-  const flashOpacity = useRef(new Animated.Value(0)).current;
+  const playSound = useSwipeSounds();
 
-  // Keep latest item/onSwipe in refs so panResponder closure never goes stale
-  const itemRef = useRef(item);
-  const onSwipeRef = useRef(onSwipe);
-  itemRef.current = item;
-  onSwipeRef.current = onSwipe;
+  // Shared values for the front card position
+  const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
+  // Y where the user first pressed (0–1 relative to card height, set in onBegin)
+  const touchYRatio = useSharedValue(0.5);
+  // Tracks which threshold we've already fired a haptic for ('none'|'draft'|'pass'|'captain')
+  const hapticFired = useSharedValue<'none' | 'draft' | 'pass' | 'captain'>('none');
 
-  // Bounce hint animation on first card load + entrance spring on each new card
-  useEffect(() => {
-    position.setValue({ x: 0, y: 0 });
+  // ─── JS-side callbacks (called via runOnJS) ───────────────────────────────
 
-    // Entrance scale spring: 0.92 → 1.0 in ~200ms
-    entranceScale.setValue(0.92);
-    Animated.spring(entranceScale, {
-      toValue: 1,
-      tension: 200,
-      friction: 12,
-      useNativeDriver: true,
-    }).start();
-
-    if (!hasHinted && item) {
-      setHasHinted(true);
-      Animated.sequence([
-        Animated.delay(600),
-        Animated.timing(hintAnim, { toValue: 1, duration: 300, useNativeDriver: false }),
-        Animated.timing(position, { toValue: { x: 55, y: 0 }, duration: 320, useNativeDriver: false }),
-        Animated.timing(position, { toValue: { x: 0, y: 0 }, duration: 280, useNativeDriver: false }),
-        Animated.timing(hintAnim, { toValue: 0, duration: 200, useNativeDriver: false }),
-      ]).start();
-    }
-  }, [item]);
-
-  // animateOut uses refs so it's always current — safe to call from stable panResponder
-  const animateOutRef = useRef<(direction: SwipeDirection) => void>(() => {});
-  animateOutRef.current = (direction: SwipeDirection) => {
-    const current = itemRef.current;
-    if (!current) return;
-    const target =
-      direction === 'left'
-        ? { x: -420, y: 40 }
-        : direction === 'right'
-          ? { x: 420, y: 40 }
-          : { x: 0, y: -420 };
-
-    // Green flash on draft (right or up)
-    if (direction === 'right' || direction === 'up') {
-      flashOpacity.setValue(0.45);
-      Animated.timing(flashOpacity, { toValue: 0, duration: 150, useNativeDriver: false }).start();
-    }
-
-    Animated.timing(position, { toValue: target, duration: 200, useNativeDriver: false }).start(() => {
-      position.setValue({ x: 0, y: 0 });
-      onSwipeRef.current(current, direction);
-    });
-  };
-
-  // Stable ref for resolveRelease so panResponder.create (run once) never uses a stale closure
-  const resolveReleaseRef = useRef<(_: unknown, gesture: PanResponderGestureState) => void>(() => {});
-  resolveReleaseRef.current = (_: unknown, gesture: PanResponderGestureState) => {
-    if (gesture.dy < -SWIPE_THRESHOLD) {
+  const triggerHaptic = useCallback((direction: 'draft' | 'pass' | 'captain') => {
+    if (direction === 'captain') {
       void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-      animateOutRef.current('up');
-      return;
-    }
-    if (gesture.dx > SWIPE_THRESHOLD) {
+    } else if (direction === 'draft') {
       void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-      animateOutRef.current('right');
-      return;
-    }
-    if (gesture.dx < -SWIPE_THRESHOLD) {
+    } else {
       void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      animateOutRef.current('left');
-      return;
     }
-    Animated.spring(position, { toValue: { x: 0, y: 0 }, friction: 5, useNativeDriver: false }).start();
-  };
+    playSound(direction);
+  }, [playSound]);
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: Animated.event([null, { dx: position.x, dy: position.y }], {
-        useNativeDriver: false,
-      }),
-      // Delegate to ref — always calls the latest resolveRelease
-      onPanResponderRelease: (e, gesture) => resolveReleaseRef.current(e, gesture),
+  const commitSwipe = useCallback(
+    (direction: SwipeDirection) => {
+      if (!item) return;
+      onSwipe(item, direction);
+    },
+    [item, onSwipe],
+  );
+
+  // ─── Gesture ─────────────────────────────────────────────────────────────
+
+  const pan = Gesture.Pan()
+    .onBegin((e) => {
+      // Card height is not known at worklet time; approximate from a fixed height
+      // The card is roughly 520px tall (cardShellFifa minHeight). We use that.
+      touchYRatio.value = e.y / 520;
+      hapticFired.value = 'none';
     })
-  ).current;
+    .onUpdate((e) => {
+      translateX.value = e.translationX;
+      translateY.value = e.translationY;
 
-  const rotation = position.x.interpolate({
-    inputRange: [-240, 0, 240],
-    outputRange: ['-16deg', '0deg', '16deg'],
+      // Check thresholds for mid-drag haptic (fires once per swipe direction)
+      const absTX = Math.abs(e.translationX);
+      const isCaptain =
+        e.translationY < CAPTAIN_Y_THRESHOLD && absTX < CAPTAIN_X_MAX;
+      const isDraft = e.translationX > COMMIT_X_THRESHOLD;
+      const isPass = e.translationX < -COMMIT_X_THRESHOLD;
+
+      if (isCaptain && hapticFired.value !== 'captain') {
+        hapticFired.value = 'captain';
+        runOnJS(triggerHaptic)('captain');
+      } else if (isDraft && hapticFired.value !== 'draft') {
+        hapticFired.value = 'draft';
+        runOnJS(triggerHaptic)('draft');
+      } else if (isPass && hapticFired.value !== 'pass') {
+        hapticFired.value = 'pass';
+        runOnJS(triggerHaptic)('pass');
+      }
+    })
+    .onEnd((e) => {
+      const absTX = Math.abs(e.translationX);
+      const isCaptain =
+        e.translationY < CAPTAIN_Y_THRESHOLD && absTX < CAPTAIN_X_MAX;
+      const overThresholdX = absTX > COMMIT_X_THRESHOLD;
+      const fastFlick = Math.abs(e.velocityX) > COMMIT_VELOCITY;
+      const committed = overThresholdX || fastFlick;
+
+      if (isCaptain) {
+        // Fly off upward
+        translateY.value = withSpring(-SCREEN_HEIGHT * 1.5, SPRING_FLY, () => {
+          runOnJS(commitSwipe)('up');
+          translateX.value = 0;
+          translateY.value = 0;
+        });
+      } else if (committed && e.translationX > 0) {
+        // DRAFT — fly right
+        translateX.value = withSpring(
+          SCREEN_WIDTH * 1.5,
+          { ...SPRING_FLY, velocity: e.velocityX },
+          () => {
+            runOnJS(commitSwipe)('right');
+            translateX.value = 0;
+            translateY.value = 0;
+          },
+        );
+      } else if (committed && e.translationX < 0) {
+        // PASS — fly left
+        translateX.value = withSpring(
+          -SCREEN_WIDTH * 1.5,
+          { ...SPRING_FLY, velocity: e.velocityX },
+          () => {
+            runOnJS(commitSwipe)('left');
+            translateX.value = 0;
+            translateY.value = 0;
+          },
+        );
+      } else {
+        // Spring back to center
+        translateX.value = withSpring(0, SPRING_BACK);
+        translateY.value = withSpring(0, SPRING_BACK);
+      }
+    });
+
+  // ─── Animated styles ──────────────────────────────────────────────────────
+
+  const cardStyle = useAnimatedStyle(() => {
+    const tx = translateX.value;
+    const ty = translateY.value;
+
+    // Rotation magnitude derived from x translation
+    const rotMag = interpolate(tx, [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2], [-10, 0, 10], Extrapolation.CLAMP);
+    // If grabbed top half: normal rotation; bottom half: invert (rotates around touch point)
+    const rotation = touchYRatio.value < 0.5 ? rotMag : -rotMag;
+
+    return {
+      transform: [
+        { translateX: tx },
+        { translateY: ty },
+        { rotate: `${rotation}deg` },
+      ],
+    };
   });
 
-  const leftOpacity = position.x.interpolate({
-    inputRange: [-160, -50, 0],
-    outputRange: [1, 0.35, 0],
+  const draftOverlayStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(translateX.value, [0, SCREEN_WIDTH / 3], [0, 1], Extrapolation.CLAMP),
+  }));
+
+  const passOverlayStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(translateX.value, [0, -SCREEN_WIDTH / 3], [0, 1], Extrapolation.CLAMP),
+  }));
+
+  const captainOverlayStyle = useAnimatedStyle(() => ({
+    opacity:
+      Math.abs(translateX.value) < CAPTAIN_X_MAX
+        ? interpolate(translateY.value, [0, -80], [0, 1], Extrapolation.CLAMP)
+        : 0,
+  }));
+
+  // Back card scale + translateY derived from front card's x movement
+  const backCardStyle = useAnimatedStyle(() => {
+    const absTX = Math.abs(translateX.value);
+    const scale = interpolate(absTX, [0, SCREEN_WIDTH / 2], [0.95, 1.0], Extrapolation.CLAMP);
+    const ty = interpolate(absTX, [0, SCREEN_WIDTH / 2], [10, 0], Extrapolation.CLAMP);
+    return { transform: [{ scale }, { translateY: ty }] };
   });
 
-  const rightOpacity = position.x.interpolate({
-    inputRange: [0, 50, 160],
-    outputRange: [0, 0.35, 1],
-  });
+  // ─── Button handlers (JS side) ────────────────────────────────────────────
 
-  const upOpacity = position.y.interpolate({
-    inputRange: [-160, -60, 0],
-    outputRange: [1, 0.4, 0],
-  });
+  const handleButtonSwipe = useCallback(
+    (direction: SwipeDirection) => {
+      if (!item) return;
+      const targetX =
+        direction === 'right'
+          ? SCREEN_WIDTH * 1.5
+          : direction === 'left'
+            ? -SCREEN_WIDTH * 1.5
+            : 0;
+      const targetY = direction === 'up' ? -SCREEN_HEIGHT * 1.5 : 0;
 
-  // First-use hint arrow opacity (fades in/out with hintAnim)
-  const hintOpacity = hintAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.75] });
+      if (direction === 'up') {
+        translateY.value = withSpring(targetY, SPRING_FLY, () => {
+          runOnJS(commitSwipe)('up');
+          translateX.value = 0;
+          translateY.value = 0;
+        });
+      } else {
+        translateX.value = withSpring(targetX, SPRING_FLY, () => {
+          runOnJS(commitSwipe)(direction);
+          translateX.value = 0;
+          translateY.value = 0;
+        });
+      }
+    },
+    [item, commitSwipe, translateX, translateY],
+  );
+
+  // ─── Empty state ──────────────────────────────────────────────────────────
 
   if (!item) {
     return (
       <View style={styles.emptyDeck}>
         <Text style={styles.emptyTitle}>Deck cleared</Text>
-        <Text style={styles.emptyCopy}>You have scouted the full launch board. Reset or jump into league mode.</Text>
+        <Text style={styles.emptyCopy}>
+          You have scouted the full launch board. Reset or jump into league mode.
+        </Text>
       </View>
     );
   }
 
+  // ─── Render ───────────────────────────────────────────────────────────────
+
   return (
     <View style={styles.deckArea}>
+      {/* Back card */}
       {nextItem ? (
-        <View style={styles.nextCard} pointerEvents="none">
+        <Animated.View style={[styles.nextCard, backCardStyle]} pointerEvents="none">
           {renderCard(nextItem)}
-        </View>
+        </Animated.View>
       ) : null}
 
-      <Animated.View
-        style={[
-          styles.cardWrap,
-          {
-            transform: [...position.getTranslateTransform(), { rotate: rotation }, { scale: entranceScale }],
-          },
-        ]}
-        {...panResponder.panHandlers}>
-        <Animated.View style={[styles.overlayBadge, styles.overlayLeft, { opacity: leftOpacity }]}>
-          <Text style={styles.overlayTextLeft}>PASS</Text>
-        </Animated.View>
-        <Animated.View style={[styles.overlayBadge, styles.overlayRight, { opacity: rightOpacity }]}>
-          <Text style={styles.overlayTextRight}>DRAFT</Text>
-        </Animated.View>
-        <Animated.View style={[styles.overlayBadge, styles.overlayTop, { opacity: upOpacity }]}>
-          <Text style={styles.overlayTextUp}>CAPTAIN</Text>
-        </Animated.View>
-        {/* Green flash on draft */}
-        <Animated.View
-          style={[
-            StyleSheet.absoluteFill,
-            { backgroundColor: '#2dc653', borderRadius: 8, zIndex: 6, opacity: flashOpacity, pointerEvents: 'none' },
-          ]}
-        />
-        {/* First-use swipe hint arrow */}
-        <Animated.View style={[styles.hintArrow, { opacity: hintOpacity }]}>
-          <Text style={styles.hintText}>→ Swipe to draft</Text>
-        </Animated.View>
-        {renderCard(item)}
-      </Animated.View>
+      {/* Front card with gesture */}
+      <GestureDetector gesture={pan}>
+        <Animated.View style={[styles.cardWrap, cardStyle]}>
+          {/* DRAFT overlay — top-left, green */}
+          <Animated.View style={[styles.overlayBadge, styles.overlayDraft, draftOverlayStyle]}>
+            <Text style={styles.overlayTextDraft}>DRAFT</Text>
+          </Animated.View>
 
+          {/* PASS overlay — top-right, red */}
+          <Animated.View style={[styles.overlayBadge, styles.overlayPass, passOverlayStyle]}>
+            <Text style={styles.overlayTextPass}>PASS</Text>
+          </Animated.View>
+
+          {/* CAPTAIN overlay — center, gold */}
+          <Animated.View style={[styles.overlayBadge, styles.overlayCaptain, captainOverlayStyle]}>
+            <Text style={styles.overlayTextCaptain}>⭐ CAPTAIN</Text>
+          </Animated.View>
+
+          {renderCard(item)}
+        </Animated.View>
+      </GestureDetector>
+
+      {/* Action buttons */}
       <View style={styles.actionRow}>
-        <ActionButton label="Pass" icon="close" tone="bad" onPress={() => animateOutRef.current('left')} />
-        <ActionButton label="Captain" icon="star" tone="gold" onPress={() => animateOutRef.current('up')} />
-        <ActionButton label="Draft" icon="checkmark" tone="good" onPress={() => animateOutRef.current('right')} />
+        <ActionButton label="Pass" icon="close" tone="bad" onPress={() => handleButtonSwipe('left')} />
+        <ActionButton label="Captain" icon="star" tone="gold" onPress={() => handleButtonSwipe('up')} />
+        <ActionButton label="Draft" icon="checkmark" tone="good" onPress={() => handleButtonSwipe('right')} />
       </View>
     </View>
   );
@@ -206,11 +280,10 @@ const styles = StyleSheet.create({
   },
   nextCard: {
     position: 'absolute',
-    top: 18,
-    left: 10,
-    right: 10,
-    opacity: 0.35,
-    transform: [{ scale: 0.95 }],
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
   },
   cardWrap: {
     zIndex: 2,
@@ -218,43 +291,45 @@ const styles = StyleSheet.create({
   overlayBadge: {
     position: 'absolute',
     zIndex: 4,
-    borderWidth: 2,
-    borderRadius: 14,
+    borderWidth: 3,
+    borderRadius: 6,
     paddingHorizontal: 14,
     paddingVertical: 10,
-    backgroundColor: 'rgba(8, 12, 20, 0.85)',
   },
-  overlayLeft: {
+  overlayDraft: {
     top: 28,
     left: 24,
-    borderColor: '#ff5d73',
-    transform: [{ rotate: '-12deg' }],
+    borderColor: '#22c55e',
+    transform: [{ rotate: '-15deg' }],
   },
-  overlayRight: {
+  overlayPass: {
     top: 28,
     right: 24,
-    borderColor: '#8bd450',
-    transform: [{ rotate: '12deg' }],
+    borderColor: '#ef233c',
+    transform: [{ rotate: '15deg' }],
   },
-  overlayTop: {
-    top: 24,
+  overlayCaptain: {
+    top: '40%',
     alignSelf: 'center',
-    borderColor: '#ffd166',
+    borderColor: '#f7c948',
   },
-  overlayTextLeft: {
-    color: '#ff5d73',
+  overlayTextDraft: {
+    color: '#22c55e',
     fontWeight: '900',
-    fontSize: 18,
+    fontSize: 20,
+    letterSpacing: 1,
   },
-  overlayTextRight: {
-    color: '#8bd450',
+  overlayTextPass: {
+    color: '#ef233c',
     fontWeight: '900',
-    fontSize: 18,
+    fontSize: 20,
+    letterSpacing: 1,
   },
-  overlayTextUp: {
-    color: '#ffd166',
+  overlayTextCaptain: {
+    color: '#f7c948',
     fontWeight: '900',
-    fontSize: 18,
+    fontSize: 20,
+    letterSpacing: 1,
   },
   actionRow: {
     flexDirection: 'row',
@@ -262,7 +337,6 @@ const styles = StyleSheet.create({
     gap: 12,
     position: 'relative',
     zIndex: 999,
-    marginBottom: 0,
   },
   emptyDeck: {
     borderRadius: 8,
@@ -281,23 +355,5 @@ const styles = StyleSheet.create({
     color: '#837766',
     fontSize: 15,
     lineHeight: 22,
-  },
-  hintArrow: {
-    position: 'absolute',
-    bottom: 14,
-    right: 16,
-    zIndex: 5,
-    backgroundColor: 'rgba(8, 12, 20, 0.75)',
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#8bd450',
-  },
-  hintText: {
-    color: '#8bd450',
-    fontSize: 13,
-    fontWeight: '800',
-    letterSpacing: 0.3,
   },
 });
