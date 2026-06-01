@@ -7,6 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { LoginGate } from '@/components/login-gate';
 import { AuthProvider } from '@/providers/auth-provider';
 import { GameProvider } from '@/providers/game-provider';
+import { MusicProvider } from '@/providers/music-provider';
 
 export const unstable_settings = {
   initialRouteName: '(tabs)',
@@ -29,14 +30,16 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AuthProvider>
         <GameProvider>
-          <ThemeProvider value={AppTheme}>
-            <LoginGate>
-              <Stack screenOptions={{ contentStyle: { backgroundColor: '#f3ead7' } }}>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              </Stack>
-            </LoginGate>
-            <StatusBar style="dark" />
-          </ThemeProvider>
+          <MusicProvider>
+            <ThemeProvider value={AppTheme}>
+              <LoginGate>
+                <Stack screenOptions={{ contentStyle: { backgroundColor: '#f3ead7' } }}>
+                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                </Stack>
+              </LoginGate>
+              <StatusBar style="dark" />
+            </ThemeProvider>
+          </MusicProvider>
         </GameProvider>
       </AuthProvider>
     </GestureHandlerRootView>

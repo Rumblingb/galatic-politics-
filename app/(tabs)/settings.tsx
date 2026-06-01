@@ -1,4 +1,4 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
+﻿import Ionicons from '@expo/vector-icons/Ionicons';
 import Constants from 'expo-constants';
 import * as WebBrowser from 'expo-web-browser';
 import { Linking, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppBackground, ScreenHeader } from '@/components/game-ui';
 import { useAuth } from '@/providers/auth-provider';
+import { useMusic } from '@/providers/music-provider';
 
 const PRO_STRIPE_URL = 'https://buy.stripe.com/bJe00la1xbg05zG5QT1oI1g';
 const PRIVACY_URL = 'https://agentpay.so/privacy';
@@ -23,6 +24,7 @@ function RowLabel({ label }: { label: string }) {
 
 export default function SettingsScreen() {
   const { user, profile, isPro, signOut } = useAuth();
+  const { isMusicEnabled, toggleMusic } = useMusic();
   const [leaderboardVisible, setLeaderboardVisible] = useState(true);
   const [notifyReceipts, setNotifyReceipts] = useState(true);
   const [notifyLeague, setNotifyLeague] = useState(true);
@@ -31,6 +33,10 @@ export default function SettingsScreen() {
   const handleSignOut = async () => {
     await AsyncStorage.removeItem('tutorial_seen');
     await signOut();
+  };
+
+  const handleMusicToggle = (enabled: boolean) => {
+    toggleMusic(enabled);
   };
 
   return (
@@ -52,6 +58,20 @@ export default function SettingsScreen() {
               <Text style={styles.accountName}>{profile?.display_name ?? 'Anonymous'}</Text>
               <Text style={styles.accountEmail}>{user?.email ?? 'Not signed in'}</Text>
             </View>
+          </View>
+        </View>
+
+        {/* Audio */}
+        <Text style={styles.section}>Audio</Text>
+        <View style={styles.card}>
+          <View style={styles.row}>
+            <RowLabel label="Background music" />
+            <Switch
+              value={isMusicEnabled}
+              onValueChange={handleMusicToggle}
+              trackColor={{ true: '#f7c948', false: '#c0b89a' }}
+              thumbColor="#111111"
+            />
           </View>
         </View>
 
@@ -243,7 +263,6 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     flex: 1,
   },
-  // Account section
   accountRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -279,7 +298,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '700',
   },
-  // Plan badge
   planBadge: {
     backgroundColor: '#f3ead7',
     borderRadius: 6,
@@ -299,7 +317,6 @@ const styles = StyleSheet.create({
   planBadgeTextPro: {
     color: '#111111',
   },
-  // Upgrade button
   upgradeBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -317,7 +334,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '900',
   },
-  // Disclaimer
   disclaimerRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -332,7 +348,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     lineHeight: 17,
   },
-  // Sign out
   signOutBtn: {
     flexDirection: 'row',
     alignItems: 'center',
