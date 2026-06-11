@@ -58,9 +58,7 @@ export function useBackgroundMusic() {
     if (!playerRef.current) return;
     try {
       // Set volume before playing
-      if (playerRef.current.setVolume) {
-        await playerRef.current.setVolume(volume);
-      }
+      playerRef.current.volume = volume;
       // Seek to start and play
       await playerRef.current.seekTo(0);
       await playerRef.current.play();
@@ -84,9 +82,9 @@ export function useBackgroundMusic() {
   const setMusicVolume = useCallback(async (level: number) => {
     const clampedVolume = Math.max(0, Math.min(1, level));
     setVolumeState(clampedVolume);
-    if (playerRef.current && playerRef.current.setVolume) {
+    if (playerRef.current) {
       try {
-        await playerRef.current.setVolume(clampedVolume);
+        playerRef.current.volume = clampedVolume;
       } catch (error) {
         console.warn('Failed to set volume:', error);
       }

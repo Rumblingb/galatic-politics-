@@ -9,6 +9,7 @@ import {
   useState,
 } from 'react';
 import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { getOrCreateProfile, Profile, supabase } from '@/lib/supabase';
 
@@ -23,6 +24,8 @@ type AuthContextValue = {
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  continueAsGuest: () => Promise<void>;
+  isGuest: boolean;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -31,6 +34,19 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isGuest, setIsGuest] = useState(false);
+
+  const GUEST_KEY = 'pc_guest_id';
+
+  const continueAsGuest = async () => {
+    let gid = await AsyncStorage.getItem(GUEST_KEY).catch(() => null);
+    if (!gid) {
+      gid = 'guest-' + Math.random().toString(36).slice(2, 10);
+      AsyncStorage.setItem(GUEST_KEY, gid).catch(() => {});
+    }
+    setIsGuest(true);
+    setUser({ id: gid });
+  };
 
   const isPro = profile?.is_pro ?? false;
 
@@ -58,8 +74,18 @@ export function AuthProvider({ children }: PropsWithChildren) {
             session.user.id,
             session.user.user_metadata?.full_name ?? session.user.user_metadata?.name
           ).then(setProfile);
+          setIsLoading(false);
+        } else {
+          AsyncStorage.getItem(GUEST_KEY)
+            .then((gid) => {
+              if (gid) {
+                setIsGuest(true);
+                setUser({ id: gid });
+              }
+            })
+            .catch(() => {})
+            .finally(() => setIsLoading(false));
         }
-        setIsLoading(false);
       })
       .catch((err) => {
         clearTimeout(loadingTimeout);
@@ -75,7 +101,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
           session.user.id,
           session.user.user_metadata?.full_name ?? session.user.user_metadata?.name
         ).then(setProfile);
-      } else {
+      } else if (!isGuest) {
         setUser(null);
         setProfile(null);
       }
@@ -142,14 +168,16 @@ export function AuthProvider({ children }: PropsWithChildren) {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    await supabase.auth.signOut().catch(() => {});
+    await AsyncStorage.removeItem(GUEST_KEY).catch(() => {});
+    setIsGuest(false);
     setUser(null);
     setProfile(null);
   };
 
   const value = useMemo(
-    () => ({ user, profile, isPro, isLoading, signInWithApple, signInWithGoogle, signOut, refreshProfile }),
-    [user, profile, isPro, isLoading]
+    () => ({ user, profile, isPro, isLoading, signInWithApple, signInWithGoogle, signOut, refreshProfile, continueAsGuest, isGuest }),
+    [user, profile, isPro, isLoading, isGuest]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

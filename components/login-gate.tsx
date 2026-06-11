@@ -19,7 +19,7 @@ import { useAuth } from '@/providers/auth-provider';
 WebBrowser.maybeCompleteAuthSession();
 
 export function LoginGate({ children }: { children: ReactNode }) {
-  const { user, isLoading, signInWithApple, signInWithGoogle } = useAuth();
+  const { user, isLoading, signInWithApple, signInWithGoogle, continueAsGuest } = useAuth();
 
   if (isLoading) {
     return (
@@ -83,6 +83,12 @@ export function LoginGate({ children }: { children: ReactNode }) {
           onPress={signInWithGoogle}>
           <Text style={styles.googleIcon}>G</Text>
           <Text style={styles.googleLabel}>Continue with Google</Text>
+        </Pressable>
+
+        <Pressable
+          style={({ pressed }) => [styles.guestBtn, pressed && { opacity: 0.7 }]}
+          onPress={continueAsGuest}>
+          <Text style={styles.guestLabel}>Play as guest</Text>
         </Pressable>
 
         <Text style={styles.hint}>
@@ -218,6 +224,16 @@ const styles = StyleSheet.create({
   appleBtn: {
     width: '100%',
     height: 52,
+  },
+  guestBtn: {
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  guestLabel: {
+    color: 'rgba(255,255,255,0.65)',
+    fontSize: 15,
+    fontWeight: '600',
+    textDecorationLine: 'underline',
   },
   googleBtn: {
     flexDirection: 'row',

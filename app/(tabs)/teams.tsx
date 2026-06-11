@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppBackground, ScreenHeader, RegionalPromo } from '@/components/game-ui';
 import { SwipeDeck } from '@/components/swipe-deck';
-import { politicians } from '@/data/politicians';
+import { politicians , teams as dataTeams} from '@/data/politicians';
 import { useGame } from '@/providers/game-provider';
 import { MAX_ROSTER_SIZE } from '@/lib/game';
 import { Team, Politician } from '@/types/game';
@@ -78,7 +78,7 @@ function TeamCard({
 }
 
 export default function TeamsScreen() {
-  const { teams } = useGame();
+  const teams = dataTeams;
   const router = useRouter();
   const [idx, setIdx] = useState(0);
 

@@ -72,6 +72,8 @@ export type LeagueEntry = {
   name: string;
   score: number;
   vibe: string;
+  policyFocus?: string;
+  truthScore?: number;
 };
 
 export type Team = {
@@ -81,4 +83,42 @@ export type Team = {
   memberIds: string[];
   theme: string;
   description: string;
+};
+
+export type PolymarketCard = {
+  id: string;
+  question: string;
+  yesOdds: number;
+  noOdds: number;
+  volume24h: number;
+};
+
+export type AuraFarmingMoment = {
+  id: string;
+  title: string;
+  category: string;
+  imageUrl?: string | null;
+  auraPoints?: number;
+  points?: number;
+};
+
+export type CardSubmission = {
+  id: string;
+  politicianName: string;
+  country: string;
+  uploader: string;
+  proposedSkin: string;
+  safeForAds: boolean;
+  moderationStatus: 'Approved' | 'Rejected' | 'Scanning';
+  botNotes: string;
+};
+
+export type CardArt = {
+  id: string;
+  politicianId: string;
+  pack: string;
+  title: string;
+  artDirection: string;
+  status: string;
+  rarity: 'Common' | 'Rare' | 'Epic' | 'Legendary';
 };

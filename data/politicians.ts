@@ -1,4 +1,4 @@
-import { LeagueEntry, MarketSignal, MemeEvent, Politician, PromiseReceipt, WildCardEvent, Team } from '@/types/game';
+import { CardArt, CardSubmission, LeagueEntry, MarketSignal, MemeEvent, Politician, PromiseReceipt, WildCardEvent, Team } from '@/types/game';
 
 export const politicians: Politician[] = [
   {
@@ -656,4 +656,40 @@ export const rivalLeagues: LeagueEntry[] = [
   { id: 'r2', name: 'Fiscal Quants', score: 284, vibe: 'Rates maxing and receipts posting' },
   { id: 'r3', name: 'Treaty Ballers', score: 271, vibe: 'Diplomacy nerds on a heater' },
   { id: 'r4', name: 'Spin Doctors United', score: 256, vibe: 'Questionable ethics, elite banter' },
+];
+
+export const communityCardSubmissions: CardSubmission[] = [
+  {
+    id: 'cs1', politicianName: 'Donald Trump', country: 'United States', uploader: '@tacticsdept',
+    proposedSkin: 'Hair Turbulence — gold-foil rally edition', safeForAds: true,
+    moderationStatus: 'Approved', botNotes: 'Caricature style, no policy claims. Cleared for ad inventory.',
+  },
+  {
+    id: 'cs2', politicianName: 'Vladimir Putin', country: 'Russia', uploader: '@fiscalquant',
+    proposedSkin: 'Horseback Boss Fight — winter map variant', safeForAds: false,
+    moderationStatus: 'Scanning', botNotes: 'Flagged: militaria props. Holding for human review before ad placement.',
+  },
+  {
+    id: 'cs3', politicianName: 'Mia Mottley', country: 'Barbados', uploader: '@treatyballer',
+    proposedSkin: 'Climate Closer — summit speech holo', safeForAds: true,
+    moderationStatus: 'Approved', botNotes: 'Positive-tone caricature. Approved for all regions.',
+  },
+];
+
+export const officialCardArt: CardArt[] = [
+  {
+    id: 'oa1', politicianId: 'us-president', pack: 'Launch Pack',
+    title: 'Hair Turbulence', artDirection: 'Wind-tunnel caricature, gold foil border, rally confetti.',
+    status: 'Live in packs', rarity: 'Legendary',
+  },
+  {
+    id: 'oa2', politicianId: 'russia-president', pack: 'Boss Fight Pack',
+    title: 'Horseback Boss Fight', artDirection: 'Steppe sunset, action-figure pose, HP bar overlay.',
+    status: 'Live in packs', rarity: 'Epic',
+  },
+  {
+    id: 'oa3', politicianId: 'uk-prime-minister', pack: 'Launch Pack',
+    title: 'Control Manager', artDirection: 'Spreadsheet aura, deadpan expression, muted palette.',
+    status: 'Drops Friday', rarity: 'Rare',
+  },
 ];
