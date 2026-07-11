@@ -6,6 +6,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { LoginGate } from '@/components/login-gate';
 import { AuthProvider } from '@/providers/auth-provider';
+import { CampaignProvider } from '@/providers/campaign-provider';
 import { GameProvider } from '@/providers/game-provider';
 import { MusicProvider } from '@/providers/music-provider';
 
@@ -30,6 +31,7 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AuthProvider>
         <GameProvider>
+          <CampaignProvider>
           <MusicProvider>
             <ThemeProvider value={AppTheme}>
               <LoginGate>
@@ -40,6 +42,7 @@ export default function RootLayout() {
               <StatusBar style="dark" />
             </ThemeProvider>
           </MusicProvider>
+          </CampaignProvider>
         </GameProvider>
       </AuthProvider>
     </GestureHandlerRootView>

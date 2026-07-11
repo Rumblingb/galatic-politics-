@@ -6,6 +6,10 @@ import { Platform, StyleSheet } from 'react-native';
 
 import { useAuth } from '@/providers/auth-provider';
 
+export const unstable_settings = {
+  initialRouteName: 'campaign',
+};
+
 export default function TabLayout() {
   const { isPro } = useAuth();
 
@@ -38,6 +42,13 @@ export default function TabLayout() {
             />
           ) : null,
       }}>
+      <Tabs.Screen
+        name="campaign"
+        options={{
+          title: 'Campaign',
+          tabBarIcon: ({ color }) => <Ionicons size={22} name="game-controller" color={color} />,
+        }}
+      />
       <Tabs.Screen
         name="index"
         options={{
